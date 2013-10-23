@@ -11,10 +11,10 @@
 
 // This class is responsible for initializing and rendering the title overlay visible
 // at the top of the DirectX SDK samples.
-ref class SampleOverlay
+ref class Overlay
 {
 internal:
-    SampleOverlay();
+    Overlay();
 
     void Initialize(
         _In_ ID2D1Device*         d2dDevice,

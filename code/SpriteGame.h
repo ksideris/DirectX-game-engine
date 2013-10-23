@@ -8,9 +8,9 @@
 #pragma once
 
 #include "DirectXBase.h"
-#include "SampleOverlay.h"
-#include "AutoThrottle.h"
+#include "Overlay.h" 
 #include "BasicSprites.h"
+#include "SpaceShip.h"
 
 namespace SampleSettings
 {
@@ -45,10 +45,10 @@ struct ParticleData
     float2 vel;
 };
 
-ref class SimpleSprites : public DirectXBase
+ref class SpriteGame : public DirectXBase
 {
 internal:
-    SimpleSprites();
+    SpriteGame();
     virtual void CreateDeviceIndependentResources() override;
     virtual void CreateDeviceResources() override;
     virtual void CreateWindowSizeDependentResources() override;
@@ -58,10 +58,11 @@ internal:
     void MoveRepulsor(_In_ uint32 id, _In_ float2 position);
     void RemoveRepulsor(_In_ uint32 id);
 
+	SpaceShip* spaceship; //************SPACESHIP CODE*********************/
+
 private:
     float RandFloat(float min, float max);
-    SampleOverlay^ m_sampleOverlay;
-    AutoThrottle^ m_autoThrottle;
+    Overlay^ m_Overlay; 
     BasicSprites::SpriteBatch^ m_spriteBatch;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;

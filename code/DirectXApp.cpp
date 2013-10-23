@@ -36,7 +36,7 @@ void DirectXApp::Initialize(
     CoreApplication::Suspending +=
         ref new EventHandler<SuspendingEventArgs^>(this, &DirectXApp::OnSuspending);
 
-    m_renderer = ref new SimpleSprites();
+    m_renderer = ref new SpriteGame();
 }
 
 void DirectXApp::SetWindow(
@@ -65,6 +65,8 @@ void DirectXApp::SetWindow(
 
     window->PointerMoved +=
         ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXApp::OnPointerMoved);
+
+	window->KeyDown+=ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow ^, Windows::UI::Core::KeyEventArgs ^>(this, &DirectXApp::OnKeyDown);
 
     // Disable all pointer visual feedback for better performance when touching.
     auto pointerVisualizationSettings = PointerVisualizationSettings::GetForCurrentView();
@@ -191,6 +193,21 @@ void DirectXApp::OnPointerMoved(
     }
 }
 
+
+/*************SPACESHIP CODE*********************/
+void DirectXApp::OnKeyDown(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::KeyEventArgs ^args)
+{
+	if (args->VirtualKey == VirtualKey::Right)
+		m_renderer->spaceship->vel.x += 10;
+	if (args->VirtualKey == VirtualKey::Left)
+		m_renderer->spaceship->vel.x -= 10;
+	if (args->VirtualKey == VirtualKey::Up)
+		m_renderer->spaceship->vel.y -= 10;
+	if (args->VirtualKey == VirtualKey::Down)
+		m_renderer->spaceship->vel.y += 10;
+}
+
+
 IFrameworkView^ DirectXAppSource::CreateView()
 {
     return ref new DirectXApp();
@@ -203,3 +220,4 @@ int main(Platform::Array<Platform::String^>^)
     CoreApplication::Run(directXAppSource);
     return 0;
 }
+

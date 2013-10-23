@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "SimpleSprites.h"
+#include "SpriteGame.h"
 
 ref class DirectXApp : public Windows::ApplicationModel::Core::IFrameworkView
 {
@@ -67,9 +67,10 @@ private:
         _In_ Windows::UI::Core::PointerEventArgs^ args
         );
 
-    SimpleSprites^ m_renderer;
+    SpriteGame^ m_renderer;
     bool m_windowClosed;
     bool m_windowVisible;
+	void OnKeyDown(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::KeyEventArgs ^args);
 };
 
 ref class DirectXAppSource : Windows::ApplicationModel::Core::IFrameworkViewSource

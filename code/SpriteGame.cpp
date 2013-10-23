@@ -6,7 +6,7 @@
 //// Copyright (c) Microsoft Corporation. All rights reserved
 
 #include "pch.h"
-#include "SimpleSprites.h"
+#include "SpriteGame.h"
 #include "BasicLoader.h"
 
 using namespace Microsoft::WRL;
@@ -16,21 +16,22 @@ using namespace Windows::UI::Core;
 
 using namespace BasicSprites;
 
-SimpleSprites::SimpleSprites() :
+SpriteGame::SpriteGame() :
     m_numParticlesToDraw(SampleSettings::Performance::InitialParticleCount)
 {
 }
 
-void SimpleSprites::CreateDeviceIndependentResources()
+void SpriteGame::CreateDeviceIndependentResources()
 {
     DirectXBase::CreateDeviceIndependentResources();
 
     // Create the performance throttler.
 
-    m_autoThrottle = ref new AutoThrottle(SampleSettings::Performance::TargetFrameTime);
+  
+
 }
 
-void SimpleSprites::CreateDeviceResources()
+void SpriteGame::CreateDeviceResources()
 {
     DirectXBase::CreateDeviceResources();
 
@@ -65,6 +66,29 @@ void SimpleSprites::CreateDeviceResources()
         );
     m_spriteBatch->AddTexture(m_asteroid.Get());
 
+	/*************SPACESHIP CODE*********************/
+	spaceship = new SpaceShip();
+
+
+
+	spaceship->pos.x = RandFloat(0.0f, m_windowBounds.Width);
+	spaceship->pos.y = RandFloat(0.0f, m_windowBounds.Height);
+	float tempRot = RandFloat(-PI_F, PI_F);
+	float tempMag = RandFloat(0.0f, 17.0f);
+	spaceship->vel.x = tempMag * cosf(tempRot);
+	spaceship->vel.y = tempMag * sinf(tempRot);
+	spaceship->rot = (0,0);
+	spaceship->scale = RandFloat(0.1f, 1.0f);
+
+	loader->LoadTexture(
+		"SpaceShip.DDS",
+		&spaceship->m_spaceship_text,
+		nullptr
+		);
+	m_spriteBatch->AddTexture(spaceship->m_spaceship_text.Get());
+
+
+	/*************SPACESHIP END*********************/
     loader->LoadTexture(
         "particle.dds",
         &m_particle,
@@ -74,18 +98,18 @@ void SimpleSprites::CreateDeviceResources()
 
     // Create the Sample Overlay.
 
-    m_sampleOverlay = ref new SampleOverlay();
+    m_Overlay = ref new Overlay();
 
-    m_sampleOverlay->Initialize(
+    m_Overlay->Initialize(
         m_d2dDevice.Get(),
         m_d2dContext.Get(),
         m_wicFactory.Get(),
         m_dwriteFactory.Get(),
-        "Direct3D SpriteBatch sample"
+        "What is the use of this?"
         );
 }
 
-void SimpleSprites::CreateWindowSizeDependentResources()
+void SpriteGame::CreateWindowSizeDependentResources()
 {
     DirectXBase::CreateWindowSizeDependentResources();
 
@@ -138,32 +162,14 @@ void SimpleSprites::CreateWindowSizeDependentResources()
         }
     }
 
-    m_sampleOverlay->UpdateForWindowSizeChange();
+    m_Overlay->UpdateForWindowSizeChange();
 }
 
-void SimpleSprites::Update(float timeTotal, float timeDelta)
+void SpriteGame::Update(float timeTotal, float timeDelta)
 {
     // Update the performance throttler.
-
-    auto control = m_autoThrottle->Update(timeDelta);
-
-    if (control == FrameWorkload::Increase)
-    {
-        m_numParticlesToDraw += SampleSettings::Performance::ParticleCountDelta;
-    }
-    if (control == FrameWorkload::Decrease)
-    {
-        m_numParticlesToDraw -= SampleSettings::Performance::ParticleCountDelta;
-    }
-    if (control != FrameWorkload::Maintain)
-    {
-        m_numParticlesToDraw = max(SampleSettings::Performance::ParticleCountMin, min(SampleSettings::Performance::ParticleCountMax, m_numParticlesToDraw));
-        if (m_featureLevel < D3D_FEATURE_LEVEL_9_3)
-        {
-            m_numParticlesToDraw = min(static_cast<int>(Parameters::MaximumCapacityCompatible - SampleSettings::NumAsteroids - 1), m_numParticlesToDraw);
-        }
-    }
-
+	
+	m_numParticlesToDraw = 500;
     // Update the non-interactive asteroids.
     // Their behavior is to drift across the window with a fixed translational and rotational
     // velocity.  Upon crossing a boundary outside the window, their position wraps.
@@ -280,9 +286,11 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 
         particle->pos = particle->pos + particle->vel * timeDelta;
     }
+
+	spaceship->pos = spaceship->pos + spaceship->vel * timeDelta; /**spaceship code**/
 }
 
-void SimpleSprites::Render()
+void SpriteGame::Render()
 {
     m_d3dContext->OMSetRenderTargets(
         1,
@@ -307,6 +315,16 @@ void SimpleSprites::Render()
         SizeUnits::Normalized
         );
 
+
+	m_spriteBatch->Draw(
+		spaceship->m_spaceship_text.Get(),
+		spaceship->pos,
+		PositionUnits::DIPs,
+		float2(1.0f, 1.0f) * spaceship->scale,
+		SizeUnits::Normalized,
+		float4(0.8f, 0.8f, 1.0f, 1.0f),
+		spaceship->rot
+		);
     // Draw the non-interactive asteroids.
 
     for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
@@ -322,7 +340,7 @@ void SimpleSprites::Render()
             );
     }
 
-    // Draw the interactive particles.
+    //// Draw the interactive particles.
 
     for (auto particle = m_particleData.begin(); particle != m_particleData.begin() + m_numParticlesToDraw; particle++)
     {
@@ -343,25 +361,25 @@ void SimpleSprites::Render()
 
     // Render the Sample Overlay.
 
-    m_sampleOverlay->Render();
+    m_Overlay->Render();
 }
 
-float SimpleSprites::RandFloat(float min, float max)
+float SpriteGame::RandFloat(float min, float max)
 {
     return (static_cast<float>(rand() % RAND_MAX) / static_cast<float>(RAND_MAX)) * (max - min) + min;
 }
 
-void SimpleSprites::AddRepulsor(_In_ uint32 id, _In_ float2 position)
+void SpriteGame::AddRepulsor(_In_ uint32 id, _In_ float2 position)
 {
     m_repulsors[id] = position;
 }
 
-void SimpleSprites::MoveRepulsor(_In_ uint32 id, _In_ float2 position)
+void SpriteGame::MoveRepulsor(_In_ uint32 id, _In_ float2 position)
 {
     m_repulsors[id] = position;
 }
 
-void SimpleSprites::RemoveRepulsor(_In_ uint32 id)
+void SpriteGame::RemoveRepulsor(_In_ uint32 id)
 {
     m_repulsors.erase(id);
 }
