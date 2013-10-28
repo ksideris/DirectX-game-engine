@@ -139,10 +139,8 @@ void  DirectXPage::OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::K
 
 void DirectXPage::CheckGameState()
 {
-	/*if (PreviousGameState != m_renderer->CurrentGameState)
-	{
-		PreviousGameState = m_renderer->CurrentGameState;
-	}*/
+	
+
 }
   
 

@@ -87,7 +87,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F23CBB13-8A62-47AF-8C1B-1DD7E3FBE46E}</ProjectGuid>
+    <ProjectGuid>{5A714955-6A6C-4847-BCC3-E9333B2D74FC}</ProjectGuid>
     <RootNamespace>Coding4Fun.FallFury</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and '$(VisualStudioVersion)' == ''">$(VCTargetsPath11)</VCTargetsPath>
@@ -365,11 +365,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest">
-      <SubType>Designer</SubType>
-    </AppxManifest>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="Assets\GameObjects\ida.dds" />
     <Image Include="Assets\GameObjects\m31.png" />
     <Image Include="Assets\GameObjects\particle.png" />
@@ -550,6 +545,9 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='ARM - Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Desktop - Release|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="PackageManifest(8.0)\Package.appxmanifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
