@@ -44,9 +44,9 @@ void Player::KeepInBounds()
 void Player::ProcessKeyDown(Windows::UI::Core::KeyEventArgs^ args){
 
 	if (args->VirtualKey == VirtualKey::Right )	 
-		vel.x = 200;
+		vel.x = 500;
 	if (args->VirtualKey == VirtualKey::Left)
-		vel.x = -200;
+		vel.x = -500;
 	if (args->VirtualKey == VirtualKey::Up)
 		vel.y = -200;
 	if (args->VirtualKey == VirtualKey::Down)

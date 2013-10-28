@@ -201,13 +201,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="DirectXApp.h" />
     <ClInclude Include="RocketFire.h" />
     <ClInclude Include="SlidingBackgroundSprite.h" />
     <ClInclude Include="BasicSprites.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HelperClasses.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="DirectXApp.h" />
     <ClInclude Include="DirectXSample.h" />
     <ClInclude Include="Overlay.h" />
     <ClInclude Include="DirectXBase.h" />
@@ -223,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="DirectXApp.cpp" />
     <ClCompile Include="RocketFire.cpp" />
     <ClCompile Include="SlidingBackgroundSprite.cpp" />
     <ClCompile Include="BasicSprites.cpp" />
@@ -235,7 +236,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="DirectXApp.cpp" />
     <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="DirectXBase.cpp" />
     <ClCompile Include="BasicTimer.cpp" />

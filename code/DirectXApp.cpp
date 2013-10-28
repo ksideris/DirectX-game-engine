@@ -184,13 +184,13 @@ void DirectXApp::OnPointerMoved(
 void DirectXApp::OnKeyDown(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::KeyEventArgs ^args)
 { 
 	m_renderer->spaceship->ProcessKeyDown(args);
-	if (args->VirtualKey == VirtualKey::Space)
-		m_renderer->CreateProjectile();
 }
 
 void DirectXApp::OnKeyUp(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::KeyEventArgs ^args)
 {
 	m_renderer->spaceship->ProcessKeyUp(args);
+	if (args->VirtualKey == VirtualKey::Space)
+		m_renderer->CreateProjectile();
 }
 
 

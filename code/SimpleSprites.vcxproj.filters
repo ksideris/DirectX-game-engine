@@ -13,9 +13,6 @@
     <ClCompile Include="BasicTimer.cpp">
       <Filter>Helpers\BasicTimer</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXApp.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXBase.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -52,6 +49,9 @@
     <ClCompile Include="RocketFire.cpp">
       <Filter>Sources\GameElements\ParticleSystems</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXApp.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicLoader.h">
@@ -68,9 +68,6 @@
     </ClInclude>
     <ClInclude Include="BasicMath.h">
       <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXApp.h">
-      <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="DirectXBase.h">
       <Filter>Sources</Filter>
@@ -113,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="RocketFire.h">
       <Filter>Sources\GameElements\ParticleSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXApp.h">
+      <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
