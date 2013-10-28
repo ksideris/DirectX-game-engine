@@ -21,6 +21,7 @@ void SpriteGame::CreateProjectile()
 	ParticleSystem data;
 	data.pos = spaceship->pos;
 	data.vel = float2(1000.0f, 0.0f);
+	data.scale = 1.0f;
 	data.SetTexture(m_particle);
 	data.SetWindowSize(m_windowBounds);
 	m_particleData.push_back(data);
@@ -159,10 +160,10 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 
 		if (particle->IsOutOfVisibleArea())
 		{
-			/*particle = m_particleData.erase(particle);
+			particle = m_particleData.erase(particle);
 
 			if (particle == m_particleData.end())
-				break;*/
+				break;
 		}
 	}
 
