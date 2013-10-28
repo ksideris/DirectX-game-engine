@@ -11,6 +11,8 @@
 #include "Overlay.h" 
 #include "BasicSprites.h"
 #include "SpaceShip.h"
+#include "Asteroid.h"
+#include "Projectile.h"
 
 namespace SampleSettings
 {
@@ -30,15 +32,7 @@ namespace SampleSettings
     }
 }
 
-struct AsteroidData
-{
-    float2 pos;
-    float2 vel;
-    float rot;
-    float rotVel;
-    float scale;
-};
-
+ 
 struct ParticleData
 {
     float2 pos;
@@ -57,18 +51,22 @@ internal:
     void AddRepulsor(_In_ uint32 id, _In_ float2 position);
     void MoveRepulsor(_In_ uint32 id, _In_ float2 position);
     void RemoveRepulsor(_In_ uint32 id);
-
+	void CreateProjectile();
 	SpaceShip* spaceship; //************SPACESHIP CODE*********************/
 
 private:
     float RandFloat(float min, float max);
     Overlay^ m_Overlay; 
-    BasicSprites::SpriteBatch^ m_spriteBatch;
-    Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background;
+	BasicSprites::SpriteBatch^ m_spriteBatch;
+
+	float background1_pos;
+	float background2_pos;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background1;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background2;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_particle;
-    std::vector<AsteroidData> m_asteroidData;
-    std::vector<ParticleData> m_particleData;
+    std::vector<Asteroid> m_asteroidData;
+    std::vector<Projectile> m_particleData;
     std::map<uint32, float2> m_repulsors;
     int m_numParticlesToDraw;
 };

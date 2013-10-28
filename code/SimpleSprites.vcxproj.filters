@@ -34,6 +34,15 @@
     <ClCompile Include="SpaceShip.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicObject.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicLoader.h">
@@ -75,40 +84,46 @@
     <ClInclude Include="SpaceShip.h">
       <Filter>Sources</Filter>
     </ClInclude>
+    <ClInclude Include="DynamicObject.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="windowsbig-sdk.png">
+    <Image Include="Assets\GameObjects\ida.dds">
+      <Filter>Game Assets</Filter>
+    </Image>
+    <Image Include="Assets\GameObjects\m31.png">
+      <Filter>Game Assets</Filter>
+    </Image>
+    <Image Include="Assets\GameObjects\particle.dds">
+      <Filter>Game Assets</Filter>
+    </Image>
+    <Image Include="Assets\GameObjects\SpaceShip.png">
+      <Filter>Game Assets</Filter>
+    </Image>
+    <Image Include="Assets\UI\windowsbig-sdk.png">
+      <Filter>UI Assets</Filter>
+    </Image>
+    <Image Include="smalltile-sdk.scale-100.png">
       <Filter>App Store Files</Filter>
     </Image>
-    <Image Include="splash-sdk.png">
+    <Image Include="Appx Files\splash-sdk.scale-100.png">
       <Filter>App Store Files</Filter>
     </Image>
-    <Image Include="squaretile-sdk.png">
+    <Image Include="squaretile-sdk.scale-100.png">
       <Filter>App Store Files</Filter>
     </Image>
-    <Image Include="storelogo-sdk.png">
+    <Image Include="storelogo-sdk.scale-100.png">
       <Filter>App Store Files</Filter>
-    </Image>
-    <Image Include="smalltile-sdk.png">
-      <Filter>App Store Files</Filter>
-    </Image>
-    <Image Include="ida.dds">
-      <Filter>Sprite Textures</Filter>
-    </Image>
-    <Image Include="m31.png">
-      <Filter>Sprite Textures</Filter>
-    </Image>
-    <Image Include="particle.dds">
-      <Filter>Sprite Textures</Filter>
-    </Image>
-    <Image Include="SpaceShip.DDS">
-      <Filter>Sprite Textures</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Sprite Textures">
-      <UniqueIdentifier>{1659f819-8bf7-4df1-ac79-e07f6e0866df}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources">
       <UniqueIdentifier>{9d55c27d-f475-4c53-bc83-a469df0cb55c}</UniqueIdentifier>
     </Filter>
@@ -130,11 +145,12 @@
     <Filter Include="Helpers\BasicSprites\Shaders">
       <UniqueIdentifier>{997ca786-97fb-400e-beb6-8d50d882496b}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest">
-      <Filter>App Store Files</Filter>
-    </AppxManifest>
+    <Filter Include="Game Assets">
+      <UniqueIdentifier>{7179335d-6ba6-4bc7-b05e-4568c0fe58a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI Assets">
+      <UniqueIdentifier>{c8fa4897-75c8-443b-b6b1-f565733cd34c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicSprites.GeometryShader.gs.hlsl">
@@ -152,5 +168,10 @@
     <FxCompile Include="BasicSprites.Replication.vs.hlsl">
       <Filter>Helpers\BasicSprites\Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <Filter>App Store Files</Filter>
+    </AppxManifest>
   </ItemGroup>
 </Project>
