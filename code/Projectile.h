@@ -1,8 +1,8 @@
 #include "DirectXBase.h"
 #include "BasicSprites.h"
-#include "DynamicObject.h"
+#include "GameObject.h"
 
-class Projectile :public DynamicObject
+class Projectile :public GameObject
 {
 
 public:

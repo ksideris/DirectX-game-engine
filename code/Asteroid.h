@@ -1,13 +1,11 @@
-#include "DynamicObject.h"
+#include "GameObject.h"
 
-class Asteroid :public DynamicObject
+class Asteroid :public GameObject
 {
 
 public:
 
-
-
-
-
+	void Update(float timeDelta);
+	void WrapAroundBounds();
 
 };

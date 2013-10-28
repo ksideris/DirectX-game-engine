@@ -181,15 +181,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Appx Files\splash-sdk.scale-100.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
     <Image Include="Assets\GameObjects\ida.dds" />
     <Image Include="Assets\GameObjects\m31.png" />
     <Image Include="Assets\GameObjects\particle.dds" />
     <Image Include="Assets\GameObjects\SpaceShip.png" />
     <Image Include="Assets\UI\windowsbig-sdk.png" />
     <Image Include="smalltile-sdk.scale-100.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="splash-sdk.scale-100.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
     <Image Include="squaretile-sdk.scale-100.png">
@@ -201,8 +201,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="BackgroundSprite.h" />
     <ClInclude Include="BasicSprites.h" />
-    <ClInclude Include="DynamicObject.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HelperClasses.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="DirectXApp.h" />
     <ClInclude Include="DirectXSample.h" />
@@ -214,13 +216,15 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="BasicReaderWriter.h" />
     <ClInclude Include="Projectile.h" />
-    <ClInclude Include="SpaceShip.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="SpriteGame.h" />
+    <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="BackgroundSprite.cpp" />
     <ClCompile Include="BasicSprites.cpp" />
-    <ClCompile Include="DynamicObject.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -237,8 +241,9 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="BasicReaderWriter.cpp" />
     <ClCompile Include="Projectile.cpp" />
-    <ClCompile Include="SpaceShip.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpriteGame.cpp" />
+    <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicSprites.GeometryShader.gs.hlsl">
@@ -313,7 +318,9 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest" />
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

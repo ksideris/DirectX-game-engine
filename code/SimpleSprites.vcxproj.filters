@@ -31,17 +31,23 @@
     <ClCompile Include="SpriteGame.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="SpaceShip.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamicObject.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Asteroid.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Sources\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Sources\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Sources\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Sources\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundSprite.cpp">
+      <Filter>Sources\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Sources\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,17 +87,26 @@
     <ClInclude Include="SpriteGame.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="SpaceShip.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicObject.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
     <ClInclude Include="Asteroid.h">
-      <Filter>Sources</Filter>
+      <Filter>Sources\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Sources\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Projectile.h">
-      <Filter>Sources</Filter>
+      <Filter>Sources\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperClasses.h">
+      <Filter>Sources\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Sources\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundSprite.h">
+      <Filter>Sources\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Sources\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -113,13 +128,13 @@
     <Image Include="smalltile-sdk.scale-100.png">
       <Filter>App Store Files</Filter>
     </Image>
-    <Image Include="Appx Files\splash-sdk.scale-100.png">
-      <Filter>App Store Files</Filter>
-    </Image>
     <Image Include="squaretile-sdk.scale-100.png">
       <Filter>App Store Files</Filter>
     </Image>
     <Image Include="storelogo-sdk.scale-100.png">
+      <Filter>App Store Files</Filter>
+    </Image>
+    <Image Include="splash-sdk.scale-100.png">
       <Filter>App Store Files</Filter>
     </Image>
   </ItemGroup>
@@ -150,6 +165,9 @@
     </Filter>
     <Filter Include="UI Assets">
       <UniqueIdentifier>{c8fa4897-75c8-443b-b6b1-f565733cd34c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\GameObjects">
+      <UniqueIdentifier>{f50b3094-9e64-4bf9-aa09-ec75a2b1d4fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

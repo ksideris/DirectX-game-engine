@@ -10,9 +10,10 @@
 #include "DirectXBase.h"
 #include "Overlay.h" 
 #include "BasicSprites.h"
-#include "SpaceShip.h"
+#include "Player.h"
 #include "Asteroid.h"
 #include "Projectile.h"
+#include "BackgroundSprite.h"
 
 namespace SampleSettings
 {
@@ -43,30 +44,39 @@ ref class SpriteGame : public DirectXBase
 {
 internal:
     SpriteGame();
+
     virtual void CreateDeviceIndependentResources() override;
     virtual void CreateDeviceResources() override;
     virtual void CreateWindowSizeDependentResources() override;
     virtual void Render() override;
     void Update(float timeTotal, float timeDelta);
-    void AddRepulsor(_In_ uint32 id, _In_ float2 position);
-    void MoveRepulsor(_In_ uint32 id, _In_ float2 position);
-    void RemoveRepulsor(_In_ uint32 id);
+ 
+
+
 	void CreateProjectile();
-	SpaceShip* spaceship; //************SPACESHIP CODE*********************/
+	Player* spaceship;
+
 
 private:
+
     float RandFloat(float min, float max);
     Overlay^ m_Overlay; 
+
 	BasicSprites::SpriteBatch^ m_spriteBatch;
 
-	float background1_pos;
-	float background2_pos;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background1;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background2;
-    Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
-    Microsoft::WRL::ComPtr<ID3D11Texture2D> m_particle;
+ 
+
+	BackgroundSprite * background1;
+	BackgroundSprite * background2;
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background; 
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_particle;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_player;
+
+
     std::vector<Asteroid> m_asteroidData;
-    std::vector<Projectile> m_particleData;
-    std::map<uint32, float2> m_repulsors;
+    std::vector<Projectile> m_particleData; 
+
     int m_numParticlesToDraw;
 };

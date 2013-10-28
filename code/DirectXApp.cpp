@@ -159,21 +159,14 @@ void DirectXApp::OnPointerPressed(
     _In_ Windows::UI::Core::PointerEventArgs^ args
     )
 {
-    m_renderer->AddRepulsor(
-        args->CurrentPoint->PointerId,
-        float2(
-            args->CurrentPoint->Position.X,
-            args->CurrentPoint->Position.Y
-            )
-        );
+ 
 }
 
 void DirectXApp::OnPointerReleased(
     _In_ Windows::UI::Core::CoreWindow^ sender,
     _In_ Windows::UI::Core::PointerEventArgs^ args
     )
-{
-    m_renderer->RemoveRepulsor(args->CurrentPoint->PointerId);
+{ 
 }
 
 void DirectXApp::OnPointerMoved(
@@ -183,31 +176,21 @@ void DirectXApp::OnPointerMoved(
 {
     if (args->CurrentPoint->IsInContact)
     {
-        m_renderer->MoveRepulsor(
-            args->CurrentPoint->PointerId,
-            float2(
-                args->CurrentPoint->Position.X,
-                args->CurrentPoint->Position.Y
-                )
-            );
+ 
     }
 }
 
-
-/*************SPACESHIP CODE*********************/
+ 
 void DirectXApp::OnKeyDown(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::KeyEventArgs ^args)
-{
-	if (args->VirtualKey == VirtualKey::Right)
-		m_renderer->spaceship->vel.x = 200;
-	if (args->VirtualKey == VirtualKey::Left)
-		m_renderer->spaceship->vel.x = -200;
-	if (args->VirtualKey == VirtualKey::Up)
-		m_renderer->spaceship->vel.y  = -200;
-	if (args->VirtualKey == VirtualKey::Down)
-		m_renderer->spaceship->vel.y  = 200;
-
+{ 
+	m_renderer->spaceship->ProcessKeyDown(args);
 	if (args->VirtualKey == VirtualKey::Space)
 		m_renderer->CreateProjectile();
+}
+
+void DirectXApp::OnKeyUp(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::KeyEventArgs ^args)
+{
+	m_renderer->spaceship->ProcessKeyUp(args);
 }
 
 
@@ -226,9 +209,3 @@ int main(Platform::Array<Platform::String^>^)
 
 
 
-void DirectXApp::OnKeyUp(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::KeyEventArgs ^args)
-{
-
- 
-	m_renderer->spaceship->vel = (0, 0);
-}
