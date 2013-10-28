@@ -11,8 +11,7 @@ class GameObject: public Sprite
 public: 
 	float2 vel;
 	float rot;
-	float rotVel;
-	float scale;
+	float rotVel; 
 	float2 accel;
 
 	float2 size; 

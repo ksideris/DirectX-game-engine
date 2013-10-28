@@ -12,8 +12,8 @@
 #include "BasicSprites.h"
 #include "Player.h"
 #include "Asteroid.h"
-#include "Projectile.h"
-#include "BackgroundSprite.h"
+#include "ParticleSystem.h"
+#include "SlidingBackgroundSprite.h"
 
 namespace SampleSettings
 {
@@ -66,8 +66,7 @@ private:
 
  
 
-	BackgroundSprite * background1;
-	BackgroundSprite * background2;
+	SlidingBackgroundSprite * background; 
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background; 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
@@ -76,7 +75,7 @@ private:
 
 
     std::vector<Asteroid> m_asteroidData;
-    std::vector<Projectile> m_particleData; 
+    std::vector<ParticleSystem> m_particleData; 
 
     int m_numParticlesToDraw;
 };

@@ -29,10 +29,11 @@ void SpriteGame::CreateDeviceIndependentResources()
 
 void SpriteGame::CreateProjectile()
 {
-	Projectile data;
+	ParticleSystem data;
 	data.pos = spaceship->pos;
 	data.vel = float2(1000.0f, 0.0f);
-	data.size = 10;
+	data.SetTexture(m_particle);
+	data.SetWindowSize(m_windowBounds);
 	m_particleData.push_back(data);
 }
 
@@ -109,17 +110,11 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	DirectXBase::CreateWindowSizeDependentResources();
 
 
-	background1 = new BackgroundSprite();
-	background2 = new BackgroundSprite();
+	background = new SlidingBackgroundSprite();
 
-	background1->pos.x = m_windowBounds.Width / 2;
-	background1->SetTexture(m_background);
-	background1->SetWindowSize(m_windowBounds);
-
-	background2->pos = background1->pos.x * 3;
-	background2->SetTexture(m_background);
-	background2->SetWindowSize(m_windowBounds);
-
+	background->SetTexture(m_background);
+	background->SetWindowSize(m_windowBounds);
+	background->InitSliding();
 
 	// Randomly generate some non-interactive asteroids to fit the screen.
 	m_asteroidData.clear();
@@ -145,15 +140,15 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	spaceship = new Player();
 
-	spaceship->pos.x =   m_windowBounds.Width/2.0;
-	spaceship->pos.y =  m_windowBounds.Height / 2.0;
+	spaceship->pos.x = (float) m_windowBounds.Width / 2.0;
+	spaceship->pos.y = (float) m_windowBounds.Height / 2.0;
 	float tempRot = RandFloat(-PI_F, PI_F);
 	float tempMag = RandFloat(0.0f, 17.0f);
 	spaceship->vel.x = 10;
 	spaceship->vel.y = 0;
 	spaceship->rot = (0, 0);
 	spaceship->scale = .25;
-	spaceship->SetTexture(m_player); 
+	spaceship->SetTexture(m_player);
 	spaceship->SetWindowSize(m_windowBounds);
 
 	m_Overlay->UpdateForWindowSizeChange();
@@ -161,23 +156,23 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
 {
-	// Update the performance throttler.
-
-	if (background1->pos.x < -m_windowBounds.Width / 2)
-		background1->pos.x = background2->pos.x + (m_windowBounds.Width);
-	if (background2->pos.x < -m_windowBounds.Width / 2)
-		background2->pos.x = background1->pos.x + (m_windowBounds.Width);
-
-	background1->Update(timeDelta);
-	background2->Update(timeDelta);
-
-
+	background->Update(timeDelta);
 
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
 		asteroid->Update(timeDelta);
 
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
+	{
 		particle->Update(timeDelta);
+		if (particle->IsOutOfVisibleArea())
+		{
+			particle = m_particleData.erase(particle);
+
+			if (particle == m_particleData.end())
+				break;
+		}
+	} 
+
 
 	spaceship->Update(timeDelta);
 }
@@ -196,46 +191,24 @@ void SpriteGame::Render()
 		);
 
 	m_spriteBatch->Begin();
+	 
 
-	// Draw the background.
-
-
-	background1->Draw(m_spriteBatch);
-	background2->Draw(m_spriteBatch);
-
-
-	// Draw the non-interactive asteroids.
+	background->Draw(m_spriteBatch);
 
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
-	{
 		asteroid->Draw(m_spriteBatch);
-		
-	}
 
-	//// Draw the interactive particles.
-	if (m_particleData.size() > 0)
-	{
-		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
-		{
-			for (int i = 0; i < 10; i++)
-			{
-				float alpha = 1.0f;
-				m_spriteBatch->Draw(
-					m_particle.Get(),
-					particle->pos,
-					PositionUnits::DIPs,
-					float2(32.0f, 32.0f),
-					SizeUnits::DIPs,
-					float4(0.1f, 0.02f, 0.0f, alpha),
-					0.0f,
-					BlendMode::Additive
-					);
-			}
-		}
-	}
+
+	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
+		particle->Draw(m_spriteBatch);
+
 	spaceship->Draw(m_spriteBatch);
 
+
+
 	m_spriteBatch->End();
+
+
 
 	// Render the Sample Overlay.
 

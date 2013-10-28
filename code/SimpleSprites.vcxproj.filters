@@ -37,16 +37,16 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Sources\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Projectile.cpp">
-      <Filter>Sources\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Sources\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="BackgroundSprite.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Sources\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Sources\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SlidingBackgroundSprite.cpp">
       <Filter>Sources\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,19 +93,19 @@
     <ClInclude Include="GameObject.h">
       <Filter>Sources\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Sources\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="HelperClasses.h">
       <Filter>Sources\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>Sources\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="BackgroundSprite.h">
+    <ClInclude Include="Player.h">
       <Filter>Sources\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Sources\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SlidingBackgroundSprite.h">
       <Filter>Sources\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

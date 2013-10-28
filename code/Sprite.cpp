@@ -28,6 +28,7 @@ void Sprite::SetWindowSize(Windows::Foundation::Rect windowRect)
 }
 
 
+
 void Sprite::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 {
 	m_spriteBatch->Draw(
@@ -37,4 +38,26 @@ void Sprite::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 		float2(_windowRect.Width / textureSize.Width, _windowRect.Height / textureSize.Height),
 		SizeUnits::Normalized
 		);
+}
+
+bool Sprite::IsOutOfVisibleArea()
+{
+	if (pos.x > _windowRect.Width + textureSize.Width  * scale)
+	{
+		return true;
+	}
+	if (pos.y > _windowRect.Height + textureSize.Height   * scale)
+	{
+		return true;
+	}
+	if (pos.x < textureSize.Width  * scale)
+	{
+		return true;
+	}
+	if (pos.y < textureSize.Height   * scale)
+	{
+		return true;
+	}
+
+	return false;
 }
