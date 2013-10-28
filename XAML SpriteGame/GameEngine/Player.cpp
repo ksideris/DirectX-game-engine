@@ -46,21 +46,21 @@ void Player::KeepInBounds()
 }
 
 
-void Player::ProcessKeyDown(Windows::UI::Core::KeyEventArgs^ args){
+void Player::ProcessKeyDown(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args){
 
-	if (args->VirtualKey == VirtualKey::Right )	 
+	if (args->Key == VirtualKey::Right)
 		vel.x = 500;
-	if (args->VirtualKey == VirtualKey::Left)
+	if (args->Key == VirtualKey::Left)
 		vel.x = -500;
-	if (args->VirtualKey == VirtualKey::Up)
+	if (args->Key == VirtualKey::Up)
 		vel.y = -200;
-	if (args->VirtualKey == VirtualKey::Down)
+	if (args->Key == VirtualKey::Down)
 		vel.y = 200;
 
 	if ( ! args->KeyStatus.WasKeyDown )
 		keys_down += 1;
 }
-void Player::ProcessKeyUp(Windows::UI::Core::KeyEventArgs^ args){
+void Player::ProcessKeyUp(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args){
 
 	keys_down -= 1;
 

@@ -65,6 +65,7 @@ namespace Coding4Fun
 			void XAMLPage_LayoutUpdated(Platform::Object^ sender, Platform::Object^ e);
 
 
+			void OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
 		};
 	}
 }

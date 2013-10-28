@@ -16,6 +16,7 @@ using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::UI::Input;
 using namespace Windows::UI::Core;
+using namespace Windows::System;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Controls::Primitives;
@@ -121,10 +122,19 @@ void DirectXPage::OnWindowActivated(Object^ sender, Windows::UI::Core::WindowAct
 
 void DirectXPage::OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e)
 {
-	//m_renderer->CurrentGameScreen->HandleKeyInput(e->Key);
+	m_renderer->spaceship->ProcessKeyDown(e);
 }
 
 
+
+
+void  DirectXPage::OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e)
+{
+
+	m_renderer->spaceship->ProcessKeyUp(e);
+	if (e->Key == VirtualKey::Space)
+		m_renderer->CreateProjectile();
+}
 
 
 void DirectXPage::CheckGameState()

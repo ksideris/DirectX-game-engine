@@ -12,8 +12,8 @@ public:
 	Player();
 	void Update(float timeDelta);
 	void KeepInBounds();
-	void ProcessKeyDown(Windows::UI::Core::KeyEventArgs^ args);
-	void ProcessKeyUp(Windows::UI::Core::KeyEventArgs^ args);
+	void ProcessKeyDown(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args);
+	void ProcessKeyUp(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args);
 	void ProcessPointer();
 
 };

@@ -5,10 +5,10 @@ using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
 using namespace Windows::UI::Core;
 using namespace DirectX;
-using namespace Windows::Graphics::Display; 
+using namespace Windows::Graphics::Display;
 
 SpriteGame::SpriteGame()
-{ 
+{
 }
 
 void SpriteGame::CreateDeviceIndependentResources()
@@ -31,8 +31,8 @@ void SpriteGame::CreateDeviceResources()
 	DirectXBase::CreateDeviceResources();
 
 	m_spriteBatch = ref new SpriteBatch();
-	unsigned int capacity = 2000;
-	 
+	unsigned int capacity = 10000;
+
 	m_spriteBatch->Initialize(
 		m_d3dDevice.Get(),
 		capacity
@@ -81,7 +81,7 @@ void SpriteGame::CreateDeviceResources()
 void SpriteGame::CreateWindowSizeDependentResources()
 {
 	DirectXBase::CreateWindowSizeDependentResources();
-	 
+
 
 
 	background = new SlidingBackgroundSprite();
@@ -92,7 +92,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	// Randomly generate some non-interactive asteroids to fit the screen.
 	m_asteroidData.clear();
-	for (int i = 0; i <100; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		Asteroid data;
 		data.pos.x = RandFloat(0.0f, m_windowBounds.Width);
@@ -132,7 +132,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 }
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
-{ 
+{
 
 
 	background->Update(timeDelta);
@@ -159,10 +159,10 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 
 		if (particle->IsOutOfVisibleArea())
 		{
-			particle = m_particleData.erase(particle);
+			/*particle = m_particleData.erase(particle);
 
 			if (particle == m_particleData.end())
-				break;
+				break;*/
 		}
 	}
 
@@ -182,12 +182,12 @@ void SpriteGame::Render()
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
 		asteroid->Draw(m_spriteBatch);
 
-	 for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
-	 particle->Draw(m_spriteBatch); 
+	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
+		particle->Draw(m_spriteBatch);
 
 
 	rocketFuel->Draw(m_spriteBatch);
-	 spaceship->Draw(m_spriteBatch);
+	spaceship->Draw(m_spriteBatch);
 
 	m_spriteBatch->End();
 }
@@ -195,7 +195,7 @@ void SpriteGame::Render()
 void SpriteGame::CheckScreenType()
 {
 
- 
+
 
 
 }
@@ -212,7 +212,7 @@ bool SpriteGame::IsWithinScreenBoundaries(float2 position)
 {
 	/*if (position.x < CurrentGameScreen->LoBoundX || position.x > CurrentGameScreen->HiBoundX || position.y < CurrentGameScreen->LoBoundY || position.y > CurrentGameScreen->HiBoundY)
 		return false;
-	else
-	return true;*/return true;
+		else
+		return true;*/return true;
 
 }
