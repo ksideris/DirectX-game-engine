@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="5648HilltopDevelopment.C4FFallFury" Publisher="CN=TYREX" Version="1.0.0.40" />
+  <Properties>
+    <DisplayName>C4F FallFury</DisplayName>
+    <PublisherDisplayName>Hilltop Development</PublisherDisplayName>
+    <Logo>Assets\Icons\50x50Tile.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.0</OSMinVersion>
+    <OSMaxVersionTested>6.2.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="FallFury.App">
+      <VisualElements DisplayName="C4F FallFury" Description="FallFury" Logo="Assets\Icons\150x150Tile.png" SmallLogo="Assets\Icons\30x30Tile.png" ForegroundText="light" BackgroundColor="#09bbe3">
+        <DefaultTile WideLogo="Assets\Icons\310x150Tile.png" />
+        <SplashScreen Image="Assets\Icons\SplashScreen.png" />
+        <InitialRotationPreference>
+          <Rotation Preference="portrait" />
+          <Rotation Preference="landscape" />
+          <Rotation Preference="portraitFlipped" />
+          <Rotation Preference="landscapeFlipped" />
+        </InitialRotationPreference>
+      </VisualElements>
+    </Application>
+  </Applications>
+</Package>

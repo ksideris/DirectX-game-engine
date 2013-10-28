@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <FxCompile Include="Shaders\GeometryShader.gs.hlsl" />
+    <FxCompile Include="Shaders\GeometryShader.vs.hlsl" />
+    <FxCompile Include="Shaders\Instancing.vs.hlsl" />
+    <FxCompile Include="Shaders\PixelShader.hlsl" />
+    <FxCompile Include="Shaders\Replication.vs.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include=".\DXCore\DirectXBase.cpp" />
+    <ClCompile Include="GameEngine\Asteroid.cpp" />
+    <ClCompile Include="GameEngine\GameObject.cpp" />
+    <ClCompile Include="GameEngine\ParticleSystem.cpp" />
+    <ClCompile Include="GameEngine\Player.cpp" />
+    <ClCompile Include="GameEngine\RocketFire.cpp" />
+    <ClCompile Include="GameEngine\SlidingBackgroundSprite.cpp" />
+    <ClCompile Include="GameEngine\Sprite.cpp" />
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include=".\DXCore\BasicLoader.cpp" />
+    <ClCompile Include=".\DXCore\DDSTextureLoader.cpp" />
+    <ClCompile Include="DirectXPage.xaml.cpp" />
+    <ClCompile Include="Helpers\Geometry.cpp" />
+    <ClCompile Include="Helpers\LocalDiagnostics.cpp" />
+    <ClCompile Include="Helpers\RWContract.cpp" />
+    <ClCompile Include="Helpers\Timer.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include=".\DXCore\SpriteWorks.cpp" />
+    <ClCompile Include="SpriteGame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include=".\DXCore\BasicLoader.h" />
+    <ClInclude Include=".\DXCore\DDSTextureLoader.h" />
+    <ClInclude Include="DXCore\SizeEnums.h" />
+    <ClInclude Include="Entities\BasicShapes.h" />
+    <ClInclude Include="Entities\SizeEnums.h" />
+    <ClInclude Include="GameEngine\Asteroid.h" />
+    <ClInclude Include="GameEngine\GameObject.h" />
+    <ClInclude Include="GameEngine\HelperClasses.h" />
+    <ClInclude Include="GameEngine\ParticleSystem.h" />
+    <ClInclude Include="GameEngine\Player.h" />
+    <ClInclude Include="GameEngine\RocketFire.h" />
+    <ClInclude Include="GameEngine\SlidingBackgroundSprite.h" />
+    <ClInclude Include="GameEngine\Sprite.h" />
+    <ClInclude Include="Helpers\BasicMath.h" />
+    <ClInclude Include="Helpers\BasicShapes.h" />
+    <ClInclude Include="Helpers\GameConstants.h" />
+    <ClInclude Include="Helpers\Geometry.h" />
+    <ClInclude Include="Helpers\LocalDiagnostics.h" />
+    <ClInclude Include="Helpers\RWContract.h" />
+    <ClInclude Include="Helpers\SizeEnums.h" />
+    <ClInclude Include="Helpers\Timer.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="DirectXPage.xaml.h" />
+    <ClInclude Include=".\DXCore\SpriteWorks.h" />
+    <ClInclude Include="SpriteGame.h" />
+    <ClInclude Include=".\DXCore\DirectXLinker.h" />
+    <ClInclude Include=".\DXCore\DirectXBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\GameObjects\ida.dds" />
+    <Image Include="Assets\GameObjects\m31.png" />
+    <Image Include="Assets\GameObjects\particle.png" />
+    <Image Include="Assets\GameObjects\SpaceShip.png" />
+    <Image Include="Assets\Icons\150x150Tile.scale-100.png" />
+    <Image Include="Assets\Icons\150x150Tile.scale-140.png" />
+    <Image Include="Assets\Icons\150x150Tile.scale-180.png" />
+    <Image Include="Assets\Icons\150x150Tile.scale-80.png" />
+    <Image Include="Assets\Icons\30x30Tile.png" />
+    <Image Include="Assets\Icons\310x150Tile.scale-100.png" />
+    <Image Include="Assets\Icons\50x50Tile.png" />
+    <Image Include="Assets\Icons\SplashScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="DirectXPage.xaml" />
+  </ItemGroup>
+</Project>
