@@ -18,8 +18,10 @@ public:
 	 
 
 	void Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
-	bool IsColliding(float2  otherPos );
+	bool IsColliding(GameObject  otherObj);
 	void Update(float timeDelta);
 	void KeepInBounds();
+	float2 GetTopLeft();
+	float2 GetBottomRight();
 };
  

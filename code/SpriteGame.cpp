@@ -127,8 +127,8 @@ void SpriteGame::CreateWindowSizeDependentResources()
 		float tempMag = RandFloat(0.0f, 17.0f);
 		data.vel.x = tempMag * cosf(tempRot);
 		data.vel.y = tempMag * sinf(tempRot);
-		data.rot = RandFloat(-PI_F, PI_F);
-		data.scale = RandFloat(0.1f, 1.0f);
+		data.rot = 0;//RandFloat(-PI_F, PI_F);
+		data.scale =  RandFloat(0.1f, 1.0f);
 		data.rotVel = RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * data.scale);
 		data.size = (180, 110);
 		data.SetTexture(m_asteroid);
@@ -157,13 +157,23 @@ void SpriteGame::CreateWindowSizeDependentResources()
 void SpriteGame::Update(float timeTotal, float timeDelta)
 {
 	background->Update(timeDelta);
+	spaceship->Update(timeDelta);
 
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
+	{
 		asteroid->Update(timeDelta);
+		if (spaceship->IsColliding(*asteroid))
+		{
+			asteroid = m_asteroidData.erase(asteroid);
 
+			if (asteroid == m_asteroidData.end())
+				break;
+		}
+	}
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 	{
 		particle->Update(timeDelta);
+		 
 		if (particle->IsOutOfVisibleArea())
 		{
 			particle = m_particleData.erase(particle);
@@ -174,7 +184,6 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	} 
 
 
-	spaceship->Update(timeDelta);
 }
 
 void SpriteGame::Render()
@@ -196,19 +205,15 @@ void SpriteGame::Render()
 	background->Draw(m_spriteBatch);
 
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
-		asteroid->Draw(m_spriteBatch);
-
+		asteroid->Draw(m_spriteBatch); 
 
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 		particle->Draw(m_spriteBatch);
 
 	spaceship->Draw(m_spriteBatch);
+	 
 
-
-
-	m_spriteBatch->End();
-
-
+	m_spriteBatch->End(); 
 
 	// Render the Sample Overlay.
 
