@@ -31,23 +31,26 @@
     <ClCompile Include="SpriteGame.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Asteroid.cpp">
-      <Filter>Sources\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Sources\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>Sources\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Sources\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Sources\GameObjects</Filter>
+      <Filter>Sources\GameElements</Filter>
     </ClCompile>
     <ClCompile Include="SlidingBackgroundSprite.cpp">
-      <Filter>Sources\GameObjects</Filter>
+      <Filter>Sources\GameElements</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>Sources\GameElements\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Sources\GameElements\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Sources\GameElements\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Sources\GameElements\ParticleSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="RocketFire.cpp">
+      <Filter>Sources\GameElements\ParticleSystems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,26 +90,29 @@
     <ClInclude Include="SpriteGame.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="Asteroid.h">
-      <Filter>Sources\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Sources\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="HelperClasses.h">
-      <Filter>Sources\GameObjects</Filter>
+      <Filter>Sources\GameElements</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
-      <Filter>Sources\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Sources\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Sources\GameObjects</Filter>
+      <Filter>Sources\GameElements</Filter>
     </ClInclude>
     <ClInclude Include="SlidingBackgroundSprite.h">
-      <Filter>Sources\GameObjects</Filter>
+      <Filter>Sources\GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.h">
+      <Filter>Sources\GameElements\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Sources\GameElements\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Sources\GameElements\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Sources\GameElements\ParticleSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="RocketFire.h">
+      <Filter>Sources\GameElements\ParticleSystems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -114,9 +120,6 @@
       <Filter>Game Assets</Filter>
     </Image>
     <Image Include="Assets\GameObjects\m31.png">
-      <Filter>Game Assets</Filter>
-    </Image>
-    <Image Include="Assets\GameObjects\particle.dds">
       <Filter>Game Assets</Filter>
     </Image>
     <Image Include="Assets\GameObjects\SpaceShip.png">
@@ -136,6 +139,9 @@
     </Image>
     <Image Include="splash-sdk.scale-100.png">
       <Filter>App Store Files</Filter>
+    </Image>
+    <Image Include="Assets\GameObjects\particle.png">
+      <Filter>Game Assets</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -166,8 +172,14 @@
     <Filter Include="UI Assets">
       <UniqueIdentifier>{c8fa4897-75c8-443b-b6b1-f565733cd34c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\GameObjects">
+    <Filter Include="Sources\GameElements">
       <UniqueIdentifier>{f50b3094-9e64-4bf9-aa09-ec75a2b1d4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\GameElements\ParticleSystems">
+      <UniqueIdentifier>{d41000b2-297e-4e74-ac29-d8ff4d3003e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\GameElements\GameObjects">
+      <UniqueIdentifier>{c3656090-0ce0-4bcd-90e5-0ee0882a318b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

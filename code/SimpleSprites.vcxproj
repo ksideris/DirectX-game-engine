@@ -183,7 +183,7 @@
   <ItemGroup>
     <Image Include="Assets\GameObjects\ida.dds" />
     <Image Include="Assets\GameObjects\m31.png" />
-    <Image Include="Assets\GameObjects\particle.dds" />
+    <Image Include="Assets\GameObjects\particle.png" />
     <Image Include="Assets\GameObjects\SpaceShip.png" />
     <Image Include="Assets\UI\windowsbig-sdk.png" />
     <Image Include="smalltile-sdk.scale-100.png">
@@ -201,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="RocketFire.h" />
     <ClInclude Include="SlidingBackgroundSprite.h" />
     <ClInclude Include="BasicSprites.h" />
     <ClInclude Include="GameObject.h" />
@@ -222,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="RocketFire.cpp" />
     <ClCompile Include="SlidingBackgroundSprite.cpp" />
     <ClCompile Include="BasicSprites.cpp" />
     <ClCompile Include="GameObject.cpp" />

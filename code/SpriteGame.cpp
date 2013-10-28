@@ -51,7 +51,7 @@ void SpriteGame::CreateDeviceResources()
 	}
 	m_spriteBatch->Initialize(
 		m_d3dDevice.Get(),
-		capacity
+		capacity      
 		);
 
 
@@ -86,7 +86,7 @@ void SpriteGame::CreateDeviceResources()
 
 
 	loader->LoadTexture(
-		"Assets\\GameObjects\\particle.dds",
+		"Assets\\GameObjects\\particle.png",
 		&m_particle,
 		nullptr
 		);
@@ -137,7 +137,6 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	}
 
 
-
 	spaceship = new Player();
 
 	spaceship->pos.x = (float) m_windowBounds.Width / 2.0;
@@ -151,6 +150,11 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	spaceship->SetTexture(m_player);
 	spaceship->SetWindowSize(m_windowBounds);
 
+	rocketFuel = new RocketFire();
+	rocketFuel->pos = spaceship->pos;
+	rocketFuel->pos.x -= spaceship->textureSize.Width/2.0*spaceship->scale;
+	rocketFuel->SetTexture(m_particle);
+
 	m_Overlay->UpdateForWindowSizeChange();
 }
 
@@ -159,6 +163,10 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	background->Update(timeDelta);
 	spaceship->Update(timeDelta);
 
+	rocketFuel->pos = float2(spaceship->pos.x-spaceship->textureSize.Width / 2.0*spaceship->scale+20, spaceship->pos.y);
+ 
+
+	rocketFuel->Update(timeDelta);
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
 	{
 		asteroid->Update(timeDelta);
@@ -210,8 +218,9 @@ void SpriteGame::Render()
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 		particle->Draw(m_spriteBatch);
 
-	spaceship->Draw(m_spriteBatch);
 	 
+	rocketFuel->Draw(m_spriteBatch);
+	spaceship->Draw(m_spriteBatch);
 
 	m_spriteBatch->End(); 
 

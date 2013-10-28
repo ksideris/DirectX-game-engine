@@ -4,13 +4,18 @@
 
 class ParticleSystem :public Sprite
 {
-	int numOfParticles = 100;
-public: 
-	float2 vel; 
+protected:
 
+	int numOfParticles = 100; 
+	std::vector<float4> particles;
+public: 
+	
+	float2 vel;  
+	ParticleSystem();
 	void Update(float timeDelta);
 	void Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
 
 
+	float RandFloat(float min, float max);
 
 };

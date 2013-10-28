@@ -11,9 +11,9 @@
 #include "Overlay.h" 
 #include "BasicSprites.h"
 #include "Player.h"
-#include "Asteroid.h"
-#include "ParticleSystem.h"
+#include "Asteroid.h" 
 #include "SlidingBackgroundSprite.h"
+#include "RocketFire.h"
 
 namespace SampleSettings
 {
@@ -76,6 +76,7 @@ private:
 
     std::vector<Asteroid> m_asteroidData;
     std::vector<ParticleSystem> m_particleData; 
+	RocketFire * rocketFuel;
 
     int m_numParticlesToDraw;
 };
