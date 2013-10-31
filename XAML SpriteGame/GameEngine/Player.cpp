@@ -9,14 +9,30 @@ using namespace Windows::UI::Core;
 
 Player::Player()
 {
+	TargetPos = (-1, -1);
 	keys_down = 0;
 	lightAngle = 0;
 	lightUpdate = 50;
 }
 void Player::Update(float timeDelta)
 { 
-
-	pos = pos + float2(vel.x*cos(rot), -vel.x*sin(rot)) * timeDelta;
+	if (TargetPos.x != -1)
+	{
+		float angle = atan2((TargetPos.y - pos.y),  -abs(TargetPos.x - pos.x))  ;
+		////angle -= rot;
+		//if (angle < 0)
+		//	angle += 2 * PI_F;
+		
+		rotVel = 3.14*angle / 180.0 * 100;
+		 
+		 
+		if (abs(3.14*angle / 180.0  ) < 1)
+		{ 
+			pos = pos + float2((TargetPos.x - pos.x), (TargetPos.y - pos.y)) * timeDelta;
+		}
+	 }
+	else
+		pos = pos + float2(vel.x*cos(rot), -vel.x*sin(rot)) * timeDelta;
 
 	rot = rot + rotVel * timeDelta;
 	if (rot > PI_F)
@@ -86,6 +102,8 @@ void Player::ProcessKeyDown(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args){
 	}
 	if ( ! args->KeyStatus.WasKeyDown )
 		keys_down += 1;
+
+	TargetPos = float2(-1, -1);
 }
 void Player::ProcessKeyUp(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args){
 	if (args->Key == VirtualKey::Left || args->Key == VirtualKey::Right)
@@ -98,19 +116,50 @@ void Player::ProcessKeyUp(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args){
 
 void Player::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 {
-	float2 spot_pos = float2(pos.x + (-10 + textureSize.Width / 2.0* scale)*cos(rot), pos.y - (-10 + textureSize.Width / 2.0* scale)*sin(rot));
-	//+(lightAngle)*3.14 / 180.0
-	m_spriteBatch->Draw(
-		spot_texture.Get(),
-		spot_pos,
-		PositionUnits::DIPs,
-		float2(1.1f, 1.1f) * scale,
-		SizeUnits::Normalized,
-		float4(0.98f, 0.8f, 1.0f, 1.0f),
-		rot
-		);
+	//float2 spot_pos = float2(pos.x + (-10 + textureSize.Width / 2.0* scale)*cos(rot), pos.y - (-10 + textureSize.Width / 2.0* scale)*sin(rot));
+	////+(lightAngle)*3.14 / 180.0
+	//m_spriteBatch->Draw(
+	//	spot_texture.Get(),
+	//	spot_pos,
+	//	PositionUnits::DIPs,
+	//	float2(1.1f, 1.1f) * scale,
+	//	SizeUnits::Normalized,
+	//	float4(0.98f, 0.8f, 1.0f, 1.0f),
+	//	rot
+	//	);
 
 	GameObject::Draw(m_spriteBatch);
 
+
+}
+
+
+
+void Player::ProcessPointerPressed(Windows::UI::Input::PointerPoint^ pt)
+{ 
+
+	TargetPos = float2(pt->Position.X, pt->Position.Y);
+/*
+		float angle = atan2(pt->Position.Y - pos.y, pt->Position.X - pos.x);
+
+		rotVel = 3.14*angle/180.0*100;*/
+
+		 
+ 
+}
+void Player::ProcessPointerReleased(Windows::UI::Input::PointerPoint^ pt)
+{
+
+
+	TargetPos = float2(-1, -1);
+	vel.x = 0;
+	rotVel = 0;
+	 
+}
+void Player::ProcessPointerMoved(Windows::UI::Input::PointerPoint^ pt)
+{
+	
+	TargetPos = float2(pt->Position.X, pt->Position.Y);
+ 
 
 }

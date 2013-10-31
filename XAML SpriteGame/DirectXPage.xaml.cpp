@@ -123,6 +123,13 @@ void DirectXPage::OnWindowActivated(Object^ sender, Windows::UI::Core::WindowAct
 void DirectXPage::OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e)
 {
 	m_renderer->spaceship->ProcessKeyDown(e);
+
+
+	if (e->Key == VirtualKey::A  )
+		m_renderer->m_currentEffect = m_renderer->m_pointSpecularEffect;
+
+	if (e->Key == VirtualKey::B )
+		m_renderer->m_currentEffect = m_renderer->m_spotSpecularEffect;
 }
 
 
@@ -148,5 +155,22 @@ void DirectXPage::XAMLPage_LayoutUpdated(Platform::Object^ sender, Platform::Obj
 {
 }
 
+ 
+void  DirectXPage::XAMLPage_PointerPressed(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
+{
+	 
+	m_renderer->spaceship->ProcessPointerPressed(e->GetCurrentPoint((DirectXPage^) sender));
+}
 
 
+void  DirectXPage::XAMLPage_PointerMoved(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
+{
+	if (e->Pointer->IsInContact)
+	m_renderer->spaceship->ProcessPointerMoved(e->GetCurrentPoint((DirectXPage^) sender));
+}
+
+
+void  DirectXPage::XAMLPage_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
+{
+	m_renderer->spaceship->ProcessPointerReleased(e->GetCurrentPoint((DirectXPage^) sender));
+}

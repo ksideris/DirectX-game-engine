@@ -371,6 +371,7 @@
     <Image Include="Assets\GameObjects\m32.png" />
     <Image Include="Assets\GameObjects\particle.png" />
     <Image Include="Assets\GameObjects\SpaceShip.png" />
+    <Image Include="Assets\GameObjects\spotlight.png" />
     <Image Include="Assets\Icons\150x150Tile.scale-100.png" />
     <Image Include="Assets\Icons\150x150Tile.scale-140.png" />
     <Image Include="Assets\Icons\150x150Tile.scale-180.png" />

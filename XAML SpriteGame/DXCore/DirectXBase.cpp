@@ -58,7 +58,7 @@ void DirectXBase::CreateDeviceIndependentResources()
 #endif
 
 	ThrowIfFailed(
-		D2D1CreateFactory(
+		D2D1CreateFactory( 
 			D2D1_FACTORY_TYPE_SINGLE_THREADED,
 			__uuidof(ID2D1Factory1),
 			&options,
@@ -364,6 +364,7 @@ void DirectXBase::CreateWindowSizeDependentResources()
 	// Set D2D text anti-alias mode to Grayscale to ensure proper rendering of text on intermediate surfaces.
 	m_d2dContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
 }
+ 
 
 // Method to deliver the final image to the display.
 void DirectXBase::Present()

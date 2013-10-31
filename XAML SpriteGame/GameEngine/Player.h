@@ -9,8 +9,7 @@ class Player :public GameObject
 {
 	int keys_down;
 	float lightUpdate;
-
-
+	float2 TargetPos;
 public:
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> spot_texture;
@@ -20,7 +19,9 @@ public:
 	void KeepInBounds();
 	void ProcessKeyDown(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args);
 	void ProcessKeyUp(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args);
-	void ProcessPointer();
+	void ProcessPointerPressed(Windows::UI::Input::PointerPoint^ pt);
+	void ProcessPointerReleased(Windows::UI::Input::PointerPoint^ pt);
+	void ProcessPointerMoved(Windows::UI::Input::PointerPoint^ pt);
 	void Player::Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
 
 };

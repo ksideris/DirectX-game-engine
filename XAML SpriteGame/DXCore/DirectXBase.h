@@ -26,12 +26,13 @@ namespace Coding4Fun
 				virtual void UpdateForWindowSizeChange();
 				virtual void Render() = 0;
 				virtual void Present();
-				virtual float ConvertDipsToPixels(float dips);
+				virtual float ConvertDipsToPixels(float dips); 
+
 
 				virtual void OnPointerMoved(Windows::UI::Core::CoreWindow^ window,Windows::UI::Core::PointerEventArgs^ pArgs);
 				virtual void OnPointerReleased(Windows::UI::Core::CoreWindow^ window,Windows::UI::Core::PointerEventArgs^ pArgs);
 				virtual void OnPointerPressed(Windows::UI::Core::CoreWindow^ window,Windows::UI::Core::PointerEventArgs^ pArgs);
-
+				
 			internal:
 				Platform::Agile<Windows::UI::Core::CoreWindow>         m_window;
 				Windows::UI::Xaml::Controls::SwapChainBackgroundPanel^ m_panel;

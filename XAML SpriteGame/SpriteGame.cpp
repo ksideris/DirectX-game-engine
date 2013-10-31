@@ -20,7 +20,7 @@ void SpriteGame::CreateDeviceIndependentResources()
 	DirectXBase::CreateDeviceIndependentResources();
 
 	// Load an image from a Windows Imaging Component decoder.
-	ComPtr<IWICBitmapDecoder> decoder;
+	ComPtr<IWICBitmapDecoder> decoder; 
 	ThrowIfFailed(
 		m_wicFactory->CreateDecoderFromFilename(
 		L"Assets\\GameObjects\\heightmap.png",
@@ -30,7 +30,7 @@ void SpriteGame::CreateDeviceIndependentResources()
 		&decoder
 		)
 		);
-
+ 
 	ComPtr<IWICBitmapFrameDecode> frame;
 	ThrowIfFailed(
 		decoder->GetFrame(0, &frame)
@@ -263,9 +263,11 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_FOCUS, 15.4f));
 	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_SPECULAR_CONSTANT, 1.2f));
-  	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_LIMITING_CONE_ANGLE, 70.0f));
-		 
+	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_LIMITING_CONE_ANGLE, 70.0f));
 	 
+
+	ThrowIfFailed(m_pointSpecularEffect->SetValue(D2D1_POINTSPECULAR_PROP_SURFACE_SCALE, 10.f));
+	ThrowIfFailed(m_pointSpecularEffect->SetValue(D2D1_POINTSPECULAR_PROP_SPECULAR_EXPONENT, 1.2f));
 	 
 }
 
@@ -277,12 +279,13 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	spaceship->Update(timeDelta);
 
 	//D2D1_VECTOR_3F lightPosition = D2D1::Vector3F(spaceship->pos.x+spaceship->textureSize.Width/2.0*spaceship->scale-30, spaceship->pos.y,25);
-	D2D1_VECTOR_3F lighttarget = D2D1::Vector3F(spaceship->pos.x + (200+spaceship->textureSize.Width / 2.0*spaceship->scale)*cos(spaceship->rot), spaceship->pos.y -(200+spaceship->textureSize.Height / 2.0*spaceship->scale)*sin(spaceship->rot), 5);//+ tan(spaceship->lightAngle* 3.14 / 180.0) * 100
+	D2D1_VECTOR_3F lighttarget = D2D1::Vector3F(spaceship->pos.x + (200  )*cos(spaceship->rot), spaceship->pos.y -(200)*sin(spaceship->rot), 5);//+ tan(spaceship->lightAngle* 3.14 / 180.0) * 100
 
 
-	D2D1_VECTOR_3F lightPosition = D2D1::Vector3F(spaceship->pos.x + (-70 + spaceship->textureSize.Width / 2.0*spaceship->scale)*cos(spaceship->rot), spaceship->pos.y - (-70 + spaceship->textureSize.Height / 2.0*spaceship->scale)*sin(spaceship->rot), 25);
+	D2D1_VECTOR_3F lightPosition = D2D1::Vector3F(spaceship->pos.x + (-70 )*cos(spaceship->rot), spaceship->pos.y - (-70)*sin(spaceship->rot), 25);
 	//D2D1_VECTOR_3F lighttarget = D2D1::Vector3F(spaceship->pos.x, spaceship->pos.y + tan(spaceship->lightAngle* 3.14 / 180.0) * 100, 5);
 	// The DistantSpecular and DistantDiffuse effects do not have a LightPosition property. 
+	ThrowIfFailed(m_pointSpecularEffect->SetValue(D2D1_POINTSPECULAR_PROP_LIGHT_POSITION, lightPosition));
 	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_LIGHT_POSITION, lightPosition));
 	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_POINTS_AT, lighttarget));
 	rocketFuel->pos = float2(spaceship->pos.x - (spaceship->textureSize.Width / 2.0*spaceship->scale  )*cos(spaceship->rot),
@@ -300,6 +303,19 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			if (asteroid == m_asteroidData.end())
 				break;
 		}
+
+		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
+		{
+			if (particle->IsColliding(*asteroid))
+			{
+				asteroid->vel = particle->vel;
+				particle = m_particleData.erase(particle);
+
+				if (particle == m_particleData.end())
+					break;
+
+			}
+		}
 	}
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 	{
@@ -312,6 +328,9 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			if (particle == m_particleData.end())
 				break;
 		}
+
+		 
+
 	}
 
 
@@ -321,10 +340,13 @@ void SpriteGame::Render()
 {
 	m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), nullptr);
 
-	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::Blue)));
-	
-	
-	//background->Draw(m_spriteBatch);
+	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::AntiqueWhite)));
+
+	m_spriteBatch->Begin(); 
+	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
+		asteroid->Draw(m_spriteBatch);
+	m_spriteBatch->End();
+
 	m_d2dContext->BeginDraw();
 
 	// Draw the currently selected effect. By using SOURCE_COPY, the screen does
@@ -333,7 +355,8 @@ void SpriteGame::Render()
 	m_d2dContext->DrawImage(
 		m_currentEffect.Get(),
 		D2D1_INTERPOLATION_MODE_LINEAR,
-		D2D1_COMPOSITE_MODE_SOURCE_COPY
+
+		D2D1_COMPOSITE_MODE_DESTINATION_ATOP
 		);
 
 	// We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device
@@ -344,8 +367,7 @@ void SpriteGame::Render()
 		ThrowIfFailed(hr);
 	}
 	m_spriteBatch->Begin();
-	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
-		asteroid->Draw(m_spriteBatch);
+	//background->Draw(m_spriteBatch);
 
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 		particle->Draw(m_spriteBatch);
