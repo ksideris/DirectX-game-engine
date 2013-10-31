@@ -7,8 +7,8 @@
 #include "DirectXPage.xaml.h"  
 #include <map>
 
-using namespace Coding4Fun::FallFury; 
-using namespace Coding4Fun::FallFury::Helpers; 
+using namespace Coding4Fun::FallFury;
+using namespace Coding4Fun::FallFury::Helpers;
 
 using namespace Windows::UI::ViewManagement;
 using namespace Platform;
@@ -59,13 +59,13 @@ DirectXPage::DirectXPage()
 }
 
 
- 
+
 
 void DirectXPage::OnWindowSizeChanged(CoreWindow^ sender, WindowSizeChangedEventArgs^ args)
 {
 	m_renderer->UpdateForWindowSizeChange();
 	UpdateWindowSize();
-	 //m_renderer->CurrentGameScreen->UpdateWindowSize();
+	//m_renderer->CurrentGameScreen->UpdateWindowSize();
 }
 
 void DirectXPage::UpdateWindowSize()
@@ -139,14 +139,14 @@ void  DirectXPage::OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::K
 
 void DirectXPage::CheckGameState()
 {
-	
+
 
 }
-  
+
 
 void DirectXPage::XAMLPage_LayoutUpdated(Platform::Object^ sender, Platform::Object^ e)
-{ 
+{
 }
-  
+
 
 
