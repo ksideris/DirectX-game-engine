@@ -15,21 +15,29 @@ Player::Player()
 	lightUpdate = 50;
 }
 void Player::Update(float timeDelta)
-{ 
+{
 	if (TargetPos.x != -1)
 	{
-		float angle = atan2((TargetPos.y - pos.y),  -abs(TargetPos.x - pos.x))  ;
-		////angle -= rot;
-		//if (angle < 0)
-		//	angle += 2 * PI_F;
+		float angle;
+
+		if (TargetPos.y - pos.y < 0)
+			angle = atan2(abs(TargetPos.y - pos.y), (TargetPos.x - pos.x)) ;
+		else
+			angle = atan2(-abs(TargetPos.y - pos.y), (TargetPos.x - pos.x))  ;
+ 
+
+		angle -= rot;
+		if ((180 * (angle) / PI_F)   >300)
+			angle -= 2 * 3.14;
+		if ((180 * (angle) / PI_F) < -300)
+			angle += 2 * 3.14;
+
+
+		if (abs(angle) < .05)
+			pos = pos + float2(TargetPos.x - pos.x, TargetPos.y - pos.y) * timeDelta;
+		 rotVel = (PI_F*angle/180  )* 1000;
+		 
 		
-		rotVel = 3.14*angle / 180.0 * 100;
-		 
-		 
-		if (abs(3.14*angle / 180.0  ) < 1)
-		{ 
-			pos = pos + float2((TargetPos.x - pos.x), (TargetPos.y - pos.y)) * timeDelta;
-		}
 	 }
 	else
 		pos = pos + float2(vel.x*cos(rot), -vel.x*sin(rot)) * timeDelta;
@@ -43,8 +51,6 @@ void Player::Update(float timeDelta)
 	{
 		rot += 2.0f * PI_F;
 	}
-
-
 	if (lightAngle > 45)
 		lightUpdate = -50;
 	else if (lightAngle < -45)
