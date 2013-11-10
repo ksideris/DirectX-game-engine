@@ -107,6 +107,30 @@ template <class T> struct Vector4
 };
 
 // Template Vector Operators
+template <class T>
+float len(Vector2<T> a)
+{
+	return sqrt(pow(a.x  , 2.0f)+ pow(a.y  , 2.0f));
+}
+
+template <class T>
+Vector2<T> norm(Vector2<T> a)
+{
+	float _len = len(a);
+	return Vector2<T>( a.x   / _len,  a.y   / _len);
+}
+
+template <class T> 
+float dist(Vector2<T> a, Vector2<T> b)
+{
+	return sqrt(pow(a.x - b.x, 2) + pow(b.y - b.y, 2));
+}
+
+template <class T>
+float dot(Vector2<T> a, Vector2<T> b)
+{
+	return  a.x * b.x+ a.y * b.y ;
+}
 
 template <class T>
 Vector2<T> operator-(Vector2<T> a, Vector2<T> b)
@@ -131,6 +155,12 @@ Vector3<T> operator-(Vector3<T> a)
 {
     return Vector3<T>( -a.x, -a.y, -a.z);
 }
+template <class T>
+bool operator==(Vector3<T> a, Vector3<T> b)
+{
+	return    a.x == b.x && a.y == b.y && a.z == b.z;
+}
+
 
 template <class T>
 Vector4<T> operator-(Vector4<T> a, Vector4<T> b)

@@ -39,18 +39,5 @@
 #include "SpriteGame.h"
 
 
-//#include "Helpers\StaticDataHelper.h"
-//#include "Helpers\LocalDiagnostics.h"
-//#include "Helpers\RWContract.h"
-//#include "Entities\Obstacle.h"
-//#include "Entities\GameState.h"
-//#include "GameScreens\MenuScreen.h"
-//#include "ParticleSystem\Particle.h"
-//#include "Entities\SizeEnums.h"
-//#include "GameScreens\GameScreenBase.h"
-//#include "Entities\Powerup.h"
-//#include "GameScreens\GamePlayScreen.h"
-//#include "Entities\TopScore.h"
-//#include "Characters\LivingEntity.h"
-
+ 
 #include "App.xaml.h"

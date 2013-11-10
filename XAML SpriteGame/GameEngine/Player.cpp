@@ -9,13 +9,15 @@ using namespace Windows::UI::Core;
 
 Player::Player()
 {
-	TargetPos = (-1, -1);
-	keys_down = 0;
-	lightAngle = 0;
-	lightUpdate = 50;
+	TargetPos = (-1.f, -1.f);
+	keys_down = 0;  
+	z = 25;
 }
 void Player::Update(float timeDelta)
 {
+
+	float2 prevPos = pos;
+	float  prevRot = rot;
 	if (TargetPos.x != -1)
 	{
 		float angle;
@@ -28,9 +30,9 @@ void Player::Update(float timeDelta)
 
 		angle -= rot;
 		if ((180 * (angle) / PI_F)   >300)
-			angle -= 2 * 3.14;
+			angle -= 2 * 3.14f;
 		if ((180 * (angle) / PI_F) < -300)
-			angle += 2 * 3.14;
+			angle += 2 * 3.14f;
 
 
 		if (abs(angle) < .05)
@@ -42,6 +44,7 @@ void Player::Update(float timeDelta)
 	else
 		pos = pos + float2(vel.x*cos(rot), -vel.x*sin(rot)) * timeDelta;
 
+	prevRot = rot;
 	rot = rot + rotVel * timeDelta;
 	if (rot > PI_F)
 	{
@@ -51,42 +54,43 @@ void Player::Update(float timeDelta)
 	{
 		rot += 2.0f * PI_F;
 	}
-	if (lightAngle > 45)
-		lightUpdate = -50;
-	else if (lightAngle < -45)
-		lightUpdate = 50;
+	 
+	KeepInBounds(); 
 
-	lightAngle = lightAngle + lightUpdate * timeDelta;
 
-	KeepInBounds();
+	UpdateChildren(timeDelta);
+	UpdateCollisionGeometry(prevPos, pos, prevRot- rot  );
+	 
+
+
 }
 void Player::KeepInBounds()
 {
 
-	if (pos.x > _windowRect.Width - textureSize.Width / 2.0 * scale)
+	if (pos.x > _windowRect.Width - textureSize.Width / 2.0f * scale.x)
 	{
-		pos.x = _windowRect.Width - textureSize.Width / 2.0 * scale;
+		pos.x = _windowRect.Width - textureSize.Width / 2.0f * scale.x;
 		accel.x = 0;
 		vel.x = 0;
 	}
-	if (pos.y > _windowRect.Height - textureSize.Height / 2.0 * scale)
+	if (pos.y > _windowRect.Height - textureSize.Height / 2.0f * scale.y)
 	{
-		pos.y = _windowRect.Height - textureSize.Height / 2.0 * scale;
+		pos.y = _windowRect.Height - textureSize.Height / 2.0f * scale.y;
 		accel.y = 0;
 		vel.y = 0;
 	}
-	if (pos.x < textureSize.Width / 2.0 * scale)
+	if (pos.x < textureSize.Width / 2.0f * scale.x)
 	{
-		pos.x = textureSize.Width / 2.0 * scale;
+		pos.x = textureSize.Width / 2.0f * scale.x;
 		accel.x = 0;
 		vel.x = 0;
 	}
-	if (pos.y < textureSize.Height / 2.0 * scale)
+	if (pos.y < textureSize.Height / 2.0f * scale.y)
 	{
-		pos.y = textureSize.Height / 2.0 * scale;
+		pos.y = textureSize.Height / 2.0f * scale.y;
 		accel.y = 0;
 		vel.y = 0;
-	}
+	} 
 }
 
 
@@ -95,7 +99,7 @@ void Player::ProcessKeyDown(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args){
 	if (args->Key == VirtualKey::Right)
 		rotVel = -2;
 	if (args->Key == VirtualKey::Left)
-	rotVel =  2;
+		rotVel =  2;
 		
 	if (args->Key == VirtualKey::Up)
 	{
@@ -105,6 +109,17 @@ void Player::ProcessKeyDown(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args){
 	if (args->Key == VirtualKey::Down)
 	{
 		vel.x = -500;
+	}
+
+	if (args->Key == VirtualKey::W)
+	{
+		z += 5;
+		scale = scale + float2(.001f, .001f);
+	}
+	if (args->Key == VirtualKey::Q)
+	{
+		z -= 5;
+		scale = scale- float2(.001f, .001f);
 	}
 	if ( ! args->KeyStatus.WasKeyDown )
 		keys_down += 1;
@@ -117,22 +132,12 @@ void Player::ProcessKeyUp(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args){
 	
 	keys_down -= 1;
 	if (keys_down == 0)
-		vel = (0, 0);
+		vel = (0.f, 0.f);
 }
 
 void Player::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 {
-	//float2 spot_pos = float2(pos.x + (-10 + textureSize.Width / 2.0* scale)*cos(rot), pos.y - (-10 + textureSize.Width / 2.0* scale)*sin(rot));
-	////+(lightAngle)*3.14 / 180.0
-	//m_spriteBatch->Draw(
-	//	spot_texture.Get(),
-	//	spot_pos,
-	//	PositionUnits::DIPs,
-	//	float2(1.1f, 1.1f) * scale,
-	//	SizeUnits::Normalized,
-	//	float4(0.98f, 0.8f, 1.0f, 1.0f),
-	//	rot
-	//	);
+ 
 
 	GameObject::Draw(m_spriteBatch);
 
@@ -145,10 +150,6 @@ void Player::ProcessPointerPressed(Windows::UI::Input::PointerPoint^ pt)
 { 
 
 	TargetPos = float2(pt->Position.X, pt->Position.Y);
-/*
-		float angle = atan2(pt->Position.Y - pos.y, pt->Position.X - pos.x);
-
-		rotVel = 3.14*angle/180.0*100;*/
 
 		 
  
@@ -163,9 +164,8 @@ void Player::ProcessPointerReleased(Windows::UI::Input::PointerPoint^ pt)
 	 
 }
 void Player::ProcessPointerMoved(Windows::UI::Input::PointerPoint^ pt)
-{
-	
+{ 
 	TargetPos = float2(pt->Position.X, pt->Position.Y);
- 
-
+  
 }
+ 

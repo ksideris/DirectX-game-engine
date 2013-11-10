@@ -327,12 +327,17 @@
   <ItemGroup>
     <ClInclude Include=".\DXCore\BasicLoader.h" />
     <ClInclude Include=".\DXCore\DDSTextureLoader.h" />
+    <ClInclude Include="Audio\AudioEngine.h" />
+    <ClInclude Include="Audio\AudioManager.h" />
+    <ClInclude Include="Audio\MediaStreamer.h" />
     <ClInclude Include="DXCore\SizeEnums.h" />
     <ClInclude Include="Entities\BasicShapes.h" />
     <ClInclude Include="Entities\SizeEnums.h" />
     <ClInclude Include="GameEngine\Asteroid.h" />
+    <ClInclude Include="GameEngine\CollidingObject.h" />
+    <ClInclude Include="GameEngine\Direct2DlightEffect.h" />
+    <ClInclude Include="GameEngine\FireBall.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
-    <ClInclude Include="GameEngine\HelperClasses.h" />
     <ClInclude Include="GameEngine\ParticleSystem.h" />
     <ClInclude Include="GameEngine\Player.h" />
     <ClInclude Include="GameEngine\RocketFire.h" />
@@ -365,6 +370,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\GameObjects\debug.png" />
     <Image Include="Assets\GameObjects\HeightMap.png" />
     <Image Include="Assets\GameObjects\ida.dds" />
     <Image Include="Assets\GameObjects\m31.png" />
@@ -387,9 +393,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".\DXCore\DirectXBase.cpp" />
+    <ClCompile Include="Audio\AudioEngine.cpp" />
+    <ClCompile Include="Audio\AudioManager.cpp" />
+    <ClCompile Include="Audio\MediaStreamer.cpp" />
     <ClCompile Include="GameEngine\Asteroid.cpp" />
+    <ClCompile Include="GameEngine\CollidingObject.cpp" />
+    <ClCompile Include="GameEngine\Direct2Dlighteffect.cpp" />
+    <ClCompile Include="GameEngine\FireBall.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
-    <ClCompile Include="GameEngine\ParticleSystem.cpp" />
     <ClCompile Include="GameEngine\Player.cpp" />
     <ClCompile Include="GameEngine\RocketFire.cpp" />
     <ClCompile Include="GameEngine\SlidingBackgroundSprite.cpp" />
@@ -550,7 +561,39 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="PackageManifest(8.0)\Package.appxmanifest" />
+    <AppxManifest Include="PackageManifest(8.0)\Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Music\candyland_theme.wma" />
+    <None Include="Assets\Music\game_over.wma" />
+    <None Include="Assets\Music\game_won.wma" />
+    <None Include="Assets\Music\magic_bean_theme.wma" />
+    <None Include="Assets\Music\maintheme.wma" />
+    <None Include="Assets\Music\nightmare_theme.wma" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Sounds\BearCry.wav" />
+    <Media Include="Assets\Sounds\Coin1.wav" />
+    <Media Include="Assets\Sounds\EnemyDead1.wav" />
+    <Media Include="Assets\Sounds\EnemyDead2.wav" />
+    <Media Include="Assets\Sounds\EnemyDead3.wav" />
+    <Media Include="Assets\Sounds\GenericPowerup.wav" />
+    <Media Include="Assets\Sounds\HardSoft1.wav" />
+    <Media Include="Assets\Sounds\HealthMax.wav" />
+    <Media Include="Assets\Sounds\HelmetPowerup.wav" />
+    <Media Include="Assets\Sounds\Laugh1.wav" />
+    <Media Include="Assets\Sounds\Laugh2.wav" />
+    <Media Include="Assets\Sounds\Laugh3.wav" />
+    <Media Include="Assets\Sounds\MenuSlide.wav" />
+    <Media Include="Assets\Sounds\MenuTap.wav" />
+    <Media Include="Assets\Sounds\Ouch1.wav" />
+    <Media Include="Assets\Sounds\Ouch2.wav" />
+    <Media Include="Assets\Sounds\Ouch3.wav" />
+    <Media Include="Assets\Sounds\ParachutePowerup.wav" />
+    <Media Include="Assets\Sounds\SharpSoft1.wav" />
+    <Media Include="Assets\Sounds\Wind.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

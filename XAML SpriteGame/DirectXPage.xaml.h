@@ -3,6 +3,7 @@
 #include "DirectXPage.g.h"
 #include "SpriteGame.h"
 #include "Helpers\Timer.h"  
+#include "Audio\AudioManager.h"
 
 using namespace Windows::UI::ViewManagement;
 using namespace Windows::UI::Xaml::Media::Animation;
@@ -28,7 +29,7 @@ namespace Coding4Fun
 			void UpdateWindowSize();
 			 
 
-
+			float totalFrames  ;
 
 			Windows::Foundation::EventRegistrationToken	WindowActivationToken;
 

@@ -5,39 +5,45 @@
 
 using namespace BasicSprites;
 
-float2 GameObject::GetTopLeft(){ 
-	return float2(pos.x - textureSize.Width / 2.0*scale, pos.y - textureSize.Height / 2.0*scale);
+float2 GameObject::GetTopLeft(){
+	return float2(pos.x - textureSize.Width / 2.0*scale.x, pos.y - textureSize.Height / 2.0*scale.y);
 }
 float2 GameObject::GetBottomRight(){
-	return float2(pos.x + textureSize.Width / 2.0*scale, pos.y + textureSize.Height / 2.0*scale);
-}
-
-bool GameObject::IsColliding(GameObject  otherObj)
-{
-
-	float2 tl1 = GetTopLeft();
-	float2 tl2 = otherObj.GetTopLeft();
-	float2 br1 = GetBottomRight();
-	float2 br2 = otherObj.GetBottomRight();
-
-	if (br1.y  < tl2.y) return(0);
-	if (tl1.y  > br2.y) return(0);
-
-	if (br1.x < tl2.x) return(0);
-	if (tl1.x > br2.x) return(0);
-
-	return 1;
-
+	return float2(pos.x + textureSize.Width / 2.0*scale.x, pos.y + textureSize.Height / 2.0*scale.y);
 }
  
+
+void	GameObject::SetVel(float2 _vel){
+	vel = _vel;
+}
+float2  GameObject::GetVel(){
+	return vel;
+}
+void    GameObject::SetAccel(float2 _accel){
+	accel = _accel;
+}
+float2  GameObject::GetAccel(){
+	return accel;
+}
+void    GameObject::SetRotVel(float  _rotVel){
+	rotVel = _rotVel;
+}
+float   GameObject::GetRotVel(){
+	return rotVel;
+}
+
+
+
 void GameObject::Update(float timeDelta)
 {
 
 
-	//vel = vel + accel*timeDelta;
+	float  prevRot = rot;
+	vel = vel + accel*timeDelta;
+	float2   prevPos = pos;
 	pos = pos + vel * timeDelta;
- 
-	rot = rot+ rotVel * timeDelta;
+
+	rot = rot + rotVel * timeDelta;
 	if (rot > PI_F)
 	{
 		rot -= 2.0f * PI_F;
@@ -45,13 +51,41 @@ void GameObject::Update(float timeDelta)
 	if (rot < -PI_F)
 	{
 		rot += 2.0f * PI_F;
-	} 
+	}
+
+	UpdateChildren(timeDelta);
+	UpdateCollisionGeometry(prevPos, pos, prevRot-rot);
 
 }
+void GameObject::UpdateChildren(float timeDelta)
+{
+
+	for (auto child = children.begin(); child != children.end(); child++)
+	{
+		float2 offset = child->second;
+		child->first->SetPos(float2(pos.x - offset.x *cos(rot), pos.y + offset.y*sin(rot)));
+		child->first->SetRot(rot);
+		child->first->Update(timeDelta);
+	}
+}
+void GameObject::UpdateCollisionGeometry(float2 prevPos, float2 pos, float rot)
+{
+	translateCollisionGeometry(pos - prevPos);
+	rotateCollisionGeometry(rot, pos);
+ 
+}
+void GameObject::AddChild(float2 offset, Sprite* obj)
+{
+	children.push_back(std::pair< Sprite*, float2 >(obj, offset));
+}
+
 
 void GameObject::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 {
-	 
+	for (auto child = children.begin(); child != children.end(); child++)
+	{
+		child->first->Draw(m_spriteBatch);
+	}
 
 	m_spriteBatch->Draw(
 		_texture.Get(),
@@ -61,6 +95,13 @@ void GameObject::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 		SizeUnits::Normalized,
 		float4(0.8f, 0.8f, 1.0f, 1.0f),
 		rot
-		);
+		); 
 }
- 
+
+void GameObject::SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D>  texture)
+{
+	Sprite::SetTexture(texture);
+
+	setRectangleCollisionGeometry(GetTopLeft(), GetBottomRight());
+
+}

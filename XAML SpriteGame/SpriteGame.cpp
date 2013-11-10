@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "SpriteGame.h"
+#include "SpriteGame.h" 
 #include <DirectXMath.h>    
+
 using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
 using namespace Windows::UI::Core;
@@ -11,63 +12,27 @@ using namespace Coding4Fun::FallFury::DXCore;
 template <typename T> int sgn(T val) {
 	return (T(0) < val) - (val < T(0));
 }
+
 SpriteGame::SpriteGame()
-{
+{ 
 }
 
 void SpriteGame::CreateDeviceIndependentResources()
 {
 	DirectXBase::CreateDeviceIndependentResources();
 
-	// Load an image from a Windows Imaging Component decoder.
-	ComPtr<IWICBitmapDecoder> decoder; 
-	ThrowIfFailed(
-		m_wicFactory->CreateDecoderFromFilename(
-		L"Assets\\GameObjects\\heightmap.png",
-		nullptr,
-		GENERIC_READ,
-		WICDecodeMetadataCacheOnDemand,
-		&decoder
-		)
-		);
- 
-	ComPtr<IWICBitmapFrameDecode> frame;
-	ThrowIfFailed(
-		decoder->GetFrame(0, &frame)
-		);
-
-	ThrowIfFailed(
-		m_wicFactory->CreateFormatConverter(&m_wicConverter)
-		);
-
-	ThrowIfFailed(
-		m_wicConverter->Initialize(
-		frame.Get(),
-		GUID_WICPixelFormat32bppPBGRA,
-		WICBitmapDitherTypeNone,
-		nullptr,
-		0.0f,
-		WICBitmapPaletteTypeCustom
-		)
-		);
-
-	// Get the size of the image.
-	unsigned int width, height;
-	ThrowIfFailed(m_wicConverter->GetSize(&width, &height));
-	m_imageSize = D2D1::SizeU(width, height);
-
-
-
-
+	spaceShipLight = new d2dLightEffect();
+	 
 }
 
 void SpriteGame::CreateProjectile()
 {
-	ParticleSystem data;
-	data.pos = spaceship->pos;
-	data.vel = float2(1000.0f* cos(spaceship->rot), -1000.0f*sin(spaceship->rot));
-	data.scale = 1.0f;
+	FireBall data;
+	data.SetPos( spaceship->GetPos() );
+	data.vel = float2(1000.0f* cos(spaceship->GetRot()), -1000.0f*sin(spaceship->GetRot()));
+	data.SetScale(float2(1.0f, 1.0f));
 	data.SetTexture(m_particle);
+	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
 	data.SetWindowSize(m_windowBounds);
 	m_particleData.push_back(data);
 }
@@ -131,39 +96,20 @@ void SpriteGame::CreateDeviceResources()
 		);
 	m_spriteBatch->AddTexture(m_particle.Get());
 
+	loader->LoadTexture(
+		"Assets\\GameObjects\\debug.png",
+		&m_debug_point,
+		nullptr
+		);
+	m_spriteBatch->AddTexture(m_debug_point.Get());
+	
 	// Create the Gaussian Blur Effect
- 
 
-	// Create a bitmap source effect and bind the WIC format converter to it.
-	m_d2dContext->CreateEffect(CLSID_D2D1BitmapSource, &m_bitmapSourceEffect);
-	ThrowIfFailed(m_bitmapSourceEffect->SetValue(D2D1_BITMAPSOURCE_PROP_WIC_BITMAP_SOURCE, m_wicConverter.Get()));
+	spaceship = new Player();
+	rocketFuel = new RocketFire();
+	spaceShipLight->initWithImageFromFile(m_d2dContext, m_wicFactory);
 
-	// Because the image will not be changing, we should cache the effect for performance reasons.
-	ThrowIfFailed(m_bitmapSourceEffect->SetValue(D2D1_PROPERTY_CACHED, FALSE));
 
-	// Create effects and set their input to the BitmapSource effect. These lighting effects use the alpha channel
-	// of the inputed image as a heightmap - higher values represent higher elevations off the surface of the image.
-	ThrowIfFailed(m_d2dContext->CreateEffect(CLSID_D2D1PointSpecular, &m_pointSpecularEffect));
-	m_pointSpecularEffect->SetInputEffect(0, m_bitmapSourceEffect.Get());
-
-	ThrowIfFailed(m_d2dContext->CreateEffect(CLSID_D2D1SpotSpecular, &m_spotSpecularEffect));
-	m_spotSpecularEffect->SetInputEffect(0, m_bitmapSourceEffect.Get());
-
-	ThrowIfFailed(m_d2dContext->CreateEffect(CLSID_D2D1DistantSpecular, &m_distantSpecularEffect));
-	m_distantSpecularEffect->SetInputEffect(0, m_bitmapSourceEffect.Get());
-
-	ThrowIfFailed(m_d2dContext->CreateEffect(CLSID_D2D1PointDiffuse, &m_pointDiffuseEffect));
-	m_pointDiffuseEffect->SetInputEffect(0, m_bitmapSourceEffect.Get());
-
-	ThrowIfFailed(m_d2dContext->CreateEffect(CLSID_D2D1SpotDiffuse, &m_spotDiffuseEffect));
-	m_spotDiffuseEffect->SetInputEffect(0, m_bitmapSourceEffect.Get());
-
-	ThrowIfFailed(m_d2dContext->CreateEffect(CLSID_D2D1DistantDiffuse, &m_distantDiffuseEffect));
-	m_distantDiffuseEffect->SetInputEffect(0, m_bitmapSourceEffect.Get());
-
-	// m_currentEffect represents the current effect being rendered in the Render() method. At startup,
-	// we default to m_pointSpecularEffect.
-	m_currentEffect = m_spotSpecularEffect;
 }
 
 void SpriteGame::CreateWindowSizeDependentResources()
@@ -183,92 +129,48 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	for (int i = 0; i < 100; i++)
 	{
 		Asteroid data;
-		data.pos.x = RandFloat(0.0f, m_windowBounds.Width);
-		data.pos.y = RandFloat(0.0f, m_windowBounds.Height);
+		data.SetPos(float2(RandFloat(0.0f, m_windowBounds.Width), RandFloat(0.0f, m_windowBounds.Height) ));
 		float tempRot = RandFloat(-PI_F, PI_F);
 		float tempMag = RandFloat(0.0f, 17.0f);
-		data.vel.x = tempMag * cosf(tempRot);
-		data.vel.y = tempMag * sinf(tempRot);
-		data.rot = 0;//RandFloat(-PI_F, PI_F);
-		data.scale = RandFloat(0.1f, 1.0f);
-		data.rotVel = RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * data.scale);
-		data.size = (180, 110);
-		data.SetTexture(m_asteroid);
+		float tempScale = RandFloat(0.1f, 1.0f); 
+
+		data.SetVel(float2(tempMag * cosf(tempRot), tempMag * sinf(tempRot)));
+		data.SetRot(0); 
+		data.SetScale(float2(tempScale,tempScale))	;
+		data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
+		data.SetTexture(m_asteroid); 
 		data.SetWindowSize(m_windowBounds);
+
+
+		data.size = float2(180, 110);
+		data.lifeTime = -1;
 		m_asteroidData.push_back(data);
 	}
 
 
-	spaceship = new Player();
 
-	spaceship->pos.x = (float) m_windowBounds.Width / 2.0;
-	spaceship->pos.y = (float) m_windowBounds.Height / 2.0;
+	spaceship->SetPos( float2( m_windowBounds.Width / 2.0f, m_windowBounds.Height / 2.0f)) ;
 	float tempRot = RandFloat(-PI_F, PI_F);
 	float tempMag = RandFloat(0.0f, 17.0f);
-	spaceship->vel.x = 10;
-	spaceship->vel.y = 0;
-	spaceship->rot = 0;
-	spaceship->rotVel =0;
-	spaceship->scale = .75;
+ 
+	spaceship->SetVel(float2(0,0));
+	spaceship->SetRot( 0 );
+	spaceship->SetRotVel(0);
+	spaceship->SetScale( float2(.5,.5) );
 	spaceship->SetTexture(m_player);
-	spaceship->spot_texture = m_player_spot;
+
+	spaceship->spot_texture = m_player_spot; 
 	spaceship->SetWindowSize(m_windowBounds);
-
-
-	rocketFuel = new RocketFire();
-	rocketFuel->pos = spaceship->pos;
-	rocketFuel->pos.x -= spaceship->textureSize.Width / 2.0*spaceship->scale;
+	
+	rocketFuel->SetPos(  spaceship->GetPos()); 
 	rocketFuel->SetTexture(m_particle);
+	spaceship->AddChild(float2(spaceship->textureSize.Width / 2.0*spaceship->GetScale().x, spaceship->textureSize.Height / 2.0*spaceship->GetScale().y), rocketFuel);
 
-	rocketFuel->ParentObject = spaceship;
-	// Resize the image depending on the layout.
-	if (m_renderTargetSize.Width < 1024.0)
-	{
-		// Scale the image to fit vertically.
-		D2D1_VECTOR_2F scale = D2D1::Vector2F(
-			1.0f,
-			m_renderTargetSize.Height / m_imageSize.height
-			);
+	
 
-		ThrowIfFailed(
-			m_bitmapSourceEffect->SetValue(D2D1_BITMAPSOURCE_PROP_SCALE, scale)
-			);
-	}
-	else
-	{
-		// Scale the image to fit horizontally and vertically.
-		D2D1_VECTOR_2F scale = D2D1::Vector2F(
-			m_renderTargetSize.Width / m_imageSize.width,
-			m_renderTargetSize.Height / m_imageSize.height
-			);
-
-		ThrowIfFailed(
-			m_bitmapSourceEffect->SetValue(D2D1_BITMAPSOURCE_PROP_SCALE, scale)
-			);
-	}
-
-	D2D1_SIZE_F size = m_d2dContext->GetSize();
-
-	// Set the pointsAt property for the Spot effects to the center of the screen.
-	D2D1_VECTOR_3F pointsAt = D2D1::Vector3F(
-		size.width / 2.0F,
-		size.height / 2.0F,
-		0.0f
-		);
-	m_lightPositionZ = 100;
-	// The Z position is manually set by the user.
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_POINTS_AT, pointsAt));
-	ThrowIfFailed(m_spotDiffuseEffect->SetValue(D2D1_SPOTDIFFUSE_PROP_POINTS_AT, pointsAt)); 
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_SURFACE_SCALE, 10.f));
-
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_FOCUS, 15.4f));
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_SPECULAR_CONSTANT, 1.2f));
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_LIMITING_CONE_ANGLE, 70.0f));
-	 
-
-	ThrowIfFailed(m_pointSpecularEffect->SetValue(D2D1_POINTSPECULAR_PROP_SURFACE_SCALE, 10.f));
-	ThrowIfFailed(m_pointSpecularEffect->SetValue(D2D1_POINTSPECULAR_PROP_SPECULAR_EXPONENT, 1.2f));
-	 
+	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
+ 
+	spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
 }
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
@@ -278,44 +180,74 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	background->Update(timeDelta);
 	spaceship->Update(timeDelta);
 
-	//D2D1_VECTOR_3F lightPosition = D2D1::Vector3F(spaceship->pos.x+spaceship->textureSize.Width/2.0*spaceship->scale-30, spaceship->pos.y,25);
-	D2D1_VECTOR_3F lighttarget = D2D1::Vector3F(spaceship->pos.x + (200  )*cos(spaceship->rot), spaceship->pos.y -(200)*sin(spaceship->rot), 5);//+ tan(spaceship->lightAngle* 3.14 / 180.0) * 100
-
-
-	D2D1_VECTOR_3F lightPosition = D2D1::Vector3F(spaceship->pos.x + (-70 )*cos(spaceship->rot), spaceship->pos.y - (-70)*sin(spaceship->rot), 25);
-	//D2D1_VECTOR_3F lighttarget = D2D1::Vector3F(spaceship->pos.x, spaceship->pos.y + tan(spaceship->lightAngle* 3.14 / 180.0) * 100, 5);
-	// The DistantSpecular and DistantDiffuse effects do not have a LightPosition property. 
-	ThrowIfFailed(m_pointSpecularEffect->SetValue(D2D1_POINTSPECULAR_PROP_LIGHT_POSITION, lightPosition));
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_LIGHT_POSITION, lightPosition));
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_POINTS_AT, lighttarget));
-	rocketFuel->pos = float2(spaceship->pos.x - (spaceship->textureSize.Width / 2.0*spaceship->scale  )*cos(spaceship->rot),
-		spaceship->pos.y +(spaceship->textureSize.Height / 2.0*spaceship->scale )*sin(spaceship->rot ));
 
 
 	rocketFuel->Update(timeDelta); 
-	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
+  	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
 	{
 		asteroid->Update(timeDelta);
-		if (spaceship->IsColliding(*asteroid))
+		
+		if (asteroid->lifeTime > 0)
+			asteroid->lifeTime--;
+
+		if (asteroid->lifeTime == 0)
 		{
+
 			asteroid = m_asteroidData.erase(asteroid);
 
 			if (asteroid == m_asteroidData.end())
 				break;
+			continue;
 		}
+		if (dist(spaceship->GetPos(), asteroid->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0)
+		if (PolygonCollision(spaceship->getCollisionGeometry(), asteroid->getCollisionGeometry()))
+			{
+
+				asteroid = m_asteroidData.erase(asteroid);
+
+				if (asteroid == m_asteroidData.end())
+					break;
+				continue;
+			}
 
 		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 		{
-			if (particle->IsColliding(*asteroid))
-			{
-				asteroid->vel = particle->vel;
+			if (dist(particle->GetPos(), asteroid->GetPos()) < asteroid->textureSize.Width*asteroid->GetScale().x*2.0)
+			if (PolygonCollision(particle->getCollisionGeometry(), asteroid->getCollisionGeometry()) && asteroid->lifeTime == -1)
+				{
+				
+
 				particle = m_particleData.erase(particle);
 
+				
+
+				for (int i = 0; i < 5 ; i++)
+				{
+					Asteroid data;
+					data.lifeTime = 20; 
+ 					data.SetPos(asteroid->GetPos()); 
+					float tempRot = RandFloat(-PI_F, PI_F);
+					float tempMag = RandFloat(60.0f, 80.0f);
+					data.SetVel( float2(tempMag * cosf(tempRot), tempMag * sinf(tempRot)) );
+					data.SetRot( 0) ; 
+					data.SetScale(asteroid->GetScale() / 4.f);
+					 
+					data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * asteroid->GetScale().x));
+					data.size = (180, 110);
+					data.SetTexture(m_asteroid);
+					data.SetWindowSize(m_windowBounds); 
+					m_asteroidData.push_back(data);
+				}
+
+				asteroid = m_asteroidData.erase(asteroid);
+
+				if (asteroid == m_asteroidData.end())
+					break;
 				if (particle == m_particleData.end())
 					break;
 
 			}
-		}
+			}
 	}
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 	{
@@ -332,7 +264,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 		 
 
 	}
-
+	spaceShipLight->Update(spaceship);
 
 }
 
@@ -344,38 +276,27 @@ void SpriteGame::Render()
 
 	m_spriteBatch->Begin(); 
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
-		asteroid->Draw(m_spriteBatch);
-	m_spriteBatch->End();
-
-	m_d2dContext->BeginDraw();
-
-	// Draw the currently selected effect. By using SOURCE_COPY, the screen does
-	// not need to be cleared prior to each render since the pixels are completely
-	// overwritten, not blended as with SOURCE_OVER.
-	m_d2dContext->DrawImage(
-		m_currentEffect.Get(),
-		D2D1_INTERPOLATION_MODE_LINEAR,
-
-		D2D1_COMPOSITE_MODE_DESTINATION_ATOP
-		);
-
-	// We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device
-	// is lost. It will be handled during the next call to Present.
-	HRESULT hr = m_d2dContext->EndDraw();
-	if (hr != D2DERR_RECREATE_TARGET)
 	{
-		ThrowIfFailed(hr);
+		asteroid->Draw(m_spriteBatch);
+		asteroid->DebugDraw(m_spriteBatch, m_debug_point);
+		 
 	}
-	m_spriteBatch->Begin();
-	//background->Draw(m_spriteBatch);
+	m_spriteBatch->End();
+	
+	spaceShipLight->Draw();
+	m_spriteBatch->Begin(); 
 
+	CollisionGeometry sg = spaceship->getCollisionGeometry();
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
+	{
 		particle->Draw(m_spriteBatch);
 
 
-	rocketFuel->Draw(m_spriteBatch);
+		particle->DebugDraw(m_spriteBatch, m_debug_point);
+	}
 	spaceship->Draw(m_spriteBatch);
 
+	spaceship->DebugDraw(m_spriteBatch, m_debug_point);
 	m_spriteBatch->End();
 }
 
@@ -397,9 +318,6 @@ float SpriteGame::RandFloat(float min, float max)
 
 bool SpriteGame::IsWithinScreenBoundaries(float2 position)
 {
-	/*if (position.x < CurrentGameScreen->LoBoundX || position.x > CurrentGameScreen->HiBoundX || position.y < CurrentGameScreen->LoBoundY || position.y > CurrentGameScreen->HiBoundY)
-		return false;
-		else
-		return true;*/return true;
+	 return true;
 
 }

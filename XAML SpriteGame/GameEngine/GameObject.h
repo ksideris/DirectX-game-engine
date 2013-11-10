@@ -1,28 +1,45 @@
 #pragma once
 
-#include "HelperClasses.h" 
+#include <utility> 
 #include "Sprite.h"
+#include "CollidingObject.h"
 
+using namespace std;
 using namespace Coding4Fun::FallFury::DXCore;
 using namespace Coding4Fun::FallFury::DXCore::BasicSprites;
 
-class GameObject: public Sprite
+class GameObject : public Sprite, public CollidingObject
 {
+protected:
 
-public: 
-	float2 vel;
-	float rot;
-	float rotVel; 
+	float  rotVel;
 	float2 accel;
+	float2 vel;
+	vector<pair<Sprite*, float2> > children;
+	virtual void UpdateChildren(float timeDelta);
+	void UpdateCollisionGeometry(float2 prevPos, float2 pos, float rot); 
 
-	float2 size; 
+public:
 	 
 
-	void Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
-	bool IsColliding(GameObject  otherObj);
-	void Update(float timeDelta);
-	void KeepInBounds();
+	float2 size;
+
+	virtual void    SetVel(float2 _vel);  //Convert To properties!
+	virtual float2  GetVel();
+	virtual void    SetAccel(float2 _accel);
+	virtual float2  GetAccel();
+	virtual void    SetRotVel(float  _rotVel);
+	virtual float   GetRotVel();
+
+	virtual void Update(float timeDelta);
+	virtual void Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
+
+	
+
+	virtual void AddChild(float2 offset, Sprite* obj);
+	void KeepInBounds(); 
+
+	virtual void SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D>  texture);
 	float2 GetTopLeft();
 	float2 GetBottomRight();
 };
- 

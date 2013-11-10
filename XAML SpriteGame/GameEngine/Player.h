@@ -11,9 +11,10 @@ class Player :public GameObject
 	float lightUpdate;
 	float2 TargetPos;
 public:
+	float z;
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> spot_texture;
-	float lightAngle;
+ 
 	Player();
 	void Update(float timeDelta);
 	void KeepInBounds();

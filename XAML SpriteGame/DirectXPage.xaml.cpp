@@ -10,6 +10,8 @@
 using namespace Coding4Fun::FallFury;
 using namespace Coding4Fun::FallFury::Helpers;
 
+using namespace Coding4Fun::FallFury::Audio;
+
 using namespace Windows::UI::ViewManagement;
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -53,7 +55,7 @@ DirectXPage::DirectXPage()
 
 	m_timer = ref new Timer();
 
-
+	totalFrames = 0;
 	UpdateWindowSize();
 
 }
@@ -96,8 +98,8 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 {
 	m_timer->Update();
 
-
-
+	totalFrames += 1;
+	framerate->Text = (1.0f / (m_timer->Total / totalFrames)).ToString();
 	m_renderer->Update(m_timer->Total, m_timer->Delta);
 	m_renderer->Render();
 	m_renderer->Present();
@@ -105,12 +107,11 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 
 }
 
-
 void DirectXPage::OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 
-
 	IsInitialDataLoaded = true;
+	 
 }
 
 void DirectXPage::OnWindowActivated(Object^ sender, Windows::UI::Core::WindowActivatedEventArgs^ e)
@@ -126,10 +127,10 @@ void DirectXPage::OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::
 
 
 	if (e->Key == VirtualKey::A  )
-		m_renderer->m_currentEffect = m_renderer->m_pointSpecularEffect;
+		m_renderer->spaceShipLight->m_currentEffect = m_renderer->spaceShipLight->m_pointSpecularEffect;
 
 	if (e->Key == VirtualKey::B )
-		m_renderer->m_currentEffect = m_renderer->m_spotSpecularEffect;
+		m_renderer->spaceShipLight->m_currentEffect = m_renderer->spaceShipLight->m_spotSpecularEffect;
 }
 
 

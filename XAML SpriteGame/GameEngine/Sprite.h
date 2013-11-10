@@ -3,21 +3,37 @@
 
 using namespace Coding4Fun::FallFury::DXCore;
 using namespace Coding4Fun::FallFury::DXCore::BasicSprites;
+
+
 class Sprite
 {
 
+protected:
+
+	float   rot;
+	float2  pos;
+	float2  scale;
+
+
 public:
 
-	Windows::Foundation::Rect textureSize;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture;
-	Windows::Foundation::Rect _windowRect;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D>		 _texture;
+	Windows::Foundation::Rect				 _windowRect;
+	Windows::Foundation::Rect				 textureSize;
+	 
 
-	float2 pos;
-	float scale;
+	virtual void	SetScale(float2 _scale);
+	virtual float2  GetScale();
+	virtual void    SetPos(float2 _pos);
+	virtual float2  GetPos();
+	virtual void    SetRot(float  _rot);
+	virtual float   GetRot();
 
-	void Update(float timeDelta);
-	void SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D> texture);
-	void SetWindowSize(Windows::Foundation::Rect windowRect);
-	void Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
-	bool IsOutOfVisibleArea();
+	virtual void SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D>  texture);
+	virtual void SetWindowSize(Windows::Foundation::Rect windowRect);
+
+
+	virtual void Update(float timeDelta);
+	virtual void Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
+	virtual bool IsOutOfVisibleArea();
 };
