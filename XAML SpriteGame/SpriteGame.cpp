@@ -275,6 +275,8 @@ void SpriteGame::Render()
 	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::AntiqueWhite)));
 
 	m_spriteBatch->Begin(); 
+	background->Draw(m_spriteBatch);
+
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
 	{
 		asteroid->Draw(m_spriteBatch);
@@ -283,7 +285,7 @@ void SpriteGame::Render()
 	}
 	m_spriteBatch->End();
 	
-	spaceShipLight->Draw();
+	//spaceShipLight->Draw();
 	m_spriteBatch->Begin(); 
 
 	CollisionGeometry sg = spaceship->getCollisionGeometry();
