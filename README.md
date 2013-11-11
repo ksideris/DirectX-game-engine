@@ -1,4 +1,4 @@
-Direct2D-game-engine
+directX 11.1 -game-engine
 ====================
 
 This is a simple and accessible directX 11.1 game engine for windows 8/8.1 built for UCLA's CS188 class.
