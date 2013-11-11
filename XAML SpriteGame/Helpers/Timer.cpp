@@ -8,7 +8,7 @@
 #include "pch.h"
 #include "Timer.h"
 
-using namespace Coding4Fun::FallFury::Helpers;
+using namespace Helpers;
 
 Timer::Timer()
 {

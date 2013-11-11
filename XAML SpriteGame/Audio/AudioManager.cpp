@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "AudioManager.h"
 
-using namespace Coding4Fun::FallFury::Audio;
+using namespace  AudioEngine;
  
 Audio				AudioManager::AudioEngineInstance;
 bool				AudioManager::IsMusicStarted;

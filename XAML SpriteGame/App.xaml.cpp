@@ -6,8 +6,8 @@
 #include "pch.h"
 #include "DirectXPage.xaml.h"
 
-using namespace Coding4Fun::FallFury;
-using namespace Coding4Fun::FallFury::Helpers;
+using namespace GameEngine;
+using namespace Helpers;
 
 using namespace Platform;
 using namespace Windows::ApplicationModel;

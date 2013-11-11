@@ -19,9 +19,9 @@ using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel;
 using namespace std;
 using namespace concurrency;
-using namespace Coding4Fun::FallFury::DXCore;
-using namespace Coding4Fun::FallFury::Entities;
-using namespace Coding4Fun::FallFury::Helpers;
+using namespace DXCore;
+using namespace  Entities;
+using namespace  Helpers;
 
 BasicLoader::BasicLoader(
     _In_ ID3D11Device* d3dDevice,

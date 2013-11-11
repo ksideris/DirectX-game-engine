@@ -5,8 +5,8 @@
 #include "CollidingObject.h"
 
 using namespace std;
-using namespace Coding4Fun::FallFury::DXCore;
-using namespace Coding4Fun::FallFury::DXCore::BasicSprites;
+using namespace  DXCore;
+using namespace  DXCore::BasicSprites;
 
 class GameObject : public Sprite, public CollidingObject
 {

@@ -9,7 +9,7 @@ using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
 using namespace D2D1;
-using namespace Coding4Fun::FallFury::DXCore;
+using namespace DXCore;
 
 // Constructor.
 DirectXBase::DirectXBase() :

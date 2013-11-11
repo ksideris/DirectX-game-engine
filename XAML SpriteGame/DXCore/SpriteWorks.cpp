@@ -21,8 +21,8 @@
 #include "Helpers\SizeEnums.h"
 
 using namespace Microsoft::WRL;
-using namespace Coding4Fun::FallFury::DXCore::BasicSprites;
-using namespace Coding4Fun::FallFury::DXCore;
+using namespace DXCore::BasicSprites;
+using namespace DXCore;
 
 SpriteBatch::SpriteBatch() : m_capacity(0)
 {

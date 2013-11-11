@@ -1,11 +1,19 @@
 ﻿<SwapChainBackgroundPanel
-    x:Class="Coding4Fun.FallFury.DirectXPage"
+    x:Class="GameEngine.DirectXPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Coding4Fun.FallFury" x:Name="XAMLPage" 
+   
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="OnLoaded" KeyDown="OnKeyDown" KeyUp="OnKeyUp" 
         LayoutUpdated="XAMLPage_LayoutUpdated" PointerPressed="XAMLPage_PointerPressed" PointerMoved="XAMLPage_PointerMoved"  PointerReleased="XAMLPage_PointerReleased"         >
-    <TextBlock x:Name="framerate"  FontSize="50" HorizontalAlignment="Left" Margin="1048,0,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="114" Width="308"/>
-</SwapChainBackgroundPanel>
+
+    <Grid>
+
+        <TextBlock x:Name="framerateLabel"  FontSize="50" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="114" Width="308" Text="FPS:"/>
+        <TextBlock x:Name="framerateV"  FontSize="50" HorizontalAlignment="Left" Margin="308,0,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="114" Width="308"/>
+
+    </Grid>
+    
+    
+</SwapChainBackgroundPanel> 

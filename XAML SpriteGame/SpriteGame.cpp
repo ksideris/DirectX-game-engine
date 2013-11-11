@@ -7,7 +7,7 @@ using namespace Windows::Foundation;
 using namespace Windows::UI::Core;
 using namespace DirectX;
 using namespace Windows::Graphics::Display;
-using namespace Coding4Fun::FallFury::DXCore;
+using namespace DXCore;
 
 template <typename T> int sgn(T val) {
 	return (T(0) < val) - (val < T(0));

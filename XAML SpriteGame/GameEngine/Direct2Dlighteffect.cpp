@@ -6,7 +6,7 @@ using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
 using namespace Windows::UI::Core; 
 using namespace Windows::Graphics::Display;
-using namespace Coding4Fun::FallFury::DXCore;
+using namespace DXCore;
 
 
 

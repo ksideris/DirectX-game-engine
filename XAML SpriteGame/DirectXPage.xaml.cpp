@@ -7,10 +7,10 @@
 #include "DirectXPage.xaml.h"  
 #include <map>
 
-using namespace Coding4Fun::FallFury;
-using namespace Coding4Fun::FallFury::Helpers;
+using namespace GameEngine;
+using namespace Helpers;
 
-using namespace Coding4Fun::FallFury::Audio;
+using namespace AudioEngine;
 
 using namespace Windows::UI::ViewManagement;
 using namespace Platform;
@@ -55,7 +55,7 @@ DirectXPage::DirectXPage()
 
 	m_timer = ref new Timer();
 
-	totalFrames = 0;
+	
 	UpdateWindowSize();
 }
 
@@ -95,10 +95,20 @@ void DirectXPage::OnLogicalDpiChanged(Platform::Object^ sender)
 
 void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 {
-	m_timer->Update();
+	m_timer->Update(); 
 
-	totalFrames += 1;
-	framerate->Text = (1.0f / (m_timer->Total / totalFrames)).ToString();
+	framerate.push_back(1.f / m_timer->Delta);
+
+	if (framerate.size()>100)
+	while (framerate.size() > 100)
+		framerate.erase(framerate.begin());
+	float fps = 0;
+
+	for (auto _fps : framerate)
+		fps += _fps; 
+
+	fps /= framerate.size();
+	framerateV->Text = fps.ToString();
 	m_renderer->Update(m_timer->Total, m_timer->Delta);
 	m_renderer->Render();
 	m_renderer->Present();

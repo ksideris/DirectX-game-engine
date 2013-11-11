@@ -9,7 +9,7 @@ using namespace Windows::Storage::Streams;
 using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel;
 using namespace concurrency;
-using namespace Coding4Fun::FallFury::Helpers;
+using namespace Helpers;
 
 RWContract::RWContract()
 {

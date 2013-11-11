@@ -2,42 +2,37 @@
 
 #include <ppltasks.h>
 
-namespace Coding4Fun
+
+namespace Helpers
 {
-	namespace FallFury
+	ref class RWContract
 	{
-		namespace Helpers
-		{
-			ref class RWContract
-			{
-			private:
-				Windows::Storage::StorageFolder^ m_location;
-				Platform::String^ m_locationPath;
+	private:
+		Windows::Storage::StorageFolder^ m_location;
+		Platform::String^ m_locationPath;
 
-			internal:
-				RWContract();
-				RWContract(
-					_In_ Windows::Storage::StorageFolder^ folder
-					);
+	internal:
+		RWContract();
+		RWContract(
+			_In_ Windows::Storage::StorageFolder^ folder
+			);
 
-				Platform::Array<byte>^ ReadData(
-					_In_ Platform::String^ filename
-					);
+		Platform::Array<byte>^ ReadData(
+			_In_ Platform::String^ filename
+			);
 
-				concurrency::task<Platform::Array<byte>^> ReadDataAsync(
-					_In_ Platform::String^ filename
-					);
+		concurrency::task<Platform::Array<byte>^> ReadDataAsync(
+			_In_ Platform::String^ filename
+			);
 
-				uint32 WriteData(
-					_In_ Platform::String^ filename,
-					_In_ const Platform::Array<byte>^ fileData
-					);
+		uint32 WriteData(
+			_In_ Platform::String^ filename,
+			_In_ const Platform::Array<byte>^ fileData
+			);
 
-				concurrency::task<void> WriteDataAsync(
-					_In_ Platform::String^ filename,
-					_In_ const Platform::Array<byte>^ fileData
-					);
-			};
-		}
-	}
+		concurrency::task<void> WriteDataAsync(
+			_In_ Platform::String^ filename,
+			_In_ const Platform::Array<byte>^ fileData
+			);
+	};
 }

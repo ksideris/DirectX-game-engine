@@ -8,11 +8,11 @@
 using namespace Windows::UI::ViewManagement;
 using namespace Windows::UI::Xaml::Media::Animation;
 using namespace Windows::UI::Xaml::Controls;
+using namespace Helpers;
 
-namespace Coding4Fun
+namespace GameEngine
 {
-	namespace FallFury
-	{
+	 
 		[Windows::Foundation::Metadata::WebHostHidden]
 		public ref class DirectXPage sealed
 		{
@@ -28,8 +28,8 @@ namespace Coding4Fun
 
 			void UpdateWindowSize();
 			 
-
-			float totalFrames  ;
+			 
+			std::vector<float> framerate;
 
 			Windows::Foundation::EventRegistrationToken	WindowActivationToken;
 
@@ -47,7 +47,7 @@ namespace Coding4Fun
 			SpriteGame^ m_renderer;
 
 
-			Coding4Fun::FallFury::Helpers::Timer^ m_timer;
+			Timer^ m_timer;
 
 			void OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 			void OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
@@ -71,5 +71,4 @@ namespace Coding4Fun
 			void XAMLPage_PointerMoved(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 			void XAMLPage_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		};
-	}
-}
+	} 

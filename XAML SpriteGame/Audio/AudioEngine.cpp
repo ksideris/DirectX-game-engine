@@ -9,8 +9,8 @@
 #include "DXCore\DirectXLinker.h"
 #include "AudioEngine.h"
 
-using namespace Coding4Fun::FallFury::DXCore;
-using namespace Coding4Fun::FallFury::Audio;
+using namespace DXCore;
+using namespace AudioEngine;
 
 void AudioEngineCallbacks::Initialize(Audio* audio)
 {

@@ -8,8 +8,8 @@
 #include "pch.h"
 #include "MediaStreamer.h"
 
-using namespace Coding4Fun::FallFury::DXCore;
-using namespace Coding4Fun::FallFury::Audio;
+using namespace DXCore;
+using namespace AudioEngine;
 
 MediaStreamer::MediaStreamer()
 {

@@ -1,20 +1,15 @@
 #pragma once
 
 // Helper utilities to make DirectX APIs work with exceptions
-namespace Coding4Fun
+
+namespace DXCore
 {
-	namespace FallFury
+	inline void ThrowIfFailed(HRESULT hr)
 	{
-		namespace DXCore
+		if (FAILED(hr))
 		{
-			inline void ThrowIfFailed(HRESULT hr)
-			{
-				if (FAILED(hr))
-				{
-					// Set a breakpoint on this line to catch DirectX API errors
-					throw Platform::Exception::CreateException(hr);
-				}
-			}
+			// Set a breakpoint on this line to catch DirectX API errors
+			throw Platform::Exception::CreateException(hr);
 		}
 	}
 }

@@ -1,8 +1,8 @@
 
 #pragma once
 
-using namespace Coding4Fun::FallFury::DXCore;
-using namespace Coding4Fun::FallFury::DXCore::BasicSprites;
+using namespace DXCore;
+using namespace  DXCore::BasicSprites;
 
 
 class Sprite
@@ -20,7 +20,7 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Texture2D>		 _texture;
 	Windows::Foundation::Rect				 _windowRect;
 	Windows::Foundation::Rect				 textureSize;
-	 
+
 
 	virtual void	SetScale(float2 _scale);
 	virtual float2  GetScale();

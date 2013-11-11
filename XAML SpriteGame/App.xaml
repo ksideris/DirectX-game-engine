@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="Coding4Fun.FallFury.App"
+    x:Class="GameEngine.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Coding4Fun.FallFury">
+   >
 
     <Application.Resources>
         <ResourceDictionary>

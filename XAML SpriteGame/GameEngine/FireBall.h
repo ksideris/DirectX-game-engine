@@ -2,10 +2,7 @@
 #include "Sprite.h"  
 #include "ParticleSystem.h"  
 #include "CollidingObject.h"
-
-using namespace Coding4Fun::FallFury::DXCore;
-using namespace Coding4Fun::FallFury::DXCore::BasicSprites;
-
+ 
 
 class FireBall :public ParticleSystem, public CollidingObject
 {

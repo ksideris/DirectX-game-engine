@@ -1,8 +1,8 @@
 
 #pragma once
 #include "GameObject.h"
-using namespace Coding4Fun::FallFury::DXCore;
-using namespace Coding4Fun::FallFury::DXCore::BasicSprites;
+using namespace DXCore;
+using namespace DXCore::BasicSprites;
 
 
 class Player :public GameObject

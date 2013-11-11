@@ -2,7 +2,7 @@
 #include "LocalDiagnostics.h"
 #include <sstream>
 
-using namespace Coding4Fun::FallFury::Helpers;
+using namespace  Helpers;
 
 void LocalDiagnostics::Print(float data)
 {
