@@ -57,7 +57,6 @@ DirectXPage::DirectXPage()
 
 	totalFrames = 0;
 	UpdateWindowSize();
-
 }
 
 

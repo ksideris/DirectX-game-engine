@@ -6,6 +6,10 @@ using namespace Coding4Fun::FallFury::DXCore;
 using namespace Coding4Fun::FallFury::DXCore::BasicSprites;
 
 
+using namespace Coding4Fun::FallFury::Audio;
+
+
+
 class ParticleSystem :public Sprite
 {
 protected:

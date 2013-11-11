@@ -14,32 +14,38 @@ template <typename T> int sgn(T val) {
 }
 
 SpriteGame::SpriteGame()
-{ 
+{
 }
 
 void SpriteGame::CreateDeviceIndependentResources()
 {
 	DirectXBase::CreateDeviceIndependentResources();
 
-	spaceShipLight = new d2dLightEffect();
-	 
+
+
+	AudioManager::AudioEngineInstance.Initialize();
+	AudioManager::AudioEngineInstance.CreateResources();
+	AudioManager::AudioEngineInstance.StartMusic();
+
 }
 
 void SpriteGame::CreateProjectile()
 {
 	FireBall data;
-	data.SetPos( spaceship->GetPos() );
+	data.SetPos(spaceship->GetPos());
 	data.vel = float2(1000.0f* cos(spaceship->GetRot()), -1000.0f*sin(spaceship->GetRot()));
 	data.SetScale(float2(1.0f, 1.0f));
 	data.SetTexture(m_particle);
 	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
 	data.SetWindowSize(m_windowBounds);
 	m_particleData.push_back(data);
+	AudioManager::AudioEngineInstance.PlaySoundEffect(HelmetPowerup);
 }
 
 void SpriteGame::CreateDeviceResources()
 {
 	DirectXBase::CreateDeviceResources();
+
 
 	m_spriteBatch = ref new SpriteBatch();
 	unsigned int capacity = 10000;
@@ -48,9 +54,6 @@ void SpriteGame::CreateDeviceResources()
 		m_d3dDevice.Get(),
 		capacity
 		);
-
-
-
 
 	// Load the sprite textures.
 
@@ -102,12 +105,18 @@ void SpriteGame::CreateDeviceResources()
 		nullptr
 		);
 	m_spriteBatch->AddTexture(m_debug_point.Get());
-	
-	// Create the Gaussian Blur Effect
+ 
 
 	spaceship = new Player();
 	rocketFuel = new RocketFire();
+	spaceShipLight = new d2dLightEffect(); 
 	spaceShipLight->initWithImageFromFile(m_d2dContext, m_wicFactory);
+
+	background = new SlidingBackgroundSprite();
+
+	background->SetTexture(m_background);
+	background->SetWindowSize(m_windowBounds);
+	background->InitSliding();
 
 
 }
@@ -117,28 +126,21 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	DirectXBase::CreateWindowSizeDependentResources();
 
 
-
-	background = new SlidingBackgroundSprite();
-
-	background->SetTexture(m_background);
-	background->SetWindowSize(m_windowBounds);
-	background->InitSliding();
-
 	// Randomly generate some non-interactive asteroids to fit the screen.
 	m_asteroidData.clear();
 	for (int i = 0; i < 100; i++)
 	{
 		Asteroid data;
-		data.SetPos(float2(RandFloat(0.0f, m_windowBounds.Width), RandFloat(0.0f, m_windowBounds.Height) ));
+		data.SetPos(float2(RandFloat(0.0f, m_windowBounds.Width), RandFloat(0.0f, m_windowBounds.Height)));
 		float tempRot = RandFloat(-PI_F, PI_F);
 		float tempMag = RandFloat(0.0f, 17.0f);
-		float tempScale = RandFloat(0.1f, 1.0f); 
+		float tempScale = RandFloat(0.1f, 1.0f);
 
 		data.SetVel(float2(tempMag * cosf(tempRot), tempMag * sinf(tempRot)));
-		data.SetRot(0); 
-		data.SetScale(float2(tempScale,tempScale))	;
+		data.SetRot(0);
+		data.SetScale(float2(tempScale, tempScale));
 		data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
-		data.SetTexture(m_asteroid); 
+		data.SetTexture(m_asteroid);
 		data.SetWindowSize(m_windowBounds);
 
 
@@ -149,27 +151,27 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 
 
-	spaceship->SetPos( float2( m_windowBounds.Width / 2.0f, m_windowBounds.Height / 2.0f)) ;
+	spaceship->SetPos(float2(m_windowBounds.Width / 2.0f, m_windowBounds.Height / 2.0f));
 	float tempRot = RandFloat(-PI_F, PI_F);
 	float tempMag = RandFloat(0.0f, 17.0f);
- 
-	spaceship->SetVel(float2(0,0));
-	spaceship->SetRot( 0 );
+
+	spaceship->SetVel(float2(0, 0));
+	spaceship->SetRot(0);
 	spaceship->SetRotVel(0);
-	spaceship->SetScale( float2(.5,.5) );
+	spaceship->SetScale(float2(.5, .5));
 	spaceship->SetTexture(m_player);
 
-	spaceship->spot_texture = m_player_spot; 
+	spaceship->spot_texture = m_player_spot;
 	spaceship->SetWindowSize(m_windowBounds);
-	
-	rocketFuel->SetPos(  spaceship->GetPos()); 
+
+	rocketFuel->SetPos(spaceship->GetPos());
 	rocketFuel->SetTexture(m_particle);
 	spaceship->AddChild(float2(spaceship->textureSize.Width / 2.0*spaceship->GetScale().x, spaceship->textureSize.Height / 2.0*spaceship->GetScale().y), rocketFuel);
 
-	
+
 
 	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
- 
+
 	spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
 }
 
@@ -177,16 +179,16 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 {
 
 
-	background->Update(timeDelta);
+	background->Update(timeDelta);														
 	spaceship->Update(timeDelta);
 
 
 
-	rocketFuel->Update(timeDelta); 
-  	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
+	rocketFuel->Update(timeDelta);
+	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
 	{
 		asteroid->Update(timeDelta);
-		
+
 		if (asteroid->lifeTime > 0)
 			asteroid->lifeTime--;
 
@@ -200,7 +202,8 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			continue;
 		}
 		if (dist(spaceship->GetPos(), asteroid->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0)
-		if (PolygonCollision(spaceship->getCollisionGeometry(), asteroid->getCollisionGeometry()))
+		{
+			if (PolygonCollision(spaceship->getCollisionGeometry(), asteroid->getCollisionGeometry()))
 			{
 
 				asteroid = m_asteroidData.erase(asteroid);
@@ -209,45 +212,50 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 					break;
 				continue;
 			}
+		}
 
 		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 		{
 			if (dist(particle->GetPos(), asteroid->GetPos()) < asteroid->textureSize.Width*asteroid->GetScale().x*2.0)
-			if (PolygonCollision(particle->getCollisionGeometry(), asteroid->getCollisionGeometry()) && asteroid->lifeTime == -1)
+			{
+				if (PolygonCollision(particle->getCollisionGeometry(), asteroid->getCollisionGeometry()) && asteroid->lifeTime == -1)
 				{
-				
 
-				particle = m_particleData.erase(particle);
+					AudioManager::AudioEngineInstance.PlaySoundEffect(EnemyDeadA);
 
-				
 
-				for (int i = 0; i < 5 ; i++)
-				{
-					Asteroid data;
-					data.lifeTime = 20; 
- 					data.SetPos(asteroid->GetPos()); 
-					float tempRot = RandFloat(-PI_F, PI_F);
-					float tempMag = RandFloat(60.0f, 80.0f);
-					data.SetVel( float2(tempMag * cosf(tempRot), tempMag * sinf(tempRot)) );
-					data.SetRot( 0) ; 
-					data.SetScale(asteroid->GetScale() / 4.f);
-					 
-					data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * asteroid->GetScale().x));
-					data.size = (180, 110);
-					data.SetTexture(m_asteroid);
-					data.SetWindowSize(m_windowBounds); 
-					m_asteroidData.push_back(data);
+					particle = m_particleData.erase(particle);
+
+
+
+					for (int i = 0; i < 5; i++)
+					{
+						Asteroid data;
+						data.lifeTime = 20;
+						data.SetPos(asteroid->GetPos());
+						float tempRot = RandFloat(-PI_F, PI_F);
+						float tempMag = RandFloat(60.0f, 80.0f);
+						data.SetVel(float2(tempMag * cosf(tempRot), tempMag * sinf(tempRot)));
+						data.SetRot(0);
+						data.SetScale(asteroid->GetScale() / 4.f);
+
+						data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * asteroid->GetScale().x));
+						data.size = (180, 110);
+						data.SetTexture(m_asteroid);
+						data.SetWindowSize(m_windowBounds);
+						m_asteroidFragments.push_back(data);
+					}
+
+					asteroid = m_asteroidData.erase(asteroid);
+
+					if (asteroid == m_asteroidData.end())
+						break;
+					if (particle == m_particleData.end())
+						break;
+
 				}
-
-				asteroid = m_asteroidData.erase(asteroid);
-
-				if (asteroid == m_asteroidData.end())
-					break;
-				if (particle == m_particleData.end())
-					break;
-
 			}
-			}
+		}
 	}
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 	{
@@ -261,8 +269,25 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 				break;
 		}
 
-		 
 
+
+	}
+	for (auto asteroid = m_asteroidFragments.begin(); asteroid != m_asteroidFragments.end(); asteroid++)
+	{
+		asteroid->Update(timeDelta);
+
+		if (asteroid->lifeTime > 0)
+			asteroid->lifeTime--;
+
+		if (asteroid->lifeTime == 0)
+		{
+
+			asteroid = m_asteroidFragments.erase(asteroid);
+
+			if (asteroid == m_asteroidFragments.end())
+				break;
+			continue;
+		}
 	}
 	spaceShipLight->Update(spaceship);
 
@@ -274,19 +299,24 @@ void SpriteGame::Render()
 
 	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::AntiqueWhite)));
 
-	m_spriteBatch->Begin(); 
+	m_spriteBatch->Begin();
 	background->Draw(m_spriteBatch);
 
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
 	{
 		asteroid->Draw(m_spriteBatch);
 		asteroid->DebugDraw(m_spriteBatch, m_debug_point);
-		 
+
+	}
+	for (auto asteroid = m_asteroidFragments.begin(); asteroid != m_asteroidFragments.end(); asteroid++)
+	{
+		asteroid->Draw(m_spriteBatch); 
+
 	}
 	m_spriteBatch->End();
-	
-	//spaceShipLight->Draw();
-	m_spriteBatch->Begin(); 
+
+	spaceShipLight->Draw();
+	m_spriteBatch->Begin();
 
 	CollisionGeometry sg = spaceship->getCollisionGeometry();
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
@@ -303,10 +333,7 @@ void SpriteGame::Render()
 }
 
 void SpriteGame::CheckScreenType()
-{
-
-
-
+{ 
 
 }
 
@@ -320,6 +347,6 @@ float SpriteGame::RandFloat(float min, float max)
 
 bool SpriteGame::IsWithinScreenBoundaries(float2 position)
 {
-	 return true;
+	return true;
 
 }

@@ -5,6 +5,7 @@
 #include "pch.h" 
 
 
+#include "Audio\AudioManager.h"
 
 #include "GameEngine\Player.h"
 #include "GameEngine\Asteroid.h" 
@@ -37,11 +38,6 @@ internal:
 
 
 	BasicSprites::SpriteBatch^ m_spriteBatch;
-
-
-	Player* spaceship;
-
-	SlidingBackgroundSprite * background;
 	 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
@@ -51,11 +47,16 @@ internal:
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_debug_point;
 
 
+
+	Player* spaceship;
+
+	SlidingBackgroundSprite * background;
+
 	std::vector<Asteroid> m_asteroidData;
+	std::vector<Asteroid> m_asteroidFragments;
 	std::vector<FireBall> m_particleData;
 
-	RocketFire * rocketFuel;
-
+	RocketFire * rocketFuel; 
 
 	int m_numParticlesToDraw; 
 
