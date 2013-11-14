@@ -36,7 +36,7 @@ DirectXPage::DirectXPage()
 
 	IsInitialDataLoaded = false;
 
-
+	//init the directX renderer 
 	m_renderer = ref new SpriteGame();
 
 	m_renderer->Initialize(
@@ -45,14 +45,23 @@ DirectXPage::DirectXPage()
 		DisplayProperties::LogicalDpi
 		);
 
+	// wire the event for screen size monitoring. Important for retargeting the renderer and pausing 
 	Window::Current->CoreWindow->SizeChanged +=
 		ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &DirectXPage::OnWindowSizeChanged);
 
+	//notify renderer of changes in DPI
 	DisplayProperties::LogicalDpiChanged +=
 		ref new DisplayPropertiesEventHandler(this, &DirectXPage::OnLogicalDpiChanged);
 
+	// wire the event for the share charm
+	auto dataTransferManager = Windows::ApplicationModel::DataTransfer::DataTransferManager::GetForCurrentView();
+	dataTransferManager->DataRequested+=ref new Windows::Foundation::TypedEventHandler<Windows::ApplicationModel::DataTransfer::DataTransferManager ^, Windows::ApplicationModel::DataTransfer::DataRequestedEventArgs ^>(this, &GameEngine::DirectXPage::OnDataRequested);
+	
+	
+	// main rendering event handler
 	m_eventToken = CompositionTarget::Rendering += ref new EventHandler<Object^>(this, &DirectXPage::OnRendering);
 
+	//init timer
 	m_timer = ref new Timer();
 
 	
@@ -66,7 +75,7 @@ void DirectXPage::OnWindowSizeChanged(CoreWindow^ sender, WindowSizeChangedEvent
 {
 	m_renderer->UpdateForWindowSizeChange();
 	UpdateWindowSize();
-	//m_renderer->CurrentGameScreen->UpdateWindowSize();
+
 }
 
 void DirectXPage::UpdateWindowSize()
@@ -93,6 +102,7 @@ void DirectXPage::OnLogicalDpiChanged(Platform::Object^ sender)
 	m_renderer->SetDpi(DisplayProperties::LogicalDpi);
 }
 
+//handles render loop
 void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 {
 	m_timer->Update(); 
@@ -143,9 +153,6 @@ void DirectXPage::OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::
 		m_renderer->spaceShipLight->m_currentEffect = m_renderer->spaceShipLight->m_spotSpecularEffect;
 }
 
-
-
-
 void  DirectXPage::OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e)
 {
 
@@ -154,18 +161,8 @@ void  DirectXPage::OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::K
 		m_renderer->CreateProjectile();
 }
 
-
-void DirectXPage::CheckGameState()
-{
-
-
-}
-
-
-void DirectXPage::XAMLPage_LayoutUpdated(Platform::Object^ sender, Platform::Object^ e)
-{
-}
-
+ 
+ 
  
 void  DirectXPage::XAMLPage_PointerPressed(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
@@ -184,4 +181,13 @@ void  DirectXPage::XAMLPage_PointerMoved(Platform::Object^ sender, Windows::UI::
 void  DirectXPage::XAMLPage_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
 	m_renderer->spaceship->ProcessPointerReleased(e->GetCurrentPoint((DirectXPage^) sender));
+}
+
+
+void DirectXPage::OnDataRequested(Windows::ApplicationModel::DataTransfer::DataTransferManager ^sender, Windows::ApplicationModel::DataTransfer::DataRequestedEventArgs ^args)
+{
+	auto request = args->Request;
+	request->Data->Properties->Title = "Share Score";
+	request->Data->Properties->Description = "Tell your friends how much you scored in the game engine";
+	request->Data->SetText("I just scored  ! ");
 }

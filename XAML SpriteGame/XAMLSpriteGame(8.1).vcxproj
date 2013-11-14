@@ -361,13 +361,13 @@
     </ClInclude>
     <ClInclude Include=".\DXCore\SpriteWorks.h" />
     <ClInclude Include="SpriteGame.h" />
-    <ClInclude Include="XML\CXMLReaderImpl.h" />
-    <ClInclude Include="XML\fast_atof.h" />
-    <ClInclude Include="XML\heapsort.h" />
-    <ClInclude Include="XML\irrArray.h" />
-    <ClInclude Include="XML\irrString.h" />
-    <ClInclude Include="XML\irrTypes.h" />
-    <ClInclude Include="XML\irrXML.h" />
+    <ClInclude Include="IrrXML\CXMLReaderImpl.h" />
+    <ClInclude Include="IrrXML\fast_atof.h" />
+    <ClInclude Include="IrrXML\heapsort.h" />
+    <ClInclude Include="IrrXML\irrArray.h" />
+    <ClInclude Include="IrrXML\irrString.h" />
+    <ClInclude Include="IrrXML\irrTypes.h" />
+    <ClInclude Include="IrrXML\irrXML.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -430,7 +430,7 @@
     </ClCompile>
     <ClCompile Include=".\DXCore\SpriteWorks.cpp" />
     <ClCompile Include="SpriteGame.cpp" />
-    <ClCompile Include="XML\irrXML.cpp" />
+    <ClCompile Include="IrrXML\irrXML.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\GeometryShader.gs.hlsl">
@@ -580,7 +580,7 @@
     <Media Include="Assets\Sounds\Shoot.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="XML\config.xml" />
+    <Xml Include="IrrXML\config.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

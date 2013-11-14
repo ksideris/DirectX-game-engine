@@ -41,7 +41,7 @@ void FireBall::Update(float timeDelta)
 
 void FireBall::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 {
-	int i = -20;
+	float i = -20;
 
 	m_spriteBatch->Draw(
 		_texture.Get(),
@@ -57,7 +57,7 @@ void FireBall::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 
 	for (auto particle : particles)
 	{
-		float x = i;
+		float x = i ;
 		float y = sqrt(size.x*size.y - x*x);
 		m_spriteBatch->Draw(
 			_texture.Get(),

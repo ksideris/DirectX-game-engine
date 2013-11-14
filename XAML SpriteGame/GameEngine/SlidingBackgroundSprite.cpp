@@ -7,21 +7,21 @@ using namespace BasicSprites;
 void SlidingBackgroundSprite::InitSliding()
 {
 
-	pos.x = _windowRect.Width / 2;
+	pos.x = _windowRect.Width / 2.f;
 
-	second_pos.x = _windowRect.Width  * 1.5;
+	second_pos.x = _windowRect.Width  * 1.5f;
 
 }
 
 void SlidingBackgroundSprite::Update(float timeDelta)
 {
-	if (pos.x < -_windowRect.Width / 2)
+	if (pos.x < -_windowRect.Width / 2.f)
 		pos.x = second_pos.x + (_windowRect.Width);
-	if (second_pos.x < -_windowRect.Width / 2)
+	if (second_pos.x < -_windowRect.Width / 2.f)
 		second_pos.x = pos.x + (_windowRect.Width);
 
-	pos.x -= 10;
-	second_pos.x -= 10;
+	pos.x -= 10.f;
+	second_pos.x -= 10.f;
 }
 
 

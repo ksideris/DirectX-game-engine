@@ -6,7 +6,7 @@
 
 
 //related to xml
-#include "XML\irrXML.h"
+#include "IrrXML\irrXML.h"
 using namespace irr; 
 using namespace io;
 //end xml imports
@@ -29,7 +29,7 @@ void SpriteGame::CreateDeviceIndependentResources()
 	DirectXBase::CreateDeviceIndependentResources();
 
 	//xml testing
-	IrrXMLReader* xml = createIrrXMLReader("XML\\config.xml");
+	IrrXMLReader* xml = createIrrXMLReader("IrrXML\\config.xml");
 
 	// strings for storing the data we want to get out of the file
 	std::string modelFile;
@@ -227,7 +227,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	rocketFuel->SetPos(spaceship->GetPos());
 	rocketFuel->SetTexture(m_particle);
-	spaceship->AddChild(float2(spaceship->textureSize.Width / 2.0*spaceship->GetScale().x, spaceship->textureSize.Height / 2.0*spaceship->GetScale().y), rocketFuel);
+	spaceship->AddChild(float2(spaceship->textureSize.Width / 2.0f*spaceship->GetScale().x, spaceship->textureSize.Height / 2.0f*spaceship->GetScale().y), rocketFuel);
 
 
 
@@ -308,7 +308,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 						data.SetScale(asteroid->GetScale() / 4.f);
 
 						data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * asteroid->GetScale().x));
-						data.size = (180, 110);
+						data.size = (180.f, 110.f);
 						data.SetTexture(m_asteroid);
 						data.SetWindowSize(m_windowBounds);
 						m_asteroidFragments.push_back(data);

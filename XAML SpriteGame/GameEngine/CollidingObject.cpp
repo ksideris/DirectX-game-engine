@@ -90,7 +90,7 @@ float IntervalDistance(float minA, float maxA, float minB, float maxB) {
 }
 
 float2 getPolygonCenter(CollisionGeometry polygonA) {
-	float2 mean = (0, 0);
+	float2 mean = float2(0.f, 0.f);
 
 	for (auto point = polygonA.begin(); point != polygonA.end(); point++)
 		mean = mean + *point;
@@ -109,7 +109,7 @@ bool PolygonCollision(CollisionGeometry polygonA,CollisionGeometry polygonB)//, 
 	int edgeCountA = polygonA.size();
 	int edgeCountB = polygonB.size();
 
-	float minIntervalDistance = std::numeric_limits<double>::infinity();
+	float minIntervalDistance = std::numeric_limits<float>::infinity();
 	float2 translationAxis;
 	float2 edge;
 
@@ -284,7 +284,7 @@ void CollidingObject::setRectangleCollisionGeometry(float2 topleft, float2 botto
 void CollidingObject::setForwardTriangleCollisionGeometry(float2 topleft, float2 bottomright){
 	polygon.clear();
 	polygon.push_back(topleft);
-	polygon.push_back(float2(bottomright.x, (bottomright.y + topleft.y) / 2.0));
+	polygon.push_back(float2(bottomright.x, (bottomright.y + topleft.y) / 2.0f));
 	polygon.push_back(float2(topleft.x, bottomright.y));
 }
 CollisionGeometry CollidingObject::getCollisionGeometry(){

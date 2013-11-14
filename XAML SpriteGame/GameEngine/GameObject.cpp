@@ -6,10 +6,10 @@
 using namespace BasicSprites;
 
 float2 GameObject::GetTopLeft(){
-	return float2(pos.x - textureSize.Width / 2.0*scale.x, pos.y - textureSize.Height / 2.0*scale.y);
+	return float2(pos.x - textureSize.Width / 2.0f*scale.x, pos.y - textureSize.Height / 2.0f*scale.y);
 }
 float2 GameObject::GetBottomRight(){
-	return float2(pos.x + textureSize.Width / 2.0*scale.x, pos.y + textureSize.Height / 2.0*scale.y);
+	return float2(pos.x + textureSize.Width / 2.0f*scale.x, pos.y + textureSize.Height / 2.0f*scale.y);
 }
  
 
