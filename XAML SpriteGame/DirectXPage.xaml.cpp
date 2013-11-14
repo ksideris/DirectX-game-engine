@@ -109,6 +109,7 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 
 	fps /= framerate.size();
 	framerateV->Text = fps.ToString();
+	AudioManager::AudioEngineInstance.Render();
 	m_renderer->Update(m_timer->Total, m_timer->Delta);
 	m_renderer->Render();
 	m_renderer->Present();

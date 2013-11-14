@@ -566,34 +566,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Music\candyland_theme.wma" />
-    <None Include="Assets\Music\game_over.wma" />
-    <None Include="Assets\Music\game_won.wma" />
-    <None Include="Assets\Music\magic_bean_theme.wma" />
-    <None Include="Assets\Music\maintheme.wma" />
-    <None Include="Assets\Music\nightmare_theme.wma" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\Sounds\BearCry.wav" />
-    <Media Include="Assets\Sounds\Coin1.wav" />
-    <Media Include="Assets\Sounds\EnemyDead1.wav" />
-    <Media Include="Assets\Sounds\EnemyDead2.wav" />
-    <Media Include="Assets\Sounds\EnemyDead3.wav" />
-    <Media Include="Assets\Sounds\GenericPowerup.wav" />
-    <Media Include="Assets\Sounds\HardSoft1.wav" />
-    <Media Include="Assets\Sounds\HealthMax.wav" />
-    <Media Include="Assets\Sounds\HelmetPowerup.wav" />
-    <Media Include="Assets\Sounds\Laugh1.wav" />
-    <Media Include="Assets\Sounds\Laugh2.wav" />
-    <Media Include="Assets\Sounds\Laugh3.wav" />
-    <Media Include="Assets\Sounds\MenuSlide.wav" />
-    <Media Include="Assets\Sounds\MenuTap.wav" />
-    <Media Include="Assets\Sounds\Ouch1.wav" />
-    <Media Include="Assets\Sounds\Ouch2.wav" />
-    <Media Include="Assets\Sounds\Ouch3.wav" />
-    <Media Include="Assets\Sounds\ParachutePowerup.wav" />
-    <Media Include="Assets\Sounds\SharpSoft1.wav" />
-    <Media Include="Assets\Sounds\Wind.wav" />
+    <Media Include="Assets\Music\maintheme.wav" />
+    <Media Include="Assets\Sounds\Crash.wav" />
+    <Media Include="Assets\Sounds\Shoot.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

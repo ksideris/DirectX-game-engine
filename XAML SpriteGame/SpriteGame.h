@@ -34,7 +34,7 @@ internal:
 
 
 	property SpriteBatch^									CurrentSpriteBatch;
-	float RandFloat(float min, float max);
+	 
 
 
 	BasicSprites::SpriteBatch^ m_spriteBatch;

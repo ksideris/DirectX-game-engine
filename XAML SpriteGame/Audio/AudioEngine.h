@@ -18,24 +18,9 @@ namespace AudioEngine
 
 	enum SoundEvent
 	{
-		BearCry = 0,
-		Coin = 1,
-		EnemyDeadA = 2,
-		EnemyDeadB = 3,
-		EnemyDeadC = 4,
-		GenericPowerup = 5,
-		HardSoftCollision = 6,
-		HealthMax = 7,
-		HelmetPowerup = 8,
-		LaughA = 9,
-		LaughB = 10,
-		LaughC = 11,
-		OuchA = 12,
-		OuchB = 13,
-		OuchC = 14,
-		ParachutePowerup = 15,
-		SharpSoftCollision = 16,
-		Wind = 17,
+		Shoot = 0,
+		Crash = 1,
+		 
 		LastSoundEvent
 	};
 

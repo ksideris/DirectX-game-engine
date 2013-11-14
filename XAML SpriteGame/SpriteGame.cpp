@@ -9,9 +9,6 @@ using namespace DirectX;
 using namespace Windows::Graphics::Display;
 using namespace DXCore;
 
-template <typename T> int sgn(T val) {
-	return (T(0) < val) - (val < T(0));
-}
 
 SpriteGame::SpriteGame()
 {
@@ -21,11 +18,31 @@ void SpriteGame::CreateDeviceIndependentResources()
 {
 	DirectXBase::CreateDeviceIndependentResources();
 
+	AudioManager::Initialize();
+	AudioManager::SetMainMenuMusic();
 
+	AudioManager::IsSFXStarted = true;
+	if (true)
+	{
+		AudioManager::AudioEngineInstance.StartSFX();
+	}
+	else
+	{
+		AudioManager::AudioEngineInstance.SuspendSFX();
+	}
 
-	AudioManager::AudioEngineInstance.Initialize();
-	AudioManager::AudioEngineInstance.CreateResources();
-	AudioManager::AudioEngineInstance.StartMusic();
+	AudioManager::IsMusicStarted = true;
+	if (true)
+	{
+		AudioManager::AudioEngineInstance.StartMusic();
+	}
+	else
+	{
+		AudioManager::AudioEngineInstance.SuspendMusic();
+	}
+
+	AudioManager::SetMusicVolume(60);
+	AudioManager::SetSFXVolume(60);
 
 }
 
@@ -39,7 +56,7 @@ void SpriteGame::CreateProjectile()
 	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
 	data.SetWindowSize(m_windowBounds);
 	m_particleData.push_back(data);
-	AudioManager::AudioEngineInstance.PlaySoundEffect(HelmetPowerup);
+	AudioManager::AudioEngineInstance.PlaySoundEffect(Shoot);
 }
 
 void SpriteGame::CreateDeviceResources()
@@ -105,18 +122,15 @@ void SpriteGame::CreateDeviceResources()
 		nullptr
 		);
 	m_spriteBatch->AddTexture(m_debug_point.Get());
- 
+
 
 	spaceship = new Player();
 	rocketFuel = new RocketFire();
-	spaceShipLight = new d2dLightEffect(); 
+	spaceShipLight = new d2dLightEffect();
 	spaceShipLight->initWithImageFromFile(m_d2dContext, m_wicFactory);
 
 	background = new SlidingBackgroundSprite();
 
-	background->SetTexture(m_background);
-	background->SetWindowSize(m_windowBounds);
-	background->InitSliding();
 
 
 }
@@ -173,13 +187,19 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
 
 	spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
+
+
+	background->SetWindowSize(m_windowBounds);
+
+	background->SetTexture(m_background);
+	background->InitSliding();
 }
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
 {
 
 
-	background->Update(timeDelta);														
+	background->Update(timeDelta);
 	spaceship->Update(timeDelta);
 
 
@@ -206,6 +226,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			if (PolygonCollision(spaceship->getCollisionGeometry(), asteroid->getCollisionGeometry()))
 			{
 
+				AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
 				asteroid = m_asteroidData.erase(asteroid);
 
 				if (asteroid == m_asteroidData.end())
@@ -221,7 +242,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 				if (PolygonCollision(particle->getCollisionGeometry(), asteroid->getCollisionGeometry()) && asteroid->lifeTime == -1)
 				{
 
-					AudioManager::AudioEngineInstance.PlaySoundEffect(EnemyDeadA);
+					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
 
 
 					particle = m_particleData.erase(particle);
@@ -310,7 +331,7 @@ void SpriteGame::Render()
 	}
 	for (auto asteroid = m_asteroidFragments.begin(); asteroid != m_asteroidFragments.end(); asteroid++)
 	{
-		asteroid->Draw(m_spriteBatch); 
+		asteroid->Draw(m_spriteBatch);
 
 	}
 	m_spriteBatch->End();
@@ -333,20 +354,10 @@ void SpriteGame::Render()
 }
 
 void SpriteGame::CheckScreenType()
-{ 
-
-}
-
-
-float SpriteGame::RandFloat(float min, float max)
 {
-	return (static_cast<float>(rand() % RAND_MAX) / static_cast<float>(RAND_MAX)) * (max - min) + min;
-}
-
-
-
-bool SpriteGame::IsWithinScreenBoundaries(float2 position)
-{
-	return true;
 
 }
+
+
+
+

@@ -26,7 +26,8 @@ void AudioManager::SetGameOverMusic()
 { 
 	AudioEngineInstance.~Audio();
 	AudioEngineInstance.Initialize();
-	AudioEngineInstance.ReInitializeStreamer(L"Assets\\Music\\game_over.wma");
+
+	AudioEngineInstance.ReInitializeStreamer(L"Assets\\Music\\maintheme.wav");
 
 	SetVolume();
 	AudioEngineInstance.Start();
@@ -39,7 +40,7 @@ void AudioManager::SetMainMenuMusic()
 	AudioEngineInstance.~Audio();
 	AudioEngineInstance.Initialize();
 
-	AudioEngineInstance.ReInitializeStreamer(L"Assets\\Music\\maintheme.wma");
+	AudioEngineInstance.ReInitializeStreamer(L"Assets\\Music\\maintheme.wav");
 
 	SetVolume();
 	AudioEngineInstance.Start();
@@ -55,12 +56,12 @@ void AudioManager::SetGamePlayMusic()
 	AudioEngineInstance.~Audio();
 	AudioEngineInstance.Initialize();
 
-	AudioManager::AudioEngineInstance.ReInitializeStreamer(L"maintheme.wma");
-	 
+	AudioEngineInstance.ReInitializeStreamer(L"Assets\\Music\\maintheme.wav");
 
-	 
-	AudioManager::AudioEngineInstance.Start();
-	AudioEngineInstance.StartMusic();
+	SetVolume();
+	AudioEngineInstance.Start();
+
+	CheckStates();
  }
 
 void AudioManager::CheckStates()

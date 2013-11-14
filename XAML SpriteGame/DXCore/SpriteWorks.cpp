@@ -756,8 +756,8 @@ void SpriteBatch::Draw(
     {
         m_instanceData[m_numSpritesDrawn].origin = origin;
         m_instanceData[m_numSpritesDrawn].offset = offset;
-        m_instanceData[m_numSpritesDrawn].rotation = rotation;
-        m_instanceData[m_numSpritesDrawn].color = MakeUnorm(color);
+		m_instanceData[m_numSpritesDrawn].rotation = rotation;
+		m_instanceData[m_numSpritesDrawn].color = MakeUnorm(color);
     }
     else if (m_technique == RenderTechnique::Replication)
     {

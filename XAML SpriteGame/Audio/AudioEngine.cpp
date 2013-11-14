@@ -159,24 +159,9 @@ void Audio::CreateResources()
 
         CreateReverb(m_soundEffectEngine, m_soundEffectMasteringVoice, &m_reverbParametersSmall, &m_soundEffectReverbVoiceSmallRoom, true);
 
-		CreateSourceVoice(BearCry);
-		CreateSourceVoice(EnemyDeadA);
-		CreateSourceVoice(EnemyDeadB);
-		CreateSourceVoice(EnemyDeadC);
-        CreateSourceVoice(Coin);
-		CreateSourceVoice(GenericPowerup);
-		CreateSourceVoice(HardSoftCollision);
-		CreateSourceVoice(HealthMax);
-		CreateSourceVoice(HelmetPowerup);
-		CreateSourceVoice(LaughA);
-        CreateSourceVoice(LaughB);
-		CreateSourceVoice(LaughC);
-		CreateSourceVoice(OuchA);
-        CreateSourceVoice(OuchB);
-		CreateSourceVoice(OuchC);
-		CreateSourceVoice(ParachutePowerup);
-		CreateSourceVoice(SharpSoftCollision);
-		CreateSourceVoice(Wind);
+		CreateSourceVoice(Shoot);
+		CreateSourceVoice(Crash);
+	 
     }
     catch (...)
     {
@@ -231,24 +216,9 @@ void Audio::CreateSourceVoice(SoundEvent sound)
     MediaStreamer soundEffectStream;
     switch (sound)
     {
-        case BearCry: soundEffectStream.Initialize(L"Assets\\Sounds\\BearCry.wav"); break;
-        case Coin: soundEffectStream.Initialize(L"Assets\\Sounds\\Coin1.wav"); break;
-		case EnemyDeadA: soundEffectStream.Initialize(L"Assets\\Sounds\\EnemyDead1.wav"); break;
-		case EnemyDeadB: soundEffectStream.Initialize(L"Assets\\Sounds\\EnemyDead2.wav"); break;
-        case EnemyDeadC: soundEffectStream.Initialize(L"Assets\\Sounds\\EnemyDead3.wav"); break;
-		case GenericPowerup: soundEffectStream.Initialize(L"Assets\\Sounds\\GenericPowerup.wav"); break;
-		case HardSoftCollision: soundEffectStream.Initialize(L"Assets\\Sounds\\HardSoft1.wav"); break;
-		case HealthMax: soundEffectStream.Initialize(L"Assets\\Sounds\\HealthMax.wav"); break;
-		case HelmetPowerup: soundEffectStream.Initialize(L"Assets\\Sounds\\HelmetPowerup.wav"); break;
-		case LaughA: soundEffectStream.Initialize(L"Assets\\Sounds\\Laugh1.wav"); break;
-        case LaughB: soundEffectStream.Initialize(L"Assets\\Sounds\\Laugh2.wav"); break;
-		case LaughC: soundEffectStream.Initialize(L"Assets\\Sounds\\Laugh3.wav"); break;
-		case OuchA: soundEffectStream.Initialize(L"Assets\\Sounds\\Ouch1.wav"); break;
-		case OuchB: soundEffectStream.Initialize(L"Assets\\Sounds\\Ouch2.wav"); break;
-		case OuchC: soundEffectStream.Initialize(L"Assets\\Sounds\\Ouch3.wav"); break;
-		case ParachutePowerup: soundEffectStream.Initialize(L"Assets\\Sounds\\ParachutePowerup.wav"); break;
-		case SharpSoftCollision: soundEffectStream.Initialize(L"Assets\\Sounds\\SharpSoft1.wav"); break;
-		case Wind: soundEffectStream.Initialize(L"Assets\\Sounds\\Wind.wav"); break;
+         
+		case Crash: soundEffectStream.Initialize(L"Assets\\Sounds\\Crash.wav"); break;
+		case Shoot: soundEffectStream.Initialize(L"Assets\\Sounds\\Shoot.wav"); break; 
     }
 
     m_soundEffects[sound].m_soundEventType = sound;

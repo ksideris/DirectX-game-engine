@@ -19,11 +19,7 @@ float2 rotate_point(float2 p, float2 c, float angle)
 	p.y = ynew + c.y;
 	return p;
 }
-//float dot(float2 i, float2 j)
-//{
-//	return i.x*j.x + i.y*j.y;
-//}
-
+ 
 
 float3 getLine(std::pair<float2, float2> la)
 {
@@ -40,6 +36,7 @@ float3 getLine(std::pair<float2, float2> la)
 		return float3((-inc), 1, a.y - inc*a.x);
 	}
 }
+
 float  minimum_distance(std::pair<float2, float2> lineSeg, float2 p)
 {
 	float2 A = lineSeg.first;

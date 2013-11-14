@@ -30,7 +30,7 @@ void MediaStreamer::Initialize(_In_ const WCHAR* url)
 
     ThrowIfFailed(MFStartup(MF_VERSION));
 
-    ThrowIfFailed(MFCreateSourceReaderFromURL(url, nullptr, &m_reader));
+     ThrowIfFailed(MFCreateSourceReaderFromURL(url, nullptr, &m_reader));
 
     // Set the decoded output format as PCM.
     // XAudio2 on Windows can process PCM and ADPCM-encoded buffers.

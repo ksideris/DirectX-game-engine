@@ -25,10 +25,5 @@ public:
 	virtual  void Update(float timeDelta) = 0;
 	virtual void Draw(BasicSprites::SpriteBatch^ m_spriteBatch) = 0;
 
-
-	float RandFloat(float min, float max)
-	{
-		return (static_cast<float>(rand() % RAND_MAX) / static_cast<float>(RAND_MAX)) * (max - min) + min;
-	}
-
+ 
 }; 

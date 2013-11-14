@@ -91,11 +91,7 @@ void FireBall::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 
 	}
 }
-
-float FireBall::RandFloat(float min, float max)
-{
-	return (static_cast<float>(rand() % RAND_MAX) / static_cast<float>(RAND_MAX)) * (max - min) + min;
-}
+ 
 float2 FireBall::GetTopLeft(){
 	return float2(pos.x - size.x, pos.y - size.y);
 }
