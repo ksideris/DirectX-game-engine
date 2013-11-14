@@ -6,22 +6,28 @@ using namespace BasicSprites;
 
 void SlidingBackgroundSprite::InitSliding()
 {
-
+	vel.x = -10.f;
 	pos.x = _windowRect.Width / 2.f;
 
 	second_pos.x = _windowRect.Width  * 1.5f;
 
 }
 
+void	SlidingBackgroundSprite::SetVel(float2 _vel){
+	vel = _vel;
+}
+float2  SlidingBackgroundSprite::GetVel(){
+	return vel;
+}
 void SlidingBackgroundSprite::Update(float timeDelta)
 {
-	if (pos.x < -_windowRect.Width / 2.f)
+	if (pos.x <= -_windowRect.Width / 2.f)
 		pos.x = second_pos.x + (_windowRect.Width);
-	if (second_pos.x < -_windowRect.Width / 2.f)
+	if (second_pos.x <= -_windowRect.Width / 2.f)
 		second_pos.x = pos.x + (_windowRect.Width);
 
-	pos.x -= 10.f;
-	second_pos.x -= 10.f;
+	pos.x += vel.x;
+	second_pos.x += vel.x;
 }
 
 

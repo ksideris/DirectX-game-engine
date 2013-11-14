@@ -5,36 +5,27 @@
 void Asteroid::Update(float timeDelta)
 {
 	GameObject::Update(timeDelta);
-	//WrapAroundBounds();
+	WrapAroundBounds();
 }
 
 void Asteroid::WrapAroundBounds()
 {
 
-	if (pos.x > _windowRect.Width + textureSize.Width  * scale.x)
+	float2 prev = pos;
+
+	if (pos.x > _windowRect.Width  )
 	{
-		pos.x = 0;
-		accel.x = 0;
-		vel.x = 0;
+		pos.x = pos.x - _windowRect.Width;
+		 
 	}
-	if (pos.y > _windowRect.Height + textureSize.Height   * scale.y)
+	 
+	if (pos.x < 0)
 	{
-		pos.y = 0;
-		accel.y = 0;
-		vel.y = 0;
+		pos.x = _windowRect.Width+ pos.x  ; 
+		 
 	}
-	if (pos.x < textureSize.Width  * scale.x)
-	{
-		pos.x = _windowRect.Width + textureSize.Width   * scale.x;
-		accel.x = 0;
-		vel.x = 0;
-	}
-	if (pos.y < textureSize.Height   * scale.y)
-	{
-		pos.y = _windowRect.Height + textureSize.Height   * scale.y;
-		accel.y = 0;
-		vel.y = 0;
-	}
+
+	UpdateCollisionGeometry(prev, pos, 0);
 
 
  

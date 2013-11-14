@@ -7,7 +7,7 @@
 
 #include "Audio\AudioManager.h"
 
-#include "GameEngine\Player.h"
+#include "GameEngine\HorizontalSliderPlayer.h"
 #include "GameEngine\Asteroid.h" 
 #include "GameEngine\SlidingBackgroundSprite.h"
 #include "GameEngine\RocketFire.h"
@@ -48,7 +48,7 @@ internal:
 
 
 
-	Player* spaceship;
+	HorizontalSliderPlayer* spaceship;
 
 	SlidingBackgroundSprite * background;
 

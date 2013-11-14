@@ -58,6 +58,8 @@ DirectXPage::DirectXPage()
 	dataTransferManager->DataRequested+=ref new Windows::Foundation::TypedEventHandler<Windows::ApplicationModel::DataTransfer::DataTransferManager ^, Windows::ApplicationModel::DataTransfer::DataRequestedEventArgs ^>(this, &GameEngine::DirectXPage::OnDataRequested);
 	
 	
+	SettingsPane::GetForCurrentView()->CommandsRequested +=ref new Windows::Foundation::TypedEventHandler<Windows::UI::ApplicationSettings::SettingsPane ^, Windows::UI::ApplicationSettings::SettingsPaneCommandsRequestedEventArgs ^>(this, &GameEngine::DirectXPage::OnCommandsRequested);
+	
 	// main rendering event handler
 	m_eventToken = CompositionTarget::Rendering += ref new EventHandler<Object^>(this, &DirectXPage::OnRendering);
 
@@ -190,4 +192,23 @@ void DirectXPage::OnDataRequested(Windows::ApplicationModel::DataTransfer::DataT
 	request->Data->Properties->Title = "Share Score";
 	request->Data->Properties->Description = "Tell your friends how much you scored in the game engine";
 	request->Data->SetText("I just scored  ! ");
+}
+void DirectXPage::OnSettingsSelected(Windows::UI::Popups::IUICommand^ command)
+{
+	 
+}
+
+void DirectXPage::OnCommandsRequested(Windows::UI::ApplicationSettings::SettingsPane ^sender, Windows::UI::ApplicationSettings::SettingsPaneCommandsRequestedEventArgs ^args)
+{
+
+	UICommandInvokedHandler^ handler = ref new UICommandInvokedHandler(this, &DirectXPage::OnSettingsSelected);
+ 
+	SettingsCommand^ generalCommand = ref new SettingsCommand("musicSfx", "Music & SFX", handler);
+	args->Request->ApplicationCommands->Append(generalCommand);
+
+	SettingsCommand^ accelerometerCommand = ref new SettingsCommand("accelerometer", "Accelerometer", handler);
+	args->Request->ApplicationCommands->Append(accelerometerCommand);
+
+	SettingsCommand^ charMovementCommand = ref new SettingsCommand("charMovement", "Character Movement", handler);
+	args->Request->ApplicationCommands->Append(charMovementCommand);
 }

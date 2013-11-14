@@ -7,7 +7,7 @@
 
 //related to xml
 #include "IrrXML\irrXML.h"
-using namespace irr; 
+using namespace irr;
 using namespace io;
 //end xml imports
 
@@ -44,7 +44,7 @@ void SpriteGame::CreateDeviceIndependentResources()
 		case EXN_TEXT:
 			// in this xml file, the only text which occurs is the messageText
 			messageText = xml->getNodeData();
-			
+
 
 			break;
 		case EXN_ELEMENT:
@@ -171,10 +171,11 @@ void SpriteGame::CreateDeviceResources()
 	m_spriteBatch->AddTexture(m_debug_point.Get());
 
 
-	spaceship = new Player();
+	spaceship = new HorizontalSliderPlayer();
+	spaceship->SetVel(float2(0, 0));
 	rocketFuel = new RocketFire();
-	spaceShipLight = new d2dLightEffect();
-	spaceShipLight->initWithImageFromFile(m_d2dContext, m_wicFactory);
+	//spaceShipLight = new d2dLightEffect();
+	//spaceShipLight->initWithImageFromFile(m_d2dContext, m_wicFactory);
 
 	background = new SlidingBackgroundSprite();
 
@@ -194,10 +195,10 @@ void SpriteGame::CreateWindowSizeDependentResources()
 		Asteroid data;
 		data.SetPos(float2(RandFloat(0.0f, m_windowBounds.Width), RandFloat(0.0f, m_windowBounds.Height)));
 		float tempRot = RandFloat(-PI_F, PI_F);
-		float tempMag = RandFloat(0.0f, 17.0f);
+		float tempMag = RandFloat(60.0f, 100.0f);
 		float tempScale = RandFloat(0.1f, 1.0f);
 
-		data.SetVel(float2(tempMag * cosf(tempRot), tempMag * sinf(tempRot)));
+		data.SetVel(float2(-tempMag, 0.f));
 		data.SetRot(0);
 		data.SetScale(float2(tempScale, tempScale));
 		data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
@@ -233,7 +234,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
 
-	spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
+	//spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
 
 
 	background->SetWindowSize(m_windowBounds);
@@ -243,18 +244,40 @@ void SpriteGame::CreateWindowSizeDependentResources()
 }
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
-{
+{ 
+	 
+	background->Update(timeDelta); 
 
-
-	background->Update(timeDelta);
 	spaceship->Update(timeDelta);
 
+	if( m_asteroidData.size()<100);
+		for (int i = 0; i < 100 - m_asteroidData.size(); i++)
+		{
+			Asteroid data;
+			data.SetPos(float2( m_windowBounds.Width, RandFloat(0.0f, m_windowBounds.Height)));
+			float tempRot = RandFloat(-PI_F, PI_F);
+			float tempMag = RandFloat(60.0f, 100.0f);
+			float tempScale = RandFloat(0.1f, 1.0f);
+
+			data.SetVel(float2(-tempMag, 0.f));
+			data.SetRot(0);
+			data.SetScale(float2(tempScale, tempScale));
+			data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
+			data.SetTexture(m_asteroid);
+			data.SetWindowSize(m_windowBounds);
+
+
+			data.size = float2(180, 110);
+			data.lifeTime = -1;
+			m_asteroidData.push_back(data);
+		}
 
 
 	rocketFuel->Update(timeDelta);
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
-	{
+	{ 
 		asteroid->Update(timeDelta);
+		 
 
 		if (asteroid->lifeTime > 0)
 			asteroid->lifeTime--;
@@ -357,7 +380,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			continue;
 		}
 	}
-	spaceShipLight->Update(spaceship);
+	//spaceShipLight->Update(spaceship);
 
 }
 
@@ -373,7 +396,7 @@ void SpriteGame::Render()
 	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
 	{
 		asteroid->Draw(m_spriteBatch);
-		asteroid->DebugDraw(m_spriteBatch, m_debug_point);
+		//asteroid->DebugDraw(m_spriteBatch, m_debug_point);
 
 	}
 	for (auto asteroid = m_asteroidFragments.begin(); asteroid != m_asteroidFragments.end(); asteroid++)
@@ -381,10 +404,10 @@ void SpriteGame::Render()
 		asteroid->Draw(m_spriteBatch);
 
 	}
-	m_spriteBatch->End();
+	//m_spriteBatch->End();
 
-	spaceShipLight->Draw();
-	m_spriteBatch->Begin();
+	//spaceShipLight->Draw();
+	//m_spriteBatch->Begin();
 
 	CollisionGeometry sg = spaceship->getCollisionGeometry();
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
@@ -392,7 +415,7 @@ void SpriteGame::Render()
 		particle->Draw(m_spriteBatch);
 
 
-		particle->DebugDraw(m_spriteBatch, m_debug_point);
+		//particle->DebugDraw(m_spriteBatch, m_debug_point);
 	}
 	spaceship->Draw(m_spriteBatch);
 
