@@ -1,6 +1,16 @@
 #include "pch.h"
 #include "SpriteGame.h" 
+
+
 #include <DirectXMath.h>    
+
+
+//related to xml
+#include "XML\irrXML.h"
+using namespace irr; 
+using namespace io;
+//end xml imports
+
 
 using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
@@ -17,6 +27,43 @@ SpriteGame::SpriteGame()
 void SpriteGame::CreateDeviceIndependentResources()
 {
 	DirectXBase::CreateDeviceIndependentResources();
+
+	//xml testing
+	IrrXMLReader* xml = createIrrXMLReader("XML\\config.xml");
+
+	// strings for storing the data we want to get out of the file
+	std::string modelFile;
+	std::string messageText;
+	std::string caption;
+
+	// parse the file until end reached
+	while (xml && xml->read())
+	{
+		switch (xml->getNodeType())
+		{
+		case EXN_TEXT:
+			// in this xml file, the only text which occurs is the messageText
+			messageText = xml->getNodeData();
+			
+
+			break;
+		case EXN_ELEMENT:
+			{
+				if (!strcmp("startUpModel", xml->getNodeName()))
+					modelFile = xml->getAttributeValue("file");
+				else
+				if (!strcmp("messageText", xml->getNodeName()))
+					caption = xml->getAttributeValue("caption");
+						}
+			break;
+		}
+	}
+
+	// delete the xml parser after usage
+	delete xml;
+	///end xml testing
+
+
 
 	AudioManager::Initialize();
 	AudioManager::SetMainMenuMusic();
