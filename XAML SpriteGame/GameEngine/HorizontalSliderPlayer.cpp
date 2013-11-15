@@ -7,6 +7,12 @@ using namespace Windows::System;
 using namespace Windows::UI::Core;
 
 
+HorizontalSliderPlayer::HorizontalSliderPlayer()
+{
+	Player::Player();
+	TargetPos = float2(-1, -1);
+	vel = float2(0, 0);
+}
 
 void HorizontalSliderPlayer::Update(float timeDelta)
 {
@@ -18,16 +24,10 @@ void HorizontalSliderPlayer::Update(float timeDelta)
 	else
 		pos = pos + vel * timeDelta;
 
-	 
-
 	KeepInBounds();
-
-
 	UpdateChildren(timeDelta);
 	UpdateCollisionGeometry(prevPos, pos, prevRot - rot);
-
-
-
+	 
 }
 void HorizontalSliderPlayer::KeepInBounds()
 {

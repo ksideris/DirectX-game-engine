@@ -21,9 +21,10 @@ protected:
 
 public:
 	 
+	bool dead;
 
 	float2 size;
-
+	GameObject();
 	virtual void    SetVel(float2 _vel);  //Convert To properties!
 	virtual float2  GetVel();
 	virtual void    SetAccel(float2 _accel);

@@ -5,12 +5,6 @@
 #include <DirectXMath.h>    
 
 
-//related to xml
-#include "IrrXML\irrXML.h"
-using namespace irr;
-using namespace io;
-//end xml imports
-
 
 using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
@@ -28,40 +22,6 @@ void SpriteGame::CreateDeviceIndependentResources()
 {
 	DirectXBase::CreateDeviceIndependentResources();
 
-	//xml testing
-	IrrXMLReader* xml = createIrrXMLReader("IrrXML\\config.xml");
-
-	// strings for storing the data we want to get out of the file
-	std::string modelFile;
-	std::string messageText;
-	std::string caption;
-
-	// parse the file until end reached
-	while (xml && xml->read())
-	{
-		switch (xml->getNodeType())
-		{
-		case EXN_TEXT:
-			// in this xml file, the only text which occurs is the messageText
-			messageText = xml->getNodeData();
-
-
-			break;
-		case EXN_ELEMENT:
-			{
-				if (!strcmp("startUpModel", xml->getNodeName()))
-					modelFile = xml->getAttributeValue("file");
-				else
-				if (!strcmp("messageText", xml->getNodeName()))
-					caption = xml->getAttributeValue("caption");
-						}
-			break;
-		}
-	}
-
-	// delete the xml parser after usage
-	delete xml;
-	///end xml testing
 
 
 
@@ -105,6 +65,19 @@ void SpriteGame::CreateProjectile()
 	m_particleData.push_back(data);
 	AudioManager::AudioEngineInstance.PlaySoundEffect(Shoot);
 }
+void SpriteGame::CreateEnemyProjectile(Enemy* enemy)
+{
+	FireBall data;
+	data.SetPos(enemy->GetPos());
+	data.vel = float2(1000.0f* cos(enemy->GetRot()), -1000.0f*sin(enemy->GetRot()));
+	data.SetScale(float2(1.0f, 1.0f));
+	data.SetTexture(m_particle);
+	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
+	data.SetWindowSize(m_windowBounds);
+	m_particleData.push_back(data);
+	AudioManager::AudioEngineInstance.PlaySoundEffect(Shoot);
+}
+
 
 void SpriteGame::CreateDeviceResources()
 {
@@ -122,6 +95,9 @@ void SpriteGame::CreateDeviceResources()
 	// Load the sprite textures.
 
 	BasicLoader^ loader = ref new BasicLoader(m_d3dDevice.Get(), m_wicFactory.Get());
+
+	level = new Level();
+	level->Load("Level Data\\Level1.xml", m_spriteBatch, loader);
 
 	loader->LoadTexture(
 		"Assets\\GameObjects\\m31.png",
@@ -172,13 +148,18 @@ void SpriteGame::CreateDeviceResources()
 
 
 	spaceship = new HorizontalSliderPlayer();
-	spaceship->SetVel(float2(0, 0));
 	rocketFuel = new RocketFire();
+
 	//spaceShipLight = new d2dLightEffect();
 	//spaceShipLight->initWithImageFromFile(m_d2dContext, m_wicFactory);
 
-	background = new SlidingBackgroundSprite();
 
+
+
+	spaceship->SetVel(float2(0, 0));
+	spaceship->SetRot(0);
+	spaceship->SetRotVel(0);
+	spaceship->SetScale(float2(.5, .5));
 
 
 }
@@ -188,120 +169,61 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	DirectXBase::CreateWindowSizeDependentResources();
 
 
-	// Randomly generate some non-interactive asteroids to fit the screen.
-	m_asteroidData.clear();
-	for (int i = 0; i < 100; i++)
-	{
-		Asteroid data;
-		data.SetPos(float2(RandFloat(0.0f, m_windowBounds.Width), RandFloat(0.0f, m_windowBounds.Height)));
-		float tempRot = RandFloat(-PI_F, PI_F);
-		float tempMag = RandFloat(60.0f, 100.0f);
-		float tempScale = RandFloat(0.1f, 1.0f);
-
-		data.SetVel(float2(-tempMag, 0.f));
-		data.SetRot(0);
-		data.SetScale(float2(tempScale, tempScale));
-		data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
-		data.SetTexture(m_asteroid);
-		data.SetWindowSize(m_windowBounds);
-
-
-		data.size = float2(180, 110);
-		data.lifeTime = -1;
-		m_asteroidData.push_back(data);
-	}
-
-
-
-	spaceship->SetPos(float2(m_windowBounds.Width / 2.0f, m_windowBounds.Height / 2.0f));
-	float tempRot = RandFloat(-PI_F, PI_F);
-	float tempMag = RandFloat(0.0f, 17.0f);
-
-	spaceship->SetVel(float2(0, 0));
-	spaceship->SetRot(0);
-	spaceship->SetRotVel(0);
-	spaceship->SetScale(float2(.5, .5));
-	spaceship->SetTexture(m_player);
-
-	spaceship->spot_texture = m_player_spot;
 	spaceship->SetWindowSize(m_windowBounds);
 
-	rocketFuel->SetPos(spaceship->GetPos());
+	spaceship->SetPos(float2(0.f, m_windowBounds.Height / 2.0f));
+
+
+
+	spaceship->SetTexture(m_player);
 	rocketFuel->SetTexture(m_particle);
+	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
 	spaceship->AddChild(float2(spaceship->textureSize.Width / 2.0f*spaceship->GetScale().x, spaceship->textureSize.Height / 2.0f*spaceship->GetScale().y), rocketFuel);
 
 
 
-	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
+	rocketFuel->SetPos(spaceship->GetPos());
+
+
 
 	//spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
 
+	level->background->SetWindowSize(m_windowBounds);
+	level->background->InitSliding();
 
-	background->SetWindowSize(m_windowBounds);
-
-	background->SetTexture(m_background);
-	background->InitSliding();
 }
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
-{ 
-	 
-	background->Update(timeDelta); 
+{
 
+	level->background->Update(timeDelta);
+	level->Update(timeTotal, timeDelta, m_windowBounds);
 	spaceship->Update(timeDelta);
-
-	if( m_asteroidData.size()<100);
-		for (int i = 0; i < 100 - m_asteroidData.size(); i++)
-		{
-			Asteroid data;
-			data.SetPos(float2( m_windowBounds.Width, RandFloat(0.0f, m_windowBounds.Height)));
-			float tempRot = RandFloat(-PI_F, PI_F);
-			float tempMag = RandFloat(60.0f, 100.0f);
-			float tempScale = RandFloat(0.1f, 1.0f);
-
-			data.SetVel(float2(-tempMag, 0.f));
-			data.SetRot(0);
-			data.SetScale(float2(tempScale, tempScale));
-			data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
-			data.SetTexture(m_asteroid);
-			data.SetWindowSize(m_windowBounds);
-
-
-			data.size = float2(180, 110);
-			data.lifeTime = -1;
-			m_asteroidData.push_back(data);
-		}
-
-
 	rocketFuel->Update(timeDelta);
-	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
-	{ 
+
+
+	for (auto asteroid = level->m_asteroidData.begin(); asteroid != level->m_asteroidData.end(); asteroid++)
+	{
 		asteroid->Update(timeDelta);
-		 
+
 
 		if (asteroid->lifeTime > 0)
 			asteroid->lifeTime--;
 
-		if (asteroid->lifeTime == 0)
+		if (asteroid->lifeTime == 0 || asteroid->GetPos().x < 400)
 		{
+			asteroid->dead = true;
 
-			asteroid = m_asteroidData.erase(asteroid);
-
-			if (asteroid == m_asteroidData.end())
-				break;
-			continue;
 		}
 		if (dist(spaceship->GetPos(), asteroid->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0)
 		{
 			if (PolygonCollision(spaceship->getCollisionGeometry(), asteroid->getCollisionGeometry()))
 			{
 
+				AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
 				AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
-				asteroid = m_asteroidData.erase(asteroid);
 
-				if (asteroid == m_asteroidData.end())
-					break;
-				continue;
+				asteroid->dead = true;
 			}
 		}
 
@@ -337,10 +259,9 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 						m_asteroidFragments.push_back(data);
 					}
 
-					asteroid = m_asteroidData.erase(asteroid);
 
-					if (asteroid == m_asteroidData.end())
-						break;
+					asteroid->dead = true;
+
 					if (particle == m_particleData.end())
 						break;
 
@@ -382,6 +303,14 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	}
 	//spaceShipLight->Update(spaceship);
 
+	for (int i = 0; i < level->m_asteroidData.size(); i++)
+	{
+		if (level->m_asteroidData[i].dead)
+			level->m_asteroidData.erase(level->m_asteroidData.begin() + i);
+	}
+
+	
+
 }
 
 void SpriteGame::Render()
@@ -391,11 +320,11 @@ void SpriteGame::Render()
 	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::AntiqueWhite)));
 
 	m_spriteBatch->Begin();
-	background->Draw(m_spriteBatch);
+	level->background->Draw(m_spriteBatch);
 
-	for (auto asteroid = m_asteroidData.begin(); asteroid != m_asteroidData.end(); asteroid++)
+	for (auto asteroid = level->m_asteroidData.begin(); asteroid != level->m_asteroidData.end(); asteroid++)
 	{
-		asteroid->Draw(m_spriteBatch);
+ 		asteroid->Draw(m_spriteBatch);
 		//asteroid->DebugDraw(m_spriteBatch, m_debug_point);
 
 	}

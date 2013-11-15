@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<Level>
+  <Background  Texture="m33.png">  </Background>
+  <Asteroid    Texture="ida.dds">  </Asteroid>
+  
+  <EnemyTypes>
+    <EnemyType Texture="Enemy1.png" id="0"></EnemyType>
+    <EnemyType Texture="Enemy2.png" id="1"></EnemyType>
+    <EnemyType Texture="Enemy3.png" id="2"></EnemyType>
+    <EnemyType Texture="Enemy4.png" id="3"></EnemyType>
+  </EnemyTypes>
+
+  <Enemies>
+    <Enemy Type="0" Loc="3" ></Enemy>
+  </Enemies>
+
+  <AsteroidField    Pos="10">  </AsteroidField>
+  <AsteroidField    Pos="20">  </AsteroidField>
+
+
+
+
+</Level>

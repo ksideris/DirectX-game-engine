@@ -336,8 +336,12 @@
     <ClInclude Include="GameEngine\Asteroid.h" />
     <ClInclude Include="GameEngine\CollidingObject.h" />
     <ClInclude Include="GameEngine\Direct2DlightEffect.h" />
+    <ClInclude Include="GameEngine\DirectionalPlayer.h" />
+    <ClInclude Include="GameEngine\Enemy.h" />
     <ClInclude Include="GameEngine\FireBall.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
+    <ClInclude Include="GameEngine\HorizontalSliderPlayer.h" />
+    <ClInclude Include="GameEngine\Level.h" />
     <ClInclude Include="GameEngine\ParticleSystem.h" />
     <ClInclude Include="GameEngine\Player.h" />
     <ClInclude Include="GameEngine\RocketFire.h" />
@@ -385,10 +389,16 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\GameObjects\debug.png" />
+    <Image Include="Assets\GameObjects\Enemy1.png" />
+    <Image Include="Assets\GameObjects\Enemy2.png" />
+    <Image Include="Assets\GameObjects\Enemy3.png" />
+    <Image Include="Assets\GameObjects\Enemy4.png" />
+    <Image Include="Assets\GameObjects\Enemy5.png" />
     <Image Include="Assets\GameObjects\HeightMap.png" />
     <Image Include="Assets\GameObjects\ida.dds" />
     <Image Include="Assets\GameObjects\m31.png" />
     <Image Include="Assets\GameObjects\m32.png" />
+    <Image Include="Assets\GameObjects\m33.png" />
     <Image Include="Assets\GameObjects\particle.png" />
     <Image Include="Assets\GameObjects\SpaceShip.png" />
     <Image Include="Assets\GameObjects\spotlight.png" />
@@ -413,8 +423,12 @@
     <ClCompile Include="GameEngine\Asteroid.cpp" />
     <ClCompile Include="GameEngine\CollidingObject.cpp" />
     <ClCompile Include="GameEngine\Direct2Dlighteffect.cpp" />
+    <ClCompile Include="GameEngine\DirectionalPlayer.cpp" />
+    <ClCompile Include="GameEngine\Enemy.cpp" />
     <ClCompile Include="GameEngine\FireBall.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
+    <ClCompile Include="GameEngine\HorizontalSliderPlayer.cpp" />
+    <ClCompile Include="GameEngine\Level.cpp" />
     <ClCompile Include="GameEngine\Player.cpp" />
     <ClCompile Include="GameEngine\RocketFire.cpp" />
     <ClCompile Include="GameEngine\SlidingBackgroundSprite.cpp" />
@@ -588,6 +602,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="IrrXML\config.xml" />
+    <Xml Include="Level Data\Level1.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

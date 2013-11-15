@@ -5,7 +5,7 @@
 void Asteroid::Update(float timeDelta)
 {
 	GameObject::Update(timeDelta);
-	WrapAroundBounds();
+//WrapAroundBounds();
 }
 
 void Asteroid::WrapAroundBounds()

@@ -13,10 +13,13 @@
 #include "GameEngine\RocketFire.h"
 #include "GameEngine\FireBall.h"
 #include "GameEngine\Direct2DlightEffect.h"
+#include "GameEngine\Enemy.h"
+#include "GameEngine\Level.h"
  
 
 ref class SpriteGame sealed : public DirectXBase
 {
+
 public:
 	SpriteGame();
 	virtual void CreateDeviceIndependentResources() override;
@@ -33,10 +36,12 @@ public:
 internal: 
 
 
+	Level* level;
+
+	void CreateEnemyProjectile(Enemy* enemy);
+
 	property SpriteBatch^									CurrentSpriteBatch;
-	 
-
-
+	  
 	BasicSprites::SpriteBatch^ m_spriteBatch;
 	 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background;
@@ -49,23 +54,22 @@ internal:
 
 
 	HorizontalSliderPlayer* spaceship;
+	RocketFire * rocketFuel;
+	d2dLightEffect * spaceShipLight;
 
-	SlidingBackgroundSprite * background;
 
+	 
 	std::vector<Asteroid> m_asteroidData;
 	std::vector<Asteroid> m_asteroidFragments;
 	std::vector<FireBall> m_particleData;
 
-	RocketFire * rocketFuel; 
 
 	int m_numParticlesToDraw; 
 
-
-	bool				IsWithinScreenBoundaries(float2);
+	 
 	void				LoadScreen();
 	void				CheckScreenType(); 
 
-
-	d2dLightEffect * spaceShipLight;
+	 
 
 };
