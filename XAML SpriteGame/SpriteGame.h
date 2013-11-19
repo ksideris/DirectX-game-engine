@@ -8,7 +8,7 @@
 #include "Audio\AudioManager.h"
 
 #include "GameEngine\HorizontalSliderPlayer.h"
-#include "GameEngine\Asteroid.h" 
+#include "GameEngine\PassiveObject.h" 
 #include "GameEngine\SlidingBackgroundSprite.h"
 #include "GameEngine\RocketFire.h"
 #include "GameEngine\FireBall.h"
@@ -63,6 +63,7 @@ internal:
 
 
 	float time_passed;
+	int score = 0;
 
 
 	HorizontalSliderPlayer* spaceship;
@@ -70,9 +71,8 @@ internal:
 	d2dLightEffect * spaceShipLight;
 
 
-	 
-	std::vector<Asteroid> m_asteroidData;
-	std::vector<Asteroid> m_asteroidFragments;
+	  
+	std::vector<PassiveObject> m_asteroidFragments;
 	std::vector<FireBall> m_particleData;
 
 

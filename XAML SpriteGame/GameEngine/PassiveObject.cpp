@@ -1,14 +1,14 @@
 #include "pch.h"
 
-#include "Asteroid.h"
+#include "PassiveObject.h"
 
-void Asteroid::Update(float timeDelta)
+void PassiveObject::Update(float timeDelta)
 {
 	GameObject::Update(timeDelta);
 //WrapAroundBounds();
 }
 
-void Asteroid::WrapAroundBounds()
+void PassiveObject::WrapAroundBounds()
 {
 
 	float2 prev = pos;

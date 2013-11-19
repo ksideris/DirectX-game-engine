@@ -274,6 +274,7 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 
 	fps /= framerate.size();
 	framerateV->Text = m_timer->Total.ToString();
+	Score->Text = m_renderer->score.ToString();
 
 
 	if (m_renderer->spaceship->health != health)

@@ -84,8 +84,7 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 
 
 				}
-				
-			/*	if (!strcmp("Ground", xml->getNodeName()))
+				if (!strcmp("RingT", xml->getNodeName()))
 				{
 					stringdata = xml->getAttributeValue("Texture");
 
@@ -97,33 +96,33 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 
 					loader->LoadTexture(
 						final_data,
-						&m_ground,
+						&m_ring,
 						nullptr
 						);
-					m_spriteBatch->AddTexture(m_ground.Get());
+					m_spriteBatch->AddTexture(m_ring.Get());
 
-					ground->SetTexture(m_ground);
+
 				}
-*/
-
 				if (!strcmp("AsteroidField", xml->getNodeName()))
 				{
 					stringdata = xml->getAttributeValue("Pos");
+					stringdata2 = xml->getAttributeValue("Count");
 
-					AsteroidFields.push_back(std::pair<float, int>(10, atoi(stringdata.c_str())));
+					AsteroidFields.push_back(std::pair<int, float>(atoi(stringdata2.c_str()), atof(stringdata.c_str()) ));
+
+
+				}
+				if (!strcmp("Ring", xml->getNodeName()))
+				{
+					stringdata = xml->getAttributeValue("Pos");
+					stringdata2 = xml->getAttributeValue("Count");
+
+					Rings.push_back(std::pair<int, float>(  atoi(stringdata2.c_str()), atof(stringdata.c_str()) ) );
 
 
 				}
 
-			/*	if (!strcmp("gpt", xml->getNodeName()))
-				{
-					stringdata = xml->getAttributeValue("x");
-					stringdata2 = xml->getAttributeValue("y");
 
-					ground->heightMap.push_back(std::pair<float, float>(atoi(stringdata.c_str()), atoi(stringdata2.c_str())));
-
-
-				}*/
 				break;
 
 						}
@@ -132,7 +131,7 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 
 	// delete the xml parser after usage
 	delete xml;
-  
+
 	///end xml testing
 }
 
@@ -142,11 +141,13 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 
 	for (auto field = AsteroidFields.begin(); field != AsteroidFields.end(); field++)
 	{
-		if (m_asteroidData.size() < 100 && timeTotal > field->second   && timeTotal < field->second + timeDelta)
+		if (  timeTotal > field->second   && timeTotal < field->second + timeDelta)
 		{
 			for (int i = 0; i < field->first; i++)
 			{
-				Asteroid data;
+				PassiveObject data;
+				data.type = PassiveObjectType::ASTEROID;
+
 				data.SetPos(float2(m_windowBounds.Width + 200, RandFloat(0.0f, m_windowBounds.Height)));
 				float tempRot = RandFloat(-PI_F, PI_F);
 				float tempMag = RandFloat(60.0f, 100.0f);
@@ -159,12 +160,36 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 				data.SetTexture(m_asteroid);
 				data.SetWindowSize(m_windowBounds);
 
-
-				data.size = float2(180, 110);
+				 
 				data.lifeTime = -1;
-				m_asteroidData.push_back(data);
+				passive_objects.push_back(data);
 			}
 		}
 	}
+	for (auto ring = Rings.begin(); ring != Rings.end(); ring++)
+	{
+		if (timeTotal > ring->second   && timeTotal < ring->second + timeDelta)
+		{
+			for (int i = 0; i < ring->first; i++)
+			{
+				PassiveObject data;
+				data.type = PassiveObjectType::RING;
 
+				data.SetPos(float2(m_windowBounds.Width + 200, RandFloat(m_windowBounds.Height / 4, 3*m_windowBounds.Height / 4)));
+				float tempRot = RandFloat(-PI_F, PI_F);
+				float tempMag = RandFloat(60.0f, 100.0f); 
+
+				data.SetVel(float2(-tempMag, 0.f));
+				data.SetRot(0);
+				data.SetScale(float2(.5f, .5f));
+				data.SetRotVel(0);
+				data.SetTexture(m_ring);
+				data.SetWindowSize(m_windowBounds);
+
+				 
+				data.lifeTime = -1;
+				passive_objects.push_back(data);
+			}
+		}
+	}
 }

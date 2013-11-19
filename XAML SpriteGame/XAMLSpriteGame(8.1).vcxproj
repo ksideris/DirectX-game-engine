@@ -355,7 +355,7 @@
     <ClInclude Include="DXCore\SizeEnums.h" />
     <ClInclude Include="Entities\BasicShapes.h" />
     <ClInclude Include="Entities\SizeEnums.h" />
-    <ClInclude Include="GameEngine\Asteroid.h" />
+    <ClInclude Include="GameEngine\PassiveObject.h" />
     <ClInclude Include="GameEngine\CollidingObject.h" />
     <ClInclude Include="GameEngine\Direct2DlightEffect.h" />
     <ClInclude Include="GameEngine\DirectionalPlayer.h" />
@@ -417,6 +417,7 @@
     <Image Include="Assets\GameObjects\m32.png" />
     <Image Include="Assets\GameObjects\m33.png" />
     <Image Include="Assets\GameObjects\particle.png" />
+    <Image Include="Assets\GameObjects\ring.png" />
     <Image Include="Assets\GameObjects\SpaceShip.png" />
     <Image Include="Assets\GameObjects\spotlight.png" />
     <Image Include="Assets\Icons\150x150Tile.scale-100.png" />
@@ -437,7 +438,7 @@
     <ClCompile Include="Audio\AudioEngine.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="Audio\MediaStreamer.cpp" />
-    <ClCompile Include="GameEngine\Asteroid.cpp" />
+    <ClCompile Include="GameEngine\PassiveObject.cpp" />
     <ClCompile Include="GameEngine\CollidingObject.cpp" />
     <ClCompile Include="GameEngine\Direct2Dlighteffect.cpp" />
     <ClCompile Include="GameEngine\DirectionalPlayer.cpp" />

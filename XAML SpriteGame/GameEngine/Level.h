@@ -6,7 +6,7 @@
  
 
 #include "HorizontalSliderPlayer.h"
-#include "Asteroid.h" 
+#include "PassiveObject.h" 
 #include "SlidingBackgroundSprite.h"
 #include "RocketFire.h"
 #include "FireBall.h"
@@ -23,23 +23,20 @@ class Level
 public:
 	SlidingBackgroundSprite * background;
 
-	std::vector<Asteroid> m_asteroidData; 
-	std::vector<Asteroid> m_asteroidFragments;
-	std::vector<FireBall> m_particleData;
-
+	std::vector<PassiveObject> passive_objects;
+	 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_particle;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_player;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_player_spot;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_debug_point;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_ground;
-	 
-	std::vector <std::pair<float, int>> Enemies;
- 
-	std::vector <std::pair<float, int>> AsteroidFields;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_ring;
 
-	std::vector <std::pair<float, int>> Rings; 
+
+
+	 
+	std::vector <std::pair<int,float>> Enemies;
+ 
+	std::vector <std::pair<int, float>> AsteroidFields;
+
+	std::vector <std::pair<int, float>> Rings;
 
 	Ground * ground;
 

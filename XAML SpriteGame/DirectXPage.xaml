@@ -31,8 +31,9 @@
 
         <TextBlock  Grid.Row="1"  x:Name="framerateLabel"  FontSize="50" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="114" Width="308" Text="FPS:"/>
         <TextBlock  Grid.Row="2"  x:Name="framerateV"      FontSize="50" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="114" Width="308"/>
-        
+
         <Grid   Grid.Row="0"    Background="DarkSlateGray"     Height="50" Margin="0,0,0,0"   VerticalAlignment="Top" Width="Auto"  >
+            <TextBlock  Grid.Row="0"  x:Name="Score"      FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center" Height="40" Width="308"/>
             <Rectangle   Grid.Row="0"  x:Name="HealthBar"    Fill="IndianRed"   Height="20" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Stroke="Black"    Width="348"  />
         </Grid>
 

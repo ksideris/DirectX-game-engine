@@ -15,9 +15,9 @@ using namespace DXCore;
 
 
 SpriteGame::SpriteGame()
-{ 
+{
 	gamestate = Menu;
-	time_passed = 0;  
+	time_passed = 0;
 }
 
 void SpriteGame::CreateDeviceIndependentResources()
@@ -96,6 +96,7 @@ void SpriteGame::LoadLevel(Platform::String^ level_xml)
 	level->background->SetWindowSize(m_windowBounds);
 	level->background->InitSliding();
 	time_passed = 0;
+	score = 0;
 }
 
 void SpriteGame::CreateDeviceResources()
@@ -114,7 +115,7 @@ void SpriteGame::CreateDeviceResources()
 	// Load the sprite textures.
 
 	BasicLoader^ loader = ref new BasicLoader(m_d3dDevice.Get(), m_wicFactory.Get());
-	 
+
 
 	loader->LoadTexture(
 		"Assets\\GameObjects\\spotlight.png",
@@ -177,7 +178,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	spaceship->SetWindowSize(m_windowBounds);
 
 	spaceship->SetPos(float2(0.f, m_windowBounds.Height / 2.0f));
-	
+
 	spaceship->SetTexture(m_player);
 	rocketFuel->SetTexture(m_particle);
 	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
@@ -187,7 +188,10 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	rocketFuel->SetPos(spaceship->GetPos());
 
-
+	if (level != NULL)
+	{
+		level->background->SetWindowSize(m_windowBounds);
+	}
 
 	//spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
 
@@ -198,7 +202,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
 {
-	time_passed += timeDelta ;
+	time_passed += timeDelta;
 
 	level->background->Update(timeDelta);
 	level->Update(timeTotal, timeDelta, m_windowBounds);
@@ -207,40 +211,45 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	rocketFuel->Update(timeDelta);
 
 
-	for (auto asteroid = level->m_asteroidData.begin(); asteroid != level->m_asteroidData.end(); asteroid++)
+	for (auto pobject = level->passive_objects.begin(); pobject != level->passive_objects.end(); pobject++)
 	{
-		asteroid->Update(timeDelta);
+		pobject->Update(timeDelta);
 
 
-		if (asteroid->lifeTime > 0)
-			asteroid->lifeTime--;
+		if (pobject->lifeTime > 0)
+			pobject->lifeTime--;
 
-		if (asteroid->lifeTime == 0 || asteroid->GetPos().x < -200)
+		if (pobject->lifeTime == 0 || pobject->GetPos().x < -200)
 		{
-			asteroid->dead = true;
+			pobject->dead = true;
 
 		}
-		if (gamestate==Playing && dist(spaceship->GetPos(), asteroid->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0)
+		if (gamestate == Playing && dist(spaceship->GetPos(), pobject->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0)
 		{
-			if (PolygonCollision(spaceship->getCollisionGeometry(), asteroid->getCollisionGeometry()))
+			if ((pobject->type == PassiveObjectType::RING || pobject->type == PassiveObjectType::ASTEROID) && PolygonCollision(spaceship->getCollisionGeometry(), pobject->getCollisionGeometry()))
 			{
-				spaceship->health -= asteroid->GetScale().x * 10.f;
+				if (pobject->type == PassiveObjectType::ASTEROID){
+					spaceship->health -= pobject->GetScale().x * 10.f;
+				}
+				else if (pobject->type == PassiveObjectType::RING )
+				{
+					score++;
+				}
 				AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
 				AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
 
-				asteroid->dead = true;
+				pobject->dead = true;
 			}
 		}
 
 		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 		{
-			if (gamestate == Playing &&  dist(particle->GetPos(), asteroid->GetPos()) < asteroid->textureSize.Width*asteroid->GetScale().x*2.0)
+			if (gamestate == Playing &&  dist(particle->GetPos(), pobject->GetPos()) < pobject->textureSize.Width*pobject->GetScale().x*2.0)
 			{
-				if (PolygonCollision(particle->getCollisionGeometry(), asteroid->getCollisionGeometry()) && asteroid->lifeTime == -1)
+				if (pobject->lifeTime == -1 && pobject->type == PassiveObjectType::ASTEROID && PolygonCollision(particle->getCollisionGeometry(), pobject->getCollisionGeometry()))
 				{
 
 					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
-
 
 					particle = m_particleData.erase(particle);
 
@@ -248,16 +257,17 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 
 					for (int i = 0; i < 5; i++)
 					{
-						Asteroid data;
+						PassiveObject  data;
 						data.lifeTime = 20;
-						data.SetPos(asteroid->GetPos());
+						data.type = PassiveObjectType::FRAGMENT;
+						data.SetPos(pobject->GetPos());
 						float tempRot = RandFloat(-PI_F, PI_F);
 						float tempMag = RandFloat(60.0f, 80.0f);
 						data.SetVel(float2(tempMag * cosf(tempRot), tempMag * sinf(tempRot)));
 						data.SetRot(0);
-						data.SetScale(asteroid->GetScale() / 4.f);
+						data.SetScale(pobject->GetScale() / 4.f);
 
-						data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * asteroid->GetScale().x));
+						data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * pobject->GetScale().x));
 						data.size = (180.f, 110.f);
 						data.SetTexture(m_asteroid);
 						data.SetWindowSize(m_windowBounds);
@@ -265,7 +275,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 					}
 
 
-					asteroid->dead = true;
+					pobject->dead = true;
 
 					if (particle == m_particleData.end())
 						break;
@@ -308,13 +318,13 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	}
 	//spaceShipLight->Update(spaceship);
 
-	for (int i = 0; i < level->m_asteroidData.size(); i++)
+	for (int i = 0; i < level->passive_objects.size(); i++)
 	{
-		if (level->m_asteroidData[i].dead)
-			level->m_asteroidData.erase(level->m_asteroidData.begin() + i);
+		if (level->passive_objects[i].dead)
+			level->passive_objects.erase(level->passive_objects.begin() + i);
 	}
 
-	
+
 
 }
 
@@ -325,12 +335,12 @@ void SpriteGame::Render()
 	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::AntiqueWhite)));
 
 	m_spriteBatch->Begin();
-	level->background->Draw(m_spriteBatch); 
+	level->background->Draw(m_spriteBatch);
 
 
-	for (auto asteroid = level->m_asteroidData.begin(); asteroid != level->m_asteroidData.end(); asteroid++)
+	for (auto asteroid = level->passive_objects.begin(); asteroid != level->passive_objects.end(); asteroid++)
 	{
- 		asteroid->Draw(m_spriteBatch);
+		asteroid->Draw(m_spriteBatch);
 		//asteroid->DebugDraw(m_spriteBatch, m_debug_point);
 
 	}
