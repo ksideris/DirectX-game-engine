@@ -44,8 +44,7 @@ void AudioManager::SetMainMenuMusic()
 
 	SetVolume();
 	AudioEngineInstance.Start();
-
-	CheckStates();
+	 
 }
 
  

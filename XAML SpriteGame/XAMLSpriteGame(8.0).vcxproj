@@ -322,6 +322,13 @@
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Desktop - Release|x64'">4453</DisableSpecificWarnings>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Desktop - x64|x64'">4453</DisableSpecificWarnings>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Desktop - Debug|x64'">4453</DisableSpecificWarnings>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='ARM - Debug|Win32'">W8_0;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='ARM - Release|Win32'">W8_0;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">W8_0;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">W8_0;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - x64|Win32'">W8_0;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - Release|Win32'">W8_0;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - Debug|Win32'">W8_0;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -340,6 +347,7 @@
     <ClInclude Include="GameEngine\Enemy.h" />
     <ClInclude Include="GameEngine\FireBall.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
+    <ClInclude Include="GameEngine\Ground.h" />
     <ClInclude Include="GameEngine\HorizontalSliderPlayer.h" />
     <ClInclude Include="GameEngine\Level.h" />
     <ClInclude Include="GameEngine\ParticleSystem.h" />
@@ -394,6 +402,7 @@
     <Image Include="Assets\GameObjects\Enemy3.png" />
     <Image Include="Assets\GameObjects\Enemy4.png" />
     <Image Include="Assets\GameObjects\Enemy5.png" />
+    <Image Include="Assets\GameObjects\ground.png" />
     <Image Include="Assets\GameObjects\HeightMap.png" />
     <Image Include="Assets\GameObjects\ida.dds" />
     <Image Include="Assets\GameObjects\m31.png" />
@@ -427,6 +436,7 @@
     <ClCompile Include="GameEngine\Enemy.cpp" />
     <ClCompile Include="GameEngine\FireBall.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
+    <ClCompile Include="GameEngine\Ground.cpp" />
     <ClCompile Include="GameEngine\HorizontalSliderPlayer.cpp" />
     <ClCompile Include="GameEngine\Level.cpp" />
     <ClCompile Include="GameEngine\Player.cpp" />
@@ -602,7 +612,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="IrrXML\config.xml" />
-    <Xml Include="Level Data\Level1.xml" />
+    <Xml Include="Level Data\Level 1.xml" />
+    <Xml Include="Level Data\Level 2.xml" />
+    <Xml Include="Level Data\Menu.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

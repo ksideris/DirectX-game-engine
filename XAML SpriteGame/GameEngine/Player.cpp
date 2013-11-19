@@ -9,6 +9,7 @@ using namespace Windows::UI::Core;
 
 Player::Player()
 {
+	health = 100;
 	TargetPos = (-1.f, -1.f);
 	keys_down = 0;  
 	z = 25;

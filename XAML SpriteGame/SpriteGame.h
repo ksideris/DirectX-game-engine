@@ -15,8 +15,16 @@
 #include "GameEngine\Direct2DlightEffect.h"
 #include "GameEngine\Enemy.h"
 #include "GameEngine\Level.h"
- 
 
+
+ 
+enum GameState
+{
+	Menu = 1,
+	Playing = 2,
+	GameOver = 3,
+	Paused = 4
+};
 ref class SpriteGame sealed : public DirectXBase
 {
 
@@ -26,6 +34,7 @@ public:
 	virtual void CreateDeviceResources() override;
 	virtual void CreateWindowSizeDependentResources() override;
 	virtual void Render() override;
+	virtual void LoadLevel(Platform::String^ level) ;
 	 
 
 	void Update(float timeTotal, float timeDelta);
@@ -36,6 +45,7 @@ public:
 internal: 
 
 
+	GameState gamestate;
 	Level* level;
 
 	void CreateEnemyProjectile(Enemy* enemy);
@@ -51,6 +61,8 @@ internal:
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_player_spot;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_debug_point;
 
+
+	float time_passed;
 
 
 	HorizontalSliderPlayer* spaceship;

@@ -12,10 +12,12 @@ HorizontalSliderPlayer::HorizontalSliderPlayer()
 	Player::Player();
 	TargetPos = float2(-1, -1);
 	vel = float2(0, 0);
+	accel.y = 1000;
 }
 
 void HorizontalSliderPlayer::Update(float timeDelta)
 {
+	//vel.y = vel.y + accel.y * timeDelta;
 
 	float2 prevPos = pos;
 	float  prevRot = rot;
@@ -41,7 +43,7 @@ void HorizontalSliderPlayer::KeepInBounds()
 	if (pos.y > _windowRect.Height - textureSize.Height / 2.0f * scale.y)
 	{
 		pos.y = _windowRect.Height - textureSize.Height / 2.0f * scale.y;
-		accel.y = 0;
+		 
 		vel.y = 0;
 	}
 	if (pos.x < textureSize.Width / 2.0f * scale.x)
@@ -53,7 +55,7 @@ void HorizontalSliderPlayer::KeepInBounds()
 	if (pos.y < textureSize.Height / 2.0f * scale.y)
 	{
 		pos.y = textureSize.Height / 2.0f * scale.y;
-		accel.y = 0;
+		 
 		vel.y = 0;
 	}
 }

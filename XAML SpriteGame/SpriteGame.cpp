@@ -15,7 +15,9 @@ using namespace DXCore;
 
 
 SpriteGame::SpriteGame()
-{
+{ 
+	gamestate = Menu;
+	time_passed = 0;  
 }
 
 void SpriteGame::CreateDeviceIndependentResources()
@@ -77,7 +79,24 @@ void SpriteGame::CreateEnemyProjectile(Enemy* enemy)
 	m_particleData.push_back(data);
 	AudioManager::AudioEngineInstance.PlaySoundEffect(Shoot);
 }
+void SpriteGame::LoadLevel(Platform::String^ level_xml)
+{
+	if (level != NULL)
+	{
+		delete level;
+	}
 
+	BasicLoader^ loader = ref new BasicLoader(m_d3dDevice.Get(), m_wicFactory.Get());
+	level = new Level();
+	std::wstring level_xmlW(level_xml->Begin());
+	std::string level_xmlA(level_xmlW.begin(), level_xmlW.end());
+	level->Load("Level Data\\" + level_xmlA, m_spriteBatch, loader);
+
+
+	level->background->SetWindowSize(m_windowBounds);
+	level->background->InitSliding();
+	time_passed = 0;
+}
 
 void SpriteGame::CreateDeviceResources()
 {
@@ -95,18 +114,7 @@ void SpriteGame::CreateDeviceResources()
 	// Load the sprite textures.
 
 	BasicLoader^ loader = ref new BasicLoader(m_d3dDevice.Get(), m_wicFactory.Get());
-
-	level = new Level();
-	level->Load("Level Data\\Level1.xml", m_spriteBatch, loader);
-
-	loader->LoadTexture(
-		"Assets\\GameObjects\\m31.png",
-		&m_background,
-		nullptr
-		);
-
-	m_spriteBatch->AddTexture(m_background.Get());
-
+	 
 
 	loader->LoadTexture(
 		"Assets\\GameObjects\\spotlight.png",
@@ -153,9 +161,6 @@ void SpriteGame::CreateDeviceResources()
 	//spaceShipLight = new d2dLightEffect();
 	//spaceShipLight->initWithImageFromFile(m_d2dContext, m_wicFactory);
 
-
-
-
 	spaceship->SetVel(float2(0, 0));
 	spaceship->SetRot(0);
 	spaceship->SetRotVel(0);
@@ -172,9 +177,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	spaceship->SetWindowSize(m_windowBounds);
 
 	spaceship->SetPos(float2(0.f, m_windowBounds.Height / 2.0f));
-
-
-
+	
 	spaceship->SetTexture(m_player);
 	rocketFuel->SetTexture(m_particle);
 	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
@@ -188,16 +191,18 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	//spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
 
-	level->background->SetWindowSize(m_windowBounds);
-	level->background->InitSliding();
+	//level->ground->SetWindowSize(m_windowBounds);
+
 
 }
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
 {
+	time_passed += timeDelta ;
 
 	level->background->Update(timeDelta);
 	level->Update(timeTotal, timeDelta, m_windowBounds);
+
 	spaceship->Update(timeDelta);
 	rocketFuel->Update(timeDelta);
 
@@ -210,16 +215,16 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 		if (asteroid->lifeTime > 0)
 			asteroid->lifeTime--;
 
-		if (asteroid->lifeTime == 0 || asteroid->GetPos().x < 400)
+		if (asteroid->lifeTime == 0 || asteroid->GetPos().x < -200)
 		{
 			asteroid->dead = true;
 
 		}
-		if (dist(spaceship->GetPos(), asteroid->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0)
+		if (gamestate==Playing && dist(spaceship->GetPos(), asteroid->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0)
 		{
 			if (PolygonCollision(spaceship->getCollisionGeometry(), asteroid->getCollisionGeometry()))
 			{
-
+				spaceship->health -= asteroid->GetScale().x * 10.f;
 				AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
 				AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
 
@@ -229,7 +234,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 
 		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 		{
-			if (dist(particle->GetPos(), asteroid->GetPos()) < asteroid->textureSize.Width*asteroid->GetScale().x*2.0)
+			if (gamestate == Playing &&  dist(particle->GetPos(), asteroid->GetPos()) < asteroid->textureSize.Width*asteroid->GetScale().x*2.0)
 			{
 				if (PolygonCollision(particle->getCollisionGeometry(), asteroid->getCollisionGeometry()) && asteroid->lifeTime == -1)
 				{
@@ -320,7 +325,8 @@ void SpriteGame::Render()
 	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::AntiqueWhite)));
 
 	m_spriteBatch->Begin();
-	level->background->Draw(m_spriteBatch);
+	level->background->Draw(m_spriteBatch); 
+
 
 	for (auto asteroid = level->m_asteroidData.begin(); asteroid != level->m_asteroidData.end(); asteroid++)
 	{
@@ -348,7 +354,7 @@ void SpriteGame::Render()
 	}
 	spaceship->Draw(m_spriteBatch);
 
-	spaceship->DebugDraw(m_spriteBatch, m_debug_point);
+	//spaceship->DebugDraw(m_spriteBatch, m_debug_point);
 	m_spriteBatch->End();
 }
 

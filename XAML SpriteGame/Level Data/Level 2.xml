@@ -2,6 +2,7 @@
 <Level>
   <Background  Texture="m33.png">  </Background>
   <Asteroid    Texture="ida.dds">  </Asteroid>
+  <Ground    Texture="ground.png">  </Ground>
   
   <EnemyTypes>
     <EnemyType Texture="Enemy1.png" id="0"></EnemyType>
@@ -17,7 +18,16 @@
   <AsteroidField    Pos="10">  </AsteroidField>
   <AsteroidField    Pos="20">  </AsteroidField>
 
-
+  <gpt x="0" y=".2"></gpt> 
+  <gpt x="10" y=".8"></gpt> 
+  <gpt x="20" y=".4"></gpt> 
+  <gpt x="30" y=".2"></gpt> 
+  <gpt x="40" y=".1"></gpt> 
+  <gpt x="50" y=".25"></gpt> 
+  <gpt x="60" y=".3"></gpt> 
+  <gpt x="70" y=".2"></gpt> 
+  <gpt x="80" y=".2"></gpt> 
+  <gpt x="90" y=".5"></gpt> 
 
 
 </Level>

@@ -376,9 +376,10 @@ void SpriteBatch::Begin()
     m_renderTargetSize = float2(
         static_cast<float>(renderTargetTextureDesc.Width),
         static_cast<float>(renderTargetTextureDesc.Height)
-        );
-
+        ); 
     m_dpi = Windows::Graphics::Display::DisplayProperties::LogicalDpi;
+ 
+	 
 }
 
 void SpriteBatch::End()

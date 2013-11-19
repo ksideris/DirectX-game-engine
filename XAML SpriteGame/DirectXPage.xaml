@@ -1,4 +1,4 @@
-﻿<SwapChainBackgroundPanel
+﻿<SwapChainBackgroundPanel 
     x:Class="GameEngine.DirectXPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,12 +8,200 @@
     mc:Ignorable="d" Loaded="OnLoaded" KeyDown="OnKeyDown" KeyUp="OnKeyUp" 
          PointerPressed="XAMLPage_PointerPressed" PointerMoved="XAMLPage_PointerMoved"  PointerReleased="XAMLPage_PointerReleased"         >
 
-    <Grid>
 
-        <TextBlock x:Name="framerateLabel"  FontSize="50" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="114" Width="308" Text="FPS:"/>
-        <TextBlock x:Name="framerateV"  FontSize="50" HorizontalAlignment="Left" Margin="308,0,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="114" Width="308"/>
+    <SwapChainBackgroundPanel.Resources>
+        <Storyboard x:Name="PlayerHitAnimation">
+            <ColorAnimation Duration="0" To="Transparent" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="RedFlashScreen" d:IsOptimized="True"/>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RedFlashScreen">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0.94"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </SwapChainBackgroundPanel.Resources>
+
+    <Grid x:Name="GamePlayGrid" Visibility="Visible" Width="Auto" Height ="Auto"    >
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock  Grid.Row="1"  x:Name="framerateLabel"  FontSize="50" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="114" Width="308" Text="FPS:"/>
+        <TextBlock  Grid.Row="2"  x:Name="framerateV"      FontSize="50" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="114" Width="308"/>
+        
+        <Grid   Grid.Row="0"    Background="DarkSlateGray"     Height="50" Margin="0,0,0,0"   VerticalAlignment="Top" Width="Auto"  >
+            <Rectangle   Grid.Row="0"  x:Name="HealthBar"    Fill="IndianRed"   Height="20" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Stroke="Black"    Width="348"  />
+        </Grid>
 
     </Grid>
+
+    <Rectangle x:Name="RedFlashScreen" Opacity="0"   Width="Auto" Height ="Auto"   Margin="0,0,0,0" Stroke="Black"   RadiusX="78">
+        <Rectangle.Fill>
+            <LinearGradientBrush EndPoint="1.469,0.708" StartPoint="0.772,0.715">
+                <GradientStop Color="#62CB3131" Offset="0"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Rectangle.Fill>
+    </Rectangle>
+
+    <Grid x:Name="MenuButtonsGrid" Visibility="Collapsed" Width="Auto" Height ="Auto" Background="Gray" Grid.RowSpan="2" Opacity=".4"  >
+       
+        <Grid.RowDefinitions>
+            <RowDefinition Height="288" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="593*"/>
+            <ColumnDefinition Width="345*"/>
+            <ColumnDefinition Width="50" />
+        </Grid.ColumnDefinitions>
+
+        <Button  Grid.Column="0" Grid.Row="2"  x:Name="PlayButton"   HorizontalAlignment="Left" Height="50"  Margin="0,10,0,0"   VerticalAlignment="Top" Width="326"   Grid.ColumnSpan="2" Content="Play"   FontSize="23" />
+        <Button  Grid.Column="0" Grid.Row="3"  x:Name="ShareButton"  HorizontalAlignment="Left" Height="50"  Margin="0,10,0,0"   VerticalAlignment="Top" Width="326"   Grid.ColumnSpan="2" Content="Share"  FontSize="23"/>
+
+        <StackPanel x:Name="HighScoresPanel" Grid.Column="1" Grid.Row="1" Width="Auto" Height="Auto"  HorizontalAlignment="Center"  >  </StackPanel>
+    </Grid>
     
-    
+    <Grid x:Name="LevelButtonsGrid" Visibility="Collapsed" Grid.RowSpan="2">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="50" />
+        </Grid.ColumnDefinitions>
+
+        <Button   Grid.Column="0" Grid.Row="1" x:Name="Level1"   HorizontalAlignment="Left" Height="50"  Margin="0,10,0,0"   VerticalAlignment="Top" Width="326"   Grid.ColumnSpan="2"  Content="Level 1"   Tag="Level 1"  FontSize="23" />
+        <Button   Grid.Column="0" Grid.Row="2" x:Name="Level2"   HorizontalAlignment="Left" Height="50"  Margin="0,10,0,0"   VerticalAlignment="Top" Width="326"   Grid.ColumnSpan="2"  Content="Level 2"   Tag="Level 2"   FontSize="23"/>
+
+    </Grid>
+
+
+    <Popup HorizontalAlignment="Right" IsLightDismissEnabled="True" x:Name="stkMusicSfx" Grid.RowSpan="2" >
+        <Grid Background="Black" x:Name="grdSubMusicSfx"  Width="346">
+            <Grid.Transitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition />
+                </TransitionCollection>
+            </Grid.Transitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,12,0,0" >
+                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissAudioSettings"  ></Button>
+                <TextBlock Margin="12,0,0,12" Height="Auto" VerticalAlignment="Center" Text="Music &amp; SFX" ></TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="24,24,0,0">
+                <StackPanel>
+                    <TextBlock Text="Music"  ></TextBlock>
+                    <TextBlock  Width="346" Text="This includes the theme track and level background music."  TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
+                    <ToggleSwitch x:Name="tglMusic"  IsOn="{Binding ElementName=XAMLPage,Path=MusicEnabled}" Margin="-6,0,0,0"></ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Margin="0,24,0,0">
+                    <TextBlock Text="Music Volume"></TextBlock>
+                    <Slider x:Name="sldMusicVolume"  Value="{Binding ElementName=XAMLPage,Path=MusicVolume, Mode=TwoWay}" Minimum="0" Maximum="100" Margin="0,0,12,0"></Slider>
+                </StackPanel>
+
+                <StackPanel Margin="0,24,0,0">
+                    <TextBlock Text="Sound Effects" ></TextBlock>
+                    <TextBlock Width="346" Text="Includes sounds played during the game (e.g. explosions)."  TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
+                    <ToggleSwitch x:Name="tglSFX"  IsOn="{Binding ElementName=XAMLPage,Path=SFXEnabled}" Margin="-6,0,0,0"></ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Margin="0,24,0,0">
+                    <TextBlock Text="SFX Volume" ></TextBlock>
+                    <Slider x:Name="sldSFXVolume"  Value="{Binding ElementName=XAMLPage,Path=SFXVolume, Mode=TwoWay}" Minimum="0" Maximum="100" Margin="0,0,12,0"></Slider>
+                </StackPanel>
+
+            </StackPanel>
+
+        </Grid>
+    </Popup>
+
+    <Popup HorizontalAlignment="Right" IsLightDismissEnabled="True" x:Name="stkAccelerometerSettings" Grid.RowSpan="2" >
+        <Grid Background="Black" x:Name="grdAccelerometerSettings" Width="346">
+            <Grid.Transitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition />
+                </TransitionCollection>
+            </Grid.Transitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,12,0,0" >
+                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissAccelerometerSettings" ></Button>
+                <TextBlock Margin="12,0,0,12" Height="Auto" VerticalAlignment="Center" Text="Accelerometer" ></TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="24,24,0,0">
+                <StackPanel>
+                    <TextBlock Text="Enable Accelerometer" ></TextBlock>
+                    <TextBlock  Width="346" Text="If the accelerometer is disabled, you will not be able to use device tilt to move the bear."   TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
+                    <ToggleSwitch x:Name="tglEnableAccelerometer"  IsOn="{Binding ElementName=XAMLPage,Path=IsAccelerometerEnabled}" Margin="-6,0,0,0"></ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Margin="0,24,0,0">
+                    <TextBlock Text="Invert Accelrometer"  ></TextBlock>
+                    <TextBlock Width="346" Text="Moves the bear in the opposite direction of the device tilt."  TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
+                    <ToggleSwitch x:Name="tglInvertAccelerometer"   IsOn="{Binding ElementName=XAMLPage,Path=IsAccelerometerInverted}" Margin="-6,0,0,0"></ToggleSwitch>
+                </StackPanel>
+
+                <StackPanel Margin="0,24,0,0">
+                    <TextBlock Text="Lock Screen Rotation"  ></TextBlock>
+                    <TextBlock Width="346" Text="Prevents the auto-rotation behavior on the application level."  TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
+                    <ToggleSwitch x:Name="tglEnableScreenLock" IsOn="{Binding ElementName=XAMLPage,Path=IsRotationLocked}" Margin="-6,0,0,0"></ToggleSwitch>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+    </Popup>
+
+    <Popup HorizontalAlignment="Right" IsLightDismissEnabled="True" x:Name="stkCharacterMovement" Grid.RowSpan="2" >
+        <Grid Background="Black" x:Name="grdCharacterMovement" Width="346">
+            <Grid.Transitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition />
+                </TransitionCollection>
+            </Grid.Transitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,12,0,0" >
+                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissCharacterMovementSettings" ></Button>
+                <TextBlock Margin="12,0,0,12" Height="Auto" VerticalAlignment="Center" Text="Character Movement" ></TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="24,24,0,0">
+                <StackPanel>
+                    <TextBlock Text="Enable Mouse/Touch To Move"  ></TextBlock>
+                    <TextBlock  Width="346" Text="Instead of using the keyboard or accelerometer, also use fingers and mouse movement to modify the position of the bear."  TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
+                    <ToggleSwitch x:Name="tglEnableMouseMovement" IsOn="{Binding ElementName=XAMLPage,Path=IsMouseEnabled}" Margin="-6,0,0,0"></ToggleSwitch>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+    </Popup>
 </SwapChainBackgroundPanel> 

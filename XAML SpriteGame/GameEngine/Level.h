@@ -12,7 +12,7 @@
 #include "FireBall.h"
 #include "Direct2DlightEffect.h"
 #include "Enemy.h"
-
+#include "Ground.h"
 
 using namespace DXCore;
 using namespace  DXCore::BasicSprites;
@@ -33,12 +33,15 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_player;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_player_spot;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_debug_point;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_ground;
 	 
 	std::vector <std::pair<float, int>> Enemies;
  
 	std::vector <std::pair<float, int>> AsteroidFields;
 
 	std::vector <std::pair<float, int>> Rings; 
+
+	Ground * ground;
 
 
 	void Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch, BasicLoader^ loader);

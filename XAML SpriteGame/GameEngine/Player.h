@@ -10,7 +10,11 @@ class Player :public GameObject
 	int keys_down;
 	float lightUpdate;
 	float2 TargetPos;
+
+
 public:
+
+	int health;
 	float z;
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> spot_texture;

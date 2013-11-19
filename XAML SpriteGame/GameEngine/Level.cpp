@@ -21,12 +21,12 @@ int StringToWString(std::wstring &ws, const std::string &s)
 void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch, BasicLoader^ loader)
 {
 
-
+	ground = new Ground();
 	//xml testing
 	IrrXMLReader* xml = createIrrXMLReader(level_loc.c_str());
 
 	// strings for storing the data we want to get out of the file
-	std::string modelFile;
+	std::string stringdata2;
 	std::string stringdata;
 	std::wstring wstringdata;
 	Platform::String^ final_data;
@@ -83,7 +83,30 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 					m_spriteBatch->AddTexture(m_asteroid.Get());
 
 
-				}if (!strcmp("AsteroidField", xml->getNodeName()))
+				}
+				
+			/*	if (!strcmp("Ground", xml->getNodeName()))
+				{
+					stringdata = xml->getAttributeValue("Texture");
+
+					StringToWString(wstringdata, stringdata);
+
+
+					final_data = L"Assets\\GameObjects\\" + ref new Platform::String(wstringdata.c_str());
+
+
+					loader->LoadTexture(
+						final_data,
+						&m_ground,
+						nullptr
+						);
+					m_spriteBatch->AddTexture(m_ground.Get());
+
+					ground->SetTexture(m_ground);
+				}
+*/
+
+				if (!strcmp("AsteroidField", xml->getNodeName()))
 				{
 					stringdata = xml->getAttributeValue("Pos");
 
@@ -91,6 +114,16 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 
 
 				}
+
+			/*	if (!strcmp("gpt", xml->getNodeName()))
+				{
+					stringdata = xml->getAttributeValue("x");
+					stringdata2 = xml->getAttributeValue("y");
+
+					ground->heightMap.push_back(std::pair<float, float>(atoi(stringdata.c_str()), atoi(stringdata2.c_str())));
+
+
+				}*/
 				break;
 
 						}
@@ -99,16 +132,17 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 
 	// delete the xml parser after usage
 	delete xml;
+  
 	///end xml testing
 }
 
-
+//There is some speed issue, investigate
 void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  m_windowBounds)
 {
 
 	for (auto field = AsteroidFields.begin(); field != AsteroidFields.end(); field++)
 	{
-		if (m_asteroidData.size() < 100 && ((int) timeTotal) % field->second == 0 && timeTotal - (int) timeTotal <= timeDelta)
+		if (m_asteroidData.size() < 100 && timeTotal > field->second   && timeTotal < field->second + timeDelta)
 		{
 			for (int i = 0; i < field->first; i++)
 			{
