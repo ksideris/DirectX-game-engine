@@ -27,31 +27,6 @@ void SpriteGame::CreateDeviceIndependentResources()
 
 
 
-	AudioManager::Initialize();
-	AudioManager::SetMainMenuMusic();
-
-	AudioManager::IsSFXStarted = true;
-	if (true)
-	{
-		AudioManager::AudioEngineInstance.StartSFX();
-	}
-	else
-	{
-		AudioManager::AudioEngineInstance.SuspendSFX();
-	}
-
-	AudioManager::IsMusicStarted = true;
-	if (true)
-	{
-		AudioManager::AudioEngineInstance.StartMusic();
-	}
-	else
-	{
-		AudioManager::AudioEngineInstance.SuspendMusic();
-	}
-
-	AudioManager::SetMusicVolume(60);
-	AudioManager::SetSFXVolume(60);
 
 }
 
@@ -92,7 +67,7 @@ void SpriteGame::LoadLevel(Platform::String^ level_xml)
 	std::string level_xmlA(level_xmlW.begin(), level_xmlW.end());
 	level->Load("Level Data\\" + level_xmlA, m_spriteBatch, loader);
 
-
+	spaceship->health = 100;
 	level->background->SetWindowSize(m_windowBounds);
 	level->background->InitSliding();
 	time_passed = 0;

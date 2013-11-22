@@ -25,9 +25,12 @@ namespace GameEngine
 		bool IsInitialDataLoaded;
 		void UpdateWindowSize();
 
+		bool MusicEnabled;
 
 		std::vector<float> framerate;
-		std::vector<int> scores;
+		std::deque<int> scores;
+
+		GameState previous_state;
 
 		Windows::Foundation::EventRegistrationToken	WindowActivationToken;
 
@@ -47,8 +50,7 @@ namespace GameEngine
 
 		void OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
-
-		void LoadSettings();
+		 
 		
 		void XAMLPage_Tapped(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e);
 
@@ -71,5 +73,14 @@ namespace GameEngine
 		void OnSizeChanged(Platform::Object ^sender, Windows::UI::Xaml::SizeChangedEventArgs ^e);
 
 		void LoadHighScores(Platform::String^ Filename);
+		void HandleGameOver();
+
+		void ShowScores(int highLightIndex);
+		void Save(Platform::String^ key, Platform::Object^ value);
+		Platform::Object^ DirectXPage::Read(Platform::String^ key);
+		bool DirectXPage::Exists(Platform::String^ key);
+		void OnToggled(Platform::Object ^sender, Windows::UI::Xaml::RoutedEventArgs ^e);
+		void OnValueChanged(Platform::Object ^sender, Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs ^e);
+		void LoadSettings();
 	};
 }

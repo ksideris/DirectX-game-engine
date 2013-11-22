@@ -20,6 +20,9 @@
   <AsteroidField    Pos="20" Count="30">  </AsteroidField> 
   <Ring    Pos="50" Count="10">  </Ring> 
   <Ring    Pos="15" Count="10">  </Ring> 
+  <Ring    Pos="1" Count="10">  </Ring> 
+  <Ring    Pos="2" Count="10">  </Ring> 
+  <Ring    Pos="3" Count="10">  </Ring> 
  
 
 </Level>
