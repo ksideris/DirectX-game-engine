@@ -24,8 +24,7 @@ namespace GameEngine
 		int health;
 		bool IsInitialDataLoaded;
 		void UpdateWindowSize();
-
-		bool MusicEnabled;
+		 
 
 		std::vector<float> framerate;
 		std::deque<int> scores;
@@ -82,5 +81,9 @@ namespace GameEngine
 		void OnToggled(Platform::Object ^sender, Windows::UI::Xaml::RoutedEventArgs ^e);
 		void OnValueChanged(Platform::Object ^sender, Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs ^e);
 		void LoadSettings();
+
+		void OnDismissPrivacyTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
+		void OnDismissAboutTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
+		void OnDismissAudioTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
 	};
 }

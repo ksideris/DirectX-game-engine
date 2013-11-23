@@ -56,8 +56,7 @@ DirectXPage::DirectXPage()
 		this,
 		DisplayProperties::LogicalDpi
 		);
-
-
+	
 	m_renderer->LoadLevel("Menu.xml");
 
 	MenuButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Visible;
@@ -87,15 +86,20 @@ DirectXPage::DirectXPage()
 	LevelButtonsGrid->SizeChanged += ref new Windows::UI::Xaml::SizeChangedEventHandler(this, &GameEngine::DirectXPage::OnSizeChanged);
 	GamePlayGrid->SizeChanged += ref new Windows::UI::Xaml::SizeChangedEventHandler(this, &GameEngine::DirectXPage::OnSizeChanged);
 
-	tglMusic->Toggled +=ref new Windows::UI::Xaml::RoutedEventHandler(this, &GameEngine::DirectXPage::OnToggled);
-	sldMusicVolume->ValueChanged+=ref new Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventHandler(this, &GameEngine::DirectXPage::OnValueChanged);
+	tglMusic->Toggled += ref new Windows::UI::Xaml::RoutedEventHandler(this, &GameEngine::DirectXPage::OnToggled);
+	sldMusicVolume->ValueChanged += ref new Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventHandler(this, &GameEngine::DirectXPage::OnValueChanged);
 
+	tglSFX->Toggled += ref new Windows::UI::Xaml::RoutedEventHandler(this, &GameEngine::DirectXPage::OnToggled);
+	sldSFXVolume->ValueChanged += ref new Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventHandler(this, &GameEngine::DirectXPage::OnValueChanged);
+
+	dismissAudioSettings->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnDismissAudioTapped);
+	dismissAbout->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnDismissAboutTapped);
+	dismissPrivacy->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnDismissPrivacyTapped);
 
 	CheckNCreateFile("highscore2s.dat");
-	//init timer
+
+
 	m_timer = ref new Timer();
-
-
 
 	UpdateWindowSize();
 }
@@ -177,13 +181,13 @@ void DirectXPage::LoadHighScores(String^ Filename)
 
 void DirectXPage::HandleGameOver()
 {
-	int i = 0; 
+	int i = 0;
 	for (auto score = scores.begin(); score != scores.end(); score++)
 	{
 		if (m_renderer->score >= *score)
 		{
-			scores.insert(scores.begin()+i, m_renderer->score);
-		 
+			scores.insert(scores.begin() + i, m_renderer->score);
+
 			break;
 		}
 		i++;
@@ -194,7 +198,7 @@ void DirectXPage::HandleGameOver()
 	if (scores.size() > 5)
 		scores.erase(scores.end() - 1);
 
-	
+
 
 	String^ newSave = "";
 	for (auto score = scores.begin(); score != scores.end(); score++)
@@ -225,7 +229,7 @@ void DirectXPage::ShowScores(int highLightIndex)
 		TextBlock^ t = ref new TextBlock();
 		t->TextAlignment = Windows::UI::Xaml::TextAlignment::Center;
 		t->FontSize = 30;
-		if (i==highLightIndex)
+		if (i == highLightIndex)
 			t->Foreground = ref new SolidColorBrush(Windows::UI::Colors::Yellow);
 		t->Text = (*score).ToString();
 		HighScoresPanel->Children->Append(t);
@@ -276,12 +280,14 @@ void DirectXPage::UpdateWindowSize()
 		{
 
 			m_renderer->gamestate = previous_state;
+			PausedScreen->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 		}
 	}
 	else
 	{
 		previous_state = m_renderer->gamestate;
 		m_renderer->gamestate = GameState::Paused;
+		PausedScreen->Visibility = Windows::UI::Xaml::Visibility::Visible;
 
 	}
 
@@ -315,7 +321,7 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 		framerateV->Text = m_timer->Total.ToString();
 		Score->Text = m_renderer->score.ToString();
 
-		if (m_renderer->spaceship->health <= 0 && m_renderer->gamestate==GameState::Playing)
+		if (m_renderer->spaceship->health <= 0 && m_renderer->gamestate == GameState::Playing)
 		{
 			HandleGameOver();
 		}
@@ -423,18 +429,21 @@ void DirectXPage::OnSettingsSelected(Windows::UI::Popups::IUICommand^ command)
 		grdSubMusicSfx->Height = m_renderer->m_renderTargetSize.Height;
 		stkMusicSfx->IsOpen = true;
 	}
-	//else if (command->Id->ToString() == "accelerometer")
-	//{
-	//	stkAccelerometerSettings->Width = 346.0f;
-	//	grdAccelerometerSettings->Height = m_renderer->m_renderTargetSize.Height;
-	//	stkAccelerometerSettings->IsOpen = true;
-	//}
-	//else if (command->Id->ToString() == "charMovement")
-	//{
-	//	stkCharacterMovement->Width = 346.0f;
-	//	grdCharacterMovement->Height = m_renderer->m_renderTargetSize.Height;
-	//	stkCharacterMovement->IsOpen = true;
-	//}
+	if (command->Id->ToString() == "about")
+	{
+		popupAbout->Width = 346.0f;
+		grdAbout->Height = m_renderer->m_renderTargetSize.Height;
+		popupAbout->IsOpen = true;
+		
+	}
+	if (command->Id->ToString() == "privacy")
+	{
+		popupPrivacy->Width = 346.0f;
+		grdPrivacy->Height = m_renderer->m_renderTargetSize.Height;
+		popupPrivacy->IsOpen = true;
+	}
+	WindowActivationToken = Window::Current->Activated += ref new WindowActivatedEventHandler(this, &DirectXPage::OnWindowActivated);
+
 }
 
 void DirectXPage::OnCommandsRequested(Windows::UI::ApplicationSettings::SettingsPane ^sender, Windows::UI::ApplicationSettings::SettingsPaneCommandsRequestedEventArgs ^args)
@@ -444,12 +453,33 @@ void DirectXPage::OnCommandsRequested(Windows::UI::ApplicationSettings::Settings
 
 	SettingsCommand^ generalCommand = ref new SettingsCommand("musicSfx", "Music & SFX", handler);
 	args->Request->ApplicationCommands->Append(generalCommand);
+	SettingsCommand^ privacyCommand = ref new SettingsCommand("privacy", "Privacy", handler);
+	args->Request->ApplicationCommands->Append(privacyCommand);
+	SettingsCommand^ aboutCommand = ref new SettingsCommand("about", "About", handler);
+	args->Request->ApplicationCommands->Append(aboutCommand);
 
-	SettingsCommand^ accelerometerCommand = ref new SettingsCommand("accelerometer", "Accelerometer", handler);
-	args->Request->ApplicationCommands->Append(accelerometerCommand);
+}
 
-	SettingsCommand^ charMovementCommand = ref new SettingsCommand("charMovement", "Character Movement", handler);
-	args->Request->ApplicationCommands->Append(charMovementCommand);
+void GameEngine::DirectXPage::OnDismissAboutTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
+{
+	
+
+	popupAbout->IsOpen = false;
+}
+
+
+void GameEngine::DirectXPage::OnDismissAudioTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
+{
+	stkMusicSfx->IsOpen = false;
+
+}
+
+
+void GameEngine::DirectXPage::OnDismissPrivacyTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
+{
+
+	popupPrivacy->IsOpen = false;
+
 }
 
 
@@ -506,13 +536,15 @@ bool DirectXPage::Exists(Platform::String^ key)
 
 
 void DirectXPage::LoadSettings()
-{;
-bool MusicEnabled = false;
-bool SFXEnabled = false;
-int volume = 0;
+{
+	
+	bool MusicEnabled = false;
+	bool SFXEnabled = false;
+	int volume = 0, sfxvolume = 0;
+
 	if (Exists(L"MusicEnabled"))
 	{
-		bool MusicEnabled = (bool) Read(L"MusicEnabled");
+		MusicEnabled = (bool) Read(L"MusicEnabled");
 	}
 
 	if (MusicEnabled)
@@ -530,7 +562,7 @@ int volume = 0;
 			sldMusicVolume->Value = 100;
 			volume = 100;
 		}
-		
+
 	}
 	else
 	{
@@ -538,6 +570,35 @@ int volume = 0;
 
 		sldMusicVolume->Value = 0;
 		volume = 0;
+	}
+	if (Exists(L"SFXEnabled"))
+	{
+		SFXEnabled = (bool) Read(L"SFXEnabled");
+	}
+
+	if (SFXEnabled)
+	{
+		tglSFX->IsOn = true;
+
+		if (Exists(L"MusicVolume"))
+		{
+			sfxvolume = (int) Read(L"MusicVolume");
+
+			sldSFXVolume->Value = sfxvolume;
+		}
+		else
+		{
+			sldSFXVolume->Value = 100;
+			sfxvolume = 100;
+		}
+
+	}
+	else
+	{
+		tglSFX->IsOn = false;
+
+		sldSFXVolume->Value = 0;
+		sfxvolume = 0;
 	}
 
 	AudioManager::Initialize();
@@ -554,7 +615,7 @@ int volume = 0;
 	}
 
 	AudioManager::IsMusicStarted = true;
-	
+
 	if (true)
 	{
 		AudioManager::AudioEngineInstance.StartMusic();
@@ -565,7 +626,7 @@ int volume = 0;
 	}
 
 	AudioManager::SetMusicVolume(volume);
-	AudioManager::SetSFXVolume(volume);
+	AudioManager::SetSFXVolume(sfxvolume);
 }
 
 void GameEngine::DirectXPage::OnToggled(Platform::Object ^sender, Windows::UI::Xaml::RoutedEventArgs ^e)
@@ -592,7 +653,29 @@ void GameEngine::DirectXPage::OnToggled(Platform::Object ^sender, Windows::UI::X
 		AudioEngine::AudioManager::SetMusicVolume(0);
 		Save(L"MusicEnabled", false);
 	}
-	 
+
+	if (tglSFX->IsOn)
+	{
+		if (Exists(L"SFXEnabled"))
+		{
+			int volume = (int) Read(L"SFXVolume");
+
+			AudioEngine::AudioManager::SetSFXVolume(volume);
+			sldSFXVolume->Value = volume;
+		}
+		else
+		{
+			AudioEngine::AudioManager::SetSFXVolume(100);
+			sldSFXVolume->Value = 100;
+		}
+		Save(L"SFXEnabled", true);
+	}
+	else
+	{
+		sldSFXVolume->Value = 0;
+		AudioEngine::AudioManager::SetSFXVolume(0);
+		Save(L"SFXEnabled", false);
+	}
 }
 
 
@@ -600,10 +683,26 @@ void GameEngine::DirectXPage::OnValueChanged(Platform::Object ^sender, Windows::
 {
 
 	int volume = (int) sldMusicVolume->Value;
-	
-	AudioEngine::AudioManager::SetMusicVolume(volume);
 
+	AudioEngine::AudioManager::SetMusicVolume(volume);
 	Save(L"MusicVolume", volume);
+
+	if (volume == 0)
+		tglMusic->IsOn = false;
+	else
+		tglMusic->IsOn = true;
+
+
+	int sfxvolume = (int) sldSFXVolume->Value;
+
+	if (sfxvolume == 0)
+		tglSFX->IsOn = false;
+	else
+		tglSFX->IsOn = true;
+
+	AudioEngine::AudioManager::SetSFXVolume(volume);
+	Save(L"SFXVolume", volume);
+
 
 
 }

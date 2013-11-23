@@ -20,6 +20,16 @@
         </Storyboard>
     </SwapChainBackgroundPanel.Resources>
 
+    <Grid x:Name="PausedScreen" Visibility="Collapsed" Width="Auto" Height ="Auto"   Background="DeepSkyBlue" >
+
+
+
+        <TextBlock FontSize="50" HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Center" Height="114" Width="308" Text="Paused"/>
+       
+        
+        
+
+    </Grid>
     <Grid x:Name="GamePlayGrid" Visibility="Collapsed" Width="Auto" Height ="Auto"    >
 
         <Grid.RowDefinitions>
@@ -104,7 +114,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,12,0,0" >
-                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissAudioSettings"  ></Button>
+                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissAudioSettings" Style="{StaticResource BackButtonStyle}" ></Button>
                 <TextBlock Margin="12,0,0,12" Height="Auto" VerticalAlignment="Center" Text="Music &amp; SFX" ></TextBlock>
             </StackPanel>
 
@@ -136,8 +146,32 @@
         </Grid>
     </Popup>
 
-    <!--<Popup HorizontalAlignment="Right" IsLightDismissEnabled="True" x:Name="stkAccelerometerSettings" Grid.RowSpan="2" >
-        <Grid Background="Black" x:Name="grdAccelerometerSettings" Width="346">
+    <Popup HorizontalAlignment="Right" IsLightDismissEnabled="True" x:Name="popupPrivacy" Grid.RowSpan="2" >
+        <Grid Background="Black" x:Name="grdPrivacy"  Width="346">
+
+            <Grid.Transitions>
+            <TransitionCollection>
+                <RepositionThemeTransition />
+            </TransitionCollection>
+        </Grid.Transitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,12,0,0" >
+                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissPrivacy"  Style="{StaticResource BackButtonStyle}"  ></Button>
+            <TextBlock Margin="12,0,0,12" Height="Auto" VerticalAlignment="Center" Text="Privacy" ></TextBlock>
+        </StackPanel>
+
+       
+
+        </Grid>
+    </Popup>
+    <Popup HorizontalAlignment="Right" IsLightDismissEnabled="True" x:Name="popupAbout" Grid.RowSpan="2" >
+        <Grid Background="Black" x:Name="grdAbout"  Width="346">
+
             <Grid.Transitions>
                 <TransitionCollection>
                     <RepositionThemeTransition />
@@ -150,59 +184,13 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,12,0,0" >
-                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissAccelerometerSettings" ></Button>
-                <TextBlock Margin="12,0,0,12" Height="Auto" VerticalAlignment="Center" Text="Accelerometer" ></TextBlock>
+                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissAbout"  Style="{StaticResource BackButtonStyle}"  ></Button>
+                <TextBlock Margin="12,0,0,12" Height="Auto" VerticalAlignment="Center" Text="Privacy" ></TextBlock>
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Margin="24,24,0,0">
-                <StackPanel>
-                    <TextBlock Text="Enable Accelerometer" ></TextBlock>
-                    <TextBlock  Width="346" Text="If the accelerometer is disabled, you will not be able to use device tilt to move the bear."   TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
-                    <ToggleSwitch x:Name="tglEnableAccelerometer"  IsOn="{Binding ElementName=XAMLPage,Path=IsAccelerometerEnabled}" Margin="-6,0,0,0"></ToggleSwitch>
-                </StackPanel>
 
-                <StackPanel Margin="0,24,0,0">
-                    <TextBlock Text="Invert Accelrometer"  ></TextBlock>
-                    <TextBlock Width="346" Text="Moves the bear in the opposite direction of the device tilt."  TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
-                    <ToggleSwitch x:Name="tglInvertAccelerometer"   IsOn="{Binding ElementName=XAMLPage,Path=IsAccelerometerInverted}" Margin="-6,0,0,0"></ToggleSwitch>
-                </StackPanel>
-
-                <StackPanel Margin="0,24,0,0">
-                    <TextBlock Text="Lock Screen Rotation"  ></TextBlock>
-                    <TextBlock Width="346" Text="Prevents the auto-rotation behavior on the application level."  TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
-                    <ToggleSwitch x:Name="tglEnableScreenLock" IsOn="{Binding ElementName=XAMLPage,Path=IsRotationLocked}" Margin="-6,0,0,0"></ToggleSwitch>
-                </StackPanel>
-            </StackPanel>
 
         </Grid>
     </Popup>
 
-    <Popup HorizontalAlignment="Right" IsLightDismissEnabled="True" x:Name="stkCharacterMovement" Grid.RowSpan="2" >
-        <Grid Background="Black" x:Name="grdCharacterMovement" Width="346">
-            <Grid.Transitions>
-                <TransitionCollection>
-                    <RepositionThemeTransition />
-                </TransitionCollection>
-            </Grid.Transitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="120"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,12,0,0" >
-                <Button Margin="0" VerticalAlignment="Center" x:Name="dismissCharacterMovementSettings" ></Button>
-                <TextBlock Margin="12,0,0,12" Height="Auto" VerticalAlignment="Center" Text="Character Movement" ></TextBlock>
-            </StackPanel>
-
-            <StackPanel Grid.Row="1" Margin="24,24,0,0">
-                <StackPanel>
-                    <TextBlock Text="Enable Mouse/Touch To Move"  ></TextBlock>
-                    <TextBlock  Width="346" Text="Instead of using the keyboard or accelerometer, also use fingers and mouse movement to modify the position of the bear."  TextWrapping="Wrap" Margin="0,12,12,12" ></TextBlock>
-                    <ToggleSwitch x:Name="tglEnableMouseMovement" IsOn="{Binding ElementName=XAMLPage,Path=IsMouseEnabled}" Margin="-6,0,0,0"></ToggleSwitch>
-                </StackPanel>
-            </StackPanel>
-
-        </Grid>
-    </Popup>-->
 </SwapChainBackgroundPanel> 
