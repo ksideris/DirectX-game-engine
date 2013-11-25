@@ -1,20 +1,10 @@
 <?xml version="1.0"?>
 <Level>
-  <Background  Texture="m31.png">  </Background>
-  <Asteroid    Texture="ida.dds">  </Asteroid>
-  <Ground       Texture="ground.png">  </Ground>
+  <Background  Texture="m32.png">  </Background>
+  <Foreground  Texture="GeometrySprite.png" Texture2="GeometrySprite2.png"  >  </Foreground>
+  <Asteroid    Texture="ida.dds">  </Asteroid> 
   <RingT       Texture="ring.png">  </RingT>
-
-  <EnemyTypes>
-    <EnemyType Texture="Enemy1.png" id="0"></EnemyType>
-    <EnemyType Texture="Enemy2.png" id="1"></EnemyType>
-    <EnemyType Texture="Enemy3.png" id="2"></EnemyType>
-    <EnemyType Texture="Enemy4.png" id="3"></EnemyType>
-  </EnemyTypes>
-
-  <Enemies>
-    <Enemy Type="0" Loc="3" ></Enemy>
-  </Enemies>
+ 
 
   <AsteroidField    Pos="10" Count="10">  </AsteroidField>
   <AsteroidField    Pos="20" Count="30">  </AsteroidField>

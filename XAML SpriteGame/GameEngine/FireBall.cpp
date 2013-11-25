@@ -6,92 +6,78 @@
 using namespace BasicSprites;
 
 
-FireBall::FireBall()
+FireBall::FireBall(bool _isFlipped)
 {
-
-	size = float2(20, 20);
-
-	numOfParticles = 10;
+	isFlipped = _isFlipped;
+	numOfParticles = 100;
+	color = float4(1.0f, .4f, .4f, 1.0f);
 	for (int i = 0; i < numOfParticles; i++)
 	{
 		float4 particle;
-		particle.r = 1.f;
-		particle.g = .3f;
-		particle.b = .00f;
-		particle.a = 1.0f;
+		if (isFlipped)
+			particle.x = RandFloat(1, 50);
+		else
+			particle.x = RandFloat(-50, 1);
+		particle.y = RandFloat(-15.f, 15.f);
+
 
 		particles.push_back(particle);
 
 	}
 }
 
-void  FireBall::setCollisionGeometryForParticle(float2 size,float2 _pos)
+void  FireBall::setCollisionGeometryForParticle(float2 size, float2 _pos)
 {
 
 	setRectangleCollisionGeometry(_pos - float2(10, 10), _pos + float2(10, 10));
 }
 void FireBall::Update(float timeDelta)
 {
-	float2   prevPos = pos;
-	pos = pos + vel * timeDelta;
+	float2 prev_pos = pos;
+	pos = pos + vel*timeDelta;
 
+	for (auto particle = particles.begin(); particle != particles.end(); particle++)
+	{
+		if (isFlipped)
+			particle->x = particle->x + RandFloat(1, 5);
+		else
+			particle->x = particle->x - RandFloat(1, 5);
 
-	UpdateCollisionGeometry(prevPos, pos, 0);
+		if (particle->y < 2 && particle->y > -2)
+		{
+			particle = particles.erase(particle);
+
+			if (particle == particles.end())
+				break;
+		}
+		if (abs(particle->x) + abs(particle->y * 2) > 50)
+			particle->x = 0;
+
+	}
+	UpdateCollisionGeometry(prev_pos, pos, 0);
 }
 
 void FireBall::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 {
-	float i = -20;
-
-	m_spriteBatch->Draw(
-		_texture.Get(),
-		float2(pos.x, pos.y),
-		PositionUnits::DIPs,
-		float2(22.0f, 22.0f),
-		SizeUnits::DIPs,
-		float4(particles[0].r, particles[0].g, particles[0].b, particles[0].a),
-		0.0f,
-		BlendMode::Additive
-		);
-
-
-	for (auto particle : particles)
+	for (auto particle = particles.begin(); particle != particles.end(); particle++)
 	{
-		float x = i ;
-		float y = sqrt(size.x*size.y - x*x);
+		float2 posoffset = float2(pos.x + particle->x *cos(rot),
+			pos.y - particle->x *sin(rot) + particle->y);
+
 		m_spriteBatch->Draw(
 			_texture.Get(),
-			float2(x + pos.x, y + pos.y),
+			posoffset,
 			PositionUnits::DIPs,
-			float2(12.0f, 12.0f),
+			float2(20.0f, 20.0f)* abs(abs(particle->x) - 49.f) / 50.f,
 			SizeUnits::DIPs,
-			float4(particle.r, particle.g, particle.b, particle.a),
+			color,
 			0.0f,
 			BlendMode::Additive
 			);
-		i += RandFloat(1, 5);
-
-	}
-	i = -20;
-	for (auto particle : particles)
-	{
-		float x = i;
-		float y = -sqrt(size.x*size.y - x*x);
-		m_spriteBatch->Draw(
-			_texture.Get(),
-			float2(x + pos.x, y + pos.y),
-			PositionUnits::DIPs,
-			float2(12.0f, 12.0f),
-			SizeUnits::DIPs,
-			float4(particle.r, particle.g, particle.b, particle.a),
-			0.0f,
-			BlendMode::Additive
-			);
-		i += 2 + RandFloat(1, 5);
 
 	}
 }
- 
+
 float2 FireBall::GetTopLeft(){
 	return float2(pos.x - size.x, pos.y - size.y);
 }
@@ -102,6 +88,5 @@ float2 FireBall::GetBottomRight(){
 void FireBall::UpdateCollisionGeometry(float2 prevPos, float2 pos, float rot)
 {
 	translateCollisionGeometry(pos - prevPos);
-	//rotateCollisionGeometry(rot, pos);
 
 }

@@ -26,7 +26,15 @@ void Timer::Reset()
     m_total = 0.0f;
     m_delta = 1.0f / 60.0f;
 }
-
+void Timer::Reset(LONGLONG offset)
+{
+	Update();
+	m_startTime = m_currentTime; 
+	m_lastTime = m_currentTime;
+	m_startTime.QuadPart -= offset;
+	m_total = 0.0f;
+	m_delta = 1.0f / 60.0f;
+}
 void Timer::Update()
 {
     if (!QueryPerformanceCounter(&m_currentTime))
@@ -63,4 +71,8 @@ float Timer::Total::get()
 float Timer::Delta::get()
 {
     return m_delta;
+}
+LONGLONG Timer::CurrentTime::get()
+{
+	return m_currentTime.QuadPart - m_startTime.QuadPart;
 }

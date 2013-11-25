@@ -25,6 +25,7 @@ enum GameState
 	GameOver = 3,
 	Paused = 4
 };
+
 ref class SpriteGame sealed : public DirectXBase
 {
 
@@ -47,8 +48,7 @@ internal:
 
 	GameState gamestate;
 	Level* level;
-
-	void CreateEnemyProjectile(Enemy* enemy);
+	 
 
 	property SpriteBatch^									CurrentSpriteBatch;
 	  

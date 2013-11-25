@@ -88,7 +88,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5A714955-6A6C-4847-BCC3-E9333B2D74FC}</ProjectGuid>
-    <RootNamespace>Coding4Fun.FallFury</RootNamespace>
+    <RootNamespace>GameEngine</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and '$(VisualStudioVersion)' == ''">$(VCTargetsPath11)</VCTargetsPath>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -397,18 +397,19 @@
     <Page Include="StandardStyles.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\GameObjects\andromeda.png" />
     <Image Include="Assets\GameObjects\debug.png" />
     <Image Include="Assets\GameObjects\Enemy1.png" />
     <Image Include="Assets\GameObjects\Enemy2.png" />
     <Image Include="Assets\GameObjects\Enemy3.png" />
     <Image Include="Assets\GameObjects\Enemy4.png" />
     <Image Include="Assets\GameObjects\Enemy5.png" />
+    <Image Include="Assets\GameObjects\GeometrySprite.png" />
+    <Image Include="Assets\GameObjects\GeometrySprite2.png" />
     <Image Include="Assets\GameObjects\ground.png" />
     <Image Include="Assets\GameObjects\HeightMap.png" />
     <Image Include="Assets\GameObjects\ida.dds" />
-    <Image Include="Assets\GameObjects\m31.png" />
     <Image Include="Assets\GameObjects\m32.png" />
-    <Image Include="Assets\GameObjects\m33.png" />
     <Image Include="Assets\GameObjects\particle.png" />
     <Image Include="Assets\GameObjects\ring.png" />
     <Image Include="Assets\GameObjects\SpaceShip.png" />
@@ -421,6 +422,10 @@
     <Image Include="Assets\Icons\310x150Tile.scale-100.png" />
     <Image Include="Assets\Icons\50x50Tile.png" />
     <Image Include="Assets\Icons\SplashScreen.png" />
+    <Image Include="Assets\UI\buttonHud.png" />
+    <Image Include="Assets\UI\clockHud.png" />
+    <Image Include="Assets\UI\heartHud.png" />
+    <Image Include="Assets\UI\pauseButton.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DXCore\DirectXLinker.h" />
@@ -614,8 +619,10 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="IrrXML\config.xml" />
+    <Xml Include="Level Data\Geometry.xml" />
     <Xml Include="Level Data\Level 1.xml" />
     <Xml Include="Level Data\Level 2.xml" />
+    <Xml Include="Level Data\Levels.xml" />
     <Xml Include="Level Data\Menu.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

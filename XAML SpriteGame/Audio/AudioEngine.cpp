@@ -161,6 +161,9 @@ void Audio::CreateResources()
 
 		CreateSourceVoice(Shoot);
 		CreateSourceVoice(Crash);
+		CreateSourceVoice(Star);
+		CreateSourceVoice(Powerup);
+		CreateSourceVoice(EnemyDead);
 	 
     }
     catch (...)
@@ -217,8 +220,11 @@ void Audio::CreateSourceVoice(SoundEvent sound)
     switch (sound)
     {
          
-		case Crash: soundEffectStream.Initialize(L"Assets\\Sounds\\Crash.wav"); break;
-		case Shoot: soundEffectStream.Initialize(L"Assets\\Sounds\\Shoot.wav"); break; 
+	case Crash: soundEffectStream.Initialize(L"Assets\\Sounds\\Crash.wav"); break;
+	case Shoot: soundEffectStream.Initialize(L"Assets\\Sounds\\Shoot.wav"); break;
+	case Star: soundEffectStream.Initialize(L"Assets\\Sounds\\Coin1.wav"); break;
+	case Powerup: soundEffectStream.Initialize(L"Assets\\Sounds\\GenericPowerup.wav"); break;
+	case EnemyDead: soundEffectStream.Initialize(L"Assets\\Sounds\\EnemyDead1.wav"); break;
     }
 
     m_soundEffects[sound].m_soundEventType = sound;

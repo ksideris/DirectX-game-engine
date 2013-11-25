@@ -20,6 +20,9 @@ namespace AudioEngine
 	{
 		Shoot = 0,
 		Crash = 1,
+		Star = 2,
+		Powerup = 3,
+		EnemyDead =4,
 		 
 		LastSoundEvent
 	};

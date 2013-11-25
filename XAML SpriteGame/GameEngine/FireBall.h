@@ -9,10 +9,11 @@ class FireBall :public ParticleSystem, public CollidingObject
 protected:
 	 
 public: 
-	FireBall();
+	float4 color;
+	FireBall(bool _isFlipped);
 	virtual  void Update(float timeDelta);
 	virtual void Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
-	 
+	bool isFlipped;
  
 	float2 GetTopLeft();
 	float2 GetBottomRight();

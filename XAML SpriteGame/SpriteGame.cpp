@@ -24,15 +24,11 @@ void SpriteGame::CreateDeviceIndependentResources()
 {
 	DirectXBase::CreateDeviceIndependentResources();
 
-
-
-
-
 }
 
 void SpriteGame::CreateProjectile()
 {
-	FireBall data;
+	FireBall data(false);
 	data.SetPos(spaceship->GetPos());
 	data.vel = float2(1000.0f* cos(spaceship->GetRot()), -1000.0f*sin(spaceship->GetRot()));
 	data.SetScale(float2(1.0f, 1.0f));
@@ -40,20 +36,27 @@ void SpriteGame::CreateProjectile()
 	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
 	data.SetWindowSize(m_windowBounds);
 	m_particleData.push_back(data);
+	/*
+	FireBall data2(false);
+	data2.SetPos(spaceship->GetPos() - float2(spaceship->textureSize.Width*spaceship->GetScale().x / 2.0, spaceship->textureSize.Height*spaceship->GetScale().y / 2.0));
+	data2.vel = float2(1000.0f* cos(spaceship->GetRot()), -1000.0f*sin(spaceship->GetRot()));
+	data2.SetScale(float2(1.0f, 1.0f));
+	data2.SetTexture(m_particle);
+	data2.setCollisionGeometryForParticle(float2(20, 20), data2.GetPos());
+	data2.SetWindowSize(m_windowBounds);
+	m_particleData.push_back(data2);
+	FireBall data3(false);
+	data3.SetPos(spaceship->GetPos() + float2(-spaceship->textureSize.Width*spaceship->GetScale().x / 2.0, spaceship->textureSize.Height*spaceship->GetScale().y / 2.0));
+	data3.vel = float2(1000.0f* cos(spaceship->GetRot()), -1000.0f*sin(spaceship->GetRot()));
+	data3.SetScale(float2(1.0f, 1.0f));
+	data3.SetTexture(m_particle);
+	data3.setCollisionGeometryForParticle(float2(20, 20), data3.GetPos());
+	data3.SetWindowSize(m_windowBounds);
+	m_particleData.push_back(data3);*/
+	AudioManager::AudioEngineInstance.StopSoundEffect(Shoot);
 	AudioManager::AudioEngineInstance.PlaySoundEffect(Shoot);
 }
-void SpriteGame::CreateEnemyProjectile(Enemy* enemy)
-{
-	FireBall data;
-	data.SetPos(enemy->GetPos());
-	data.vel = float2(1000.0f* cos(enemy->GetRot()), -1000.0f*sin(enemy->GetRot()));
-	data.SetScale(float2(1.0f, 1.0f));
-	data.SetTexture(m_particle);
-	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
-	data.SetWindowSize(m_windowBounds);
-	m_particleData.push_back(data);
-	AudioManager::AudioEngineInstance.PlaySoundEffect(Shoot);
-}
+ 
 void SpriteGame::LoadLevel(Platform::String^ level_xml)
 {
 	if (level != NULL)
@@ -68,8 +71,7 @@ void SpriteGame::LoadLevel(Platform::String^ level_xml)
 	level->Load("Level Data\\" + level_xmlA, m_spriteBatch, loader);
 
 	spaceship->health = 100;
-	level->background->SetWindowSize(m_windowBounds);
-	level->background->InitSliding();
+	level->SetWindowDependentProperties(m_windowBounds);
 	time_passed = 0;
 	score = 0;
 }
@@ -77,7 +79,6 @@ void SpriteGame::LoadLevel(Platform::String^ level_xml)
 void SpriteGame::CreateDeviceResources()
 {
 	DirectXBase::CreateDeviceResources();
-
 
 	m_spriteBatch = ref new SpriteBatch();
 	unsigned int capacity = 10000;
@@ -140,7 +141,7 @@ void SpriteGame::CreateDeviceResources()
 	spaceship->SetVel(float2(0, 0));
 	spaceship->SetRot(0);
 	spaceship->SetRotVel(0);
-	spaceship->SetScale(float2(.5, .5));
+	spaceship->SetScale(float2(.35, .35));
 
 
 }
@@ -180,12 +181,49 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	time_passed += timeDelta;
 
 	level->background->Update(timeDelta);
+	level->foreground->Update(timeDelta);
 	level->Update(timeTotal, timeDelta, m_windowBounds);
 
 	spaceship->Update(timeDelta);
 	rocketFuel->Update(timeDelta);
+	for (auto enemy = level->enemies.begin(); enemy != level->enemies.end(); enemy++)
+	{
+		enemy->Update(timeDelta);
+		for (auto enemyparticle = enemy->bullets.begin(); enemyparticle != enemy->bullets.end(); enemyparticle++)
+		{
+			enemyparticle->Update(timeDelta);
+			if (gamestate == Playing &&  dist(enemyparticle->GetPos(), spaceship->GetPos()) < enemyparticle->textureSize.Width*enemyparticle->GetScale().x*2.0)
+			{
+				if (PolygonCollision(spaceship->getCollisionGeometry(), enemyparticle->getCollisionGeometry()))
+				{ 
+					spaceship->health -=   10.f;
+					AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
+					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
+
+						enemyparticle = enemy->bullets.erase(enemyparticle);
+
+						if (enemyparticle == enemy->bullets.end())
+						break;
+				}
+			}
+		}
+		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
+		{
+			if (gamestate == Playing &&  dist(particle->GetPos(), enemy->GetPos()) < enemy->textureSize.Width*enemy->GetScale().x*2.0)
+			{
+				if (PolygonCollision(particle->getCollisionGeometry(), enemy->getCollisionGeometry()))
+				{
+					enemy->ProcessHit(10);
+
+					particle = m_particleData.erase(particle);
 
 
+					if (particle == m_particleData.end())
+						break;
+				}
+			}
+		}
+	}
 	for (auto pobject = level->passive_objects.begin(); pobject != level->passive_objects.end(); pobject++)
 	{
 		pobject->Update(timeDelta);
@@ -204,14 +242,16 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			if ((pobject->type == PassiveObjectType::RING || pobject->type == PassiveObjectType::ASTEROID) && PolygonCollision(spaceship->getCollisionGeometry(), pobject->getCollisionGeometry()))
 			{
 				if (pobject->type == PassiveObjectType::ASTEROID){
-					spaceship->health -= pobject->GetScale().x * 10.f;
+					spaceship->health -= (int) pobject->GetScale().x * 10.f;
+					AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
+					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
 				}
-				else if (pobject->type == PassiveObjectType::RING )
+				else if (pobject->type == PassiveObjectType::RING)
 				{
+					AudioManager::AudioEngineInstance.StopSoundEffect(Star);
+					AudioManager::AudioEngineInstance.PlaySoundEffect(Star);
 					score++;
 				}
-				AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
-				AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
 
 				pobject->dead = true;
 			}
@@ -227,8 +267,6 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
 
 					particle = m_particleData.erase(particle);
-
-
 
 					for (int i = 0; i < 5; i++)
 					{
@@ -299,7 +337,11 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			level->passive_objects.erase(level->passive_objects.begin() + i);
 	}
 
-
+	for (int i = 0; i < level->enemies.size(); i++)
+	{
+		if (level->enemies[i].dead)
+			level->enemies.erase(level->enemies.begin() + i);
+	}
 
 }
 
@@ -312,7 +354,7 @@ void SpriteGame::Render()
 	m_spriteBatch->Begin();
 	level->background->Draw(m_spriteBatch);
 
-
+	level->foreground->Draw(m_spriteBatch);
 	for (auto asteroid = level->passive_objects.begin(); asteroid != level->passive_objects.end(); asteroid++)
 	{
 		asteroid->Draw(m_spriteBatch);
@@ -328,12 +370,16 @@ void SpriteGame::Render()
 
 	//spaceShipLight->Draw();
 	//m_spriteBatch->Begin();
+	for (auto enemy = level->enemies.begin(); enemy != level->enemies.end(); enemy++)
+	{
+		enemy->Draw(m_spriteBatch);
+		enemy->DebugDraw(m_spriteBatch, m_debug_point);
+	}
 
 	CollisionGeometry sg = spaceship->getCollisionGeometry();
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 	{
 		particle->Draw(m_spriteBatch);
-
 
 		//particle->DebugDraw(m_spriteBatch, m_debug_point);
 	}

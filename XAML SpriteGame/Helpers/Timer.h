@@ -23,6 +23,7 @@ namespace Helpers
 	internal:
 		Timer();
 		void Reset();
+		void Reset(LONGLONG offset);
 		void Update();
 		property float Total
 		{
@@ -31,6 +32,10 @@ namespace Helpers
 		property float Delta
 		{
 			float get();
+		}
+		property LONGLONG CurrentTime
+		{
+			LONGLONG get();
 		}
 	};
 }
