@@ -344,6 +344,7 @@
     <ClInclude Include="GameEngine\Direct2DlightEffect.h" />
     <ClInclude Include="GameEngine\DirectionalPlayer.h" />
     <ClInclude Include="GameEngine\Enemy.h" />
+    <ClInclude Include="GameEngine\Explosion.h" />
     <ClInclude Include="GameEngine\FireBall.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="GameEngine\Ground.h" />
@@ -440,6 +441,7 @@
     <ClCompile Include="GameEngine\Direct2Dlighteffect.cpp" />
     <ClCompile Include="GameEngine\DirectionalPlayer.cpp" />
     <ClCompile Include="GameEngine\Enemy.cpp" />
+    <ClCompile Include="GameEngine\Explosion.cpp" />
     <ClCompile Include="GameEngine\FireBall.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="GameEngine\Ground.cpp" />

@@ -71,16 +71,7 @@ DirectXPage::DirectXPage()
 	// main rendering event handler
 	m_eventToken = CompositionTarget::Rendering += ref new EventHandler<Object^>(this, &DirectXPage::OnRendering);
 
-
-	if (!Exists(L"ApplicationInit"))
-	{
-		ApplicationData::Current->LocalFolder->CreateFileAsync("highscoresfile.dat");
-		writeToText("highscoresfile.dat", "0,0,0,0,0");
-		
-		Save(L"ApplicationInit", true);
-	}
-	
-
+	CheckNCreateFile(SAVEFILE);
 
 	m_timer = ref new Timer();
 
@@ -113,8 +104,9 @@ void DirectXPage::WireUpUIEvents()
 	dismissPaused->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnUnPauseTapped);
 	popupPaused->Closed += ref new Windows::Foundation::EventHandler<Platform::Object ^>(this, &GameEngine::DirectXPage::OnClosed);
 	Unpause->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnUnPauseTapped);
-	SettingsBut->Tapped +=ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnSettingsTapped);
-	Quit->Tapped+=ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnQuitTapped);
+	SettingsBut->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnSettingsTapped);
+	Quit->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnQuitTapped);
+
 	//Charm bar events
 	auto dataTransferManager = Windows::ApplicationModel::DataTransfer::DataTransferManager::GetForCurrentView();
 	dataTransferManager->DataRequested += ref new Windows::Foundation::TypedEventHandler<Windows::ApplicationModel::DataTransfer::DataTransferManager ^, Windows::ApplicationModel::DataTransfer::DataRequestedEventArgs ^>(this, &GameEngine::DirectXPage::OnDataRequested);
@@ -127,26 +119,17 @@ void DirectXPage::WireUpUIEvents()
 void  DirectXPage::CheckNCreateFile(String^ Filename)
 {
 
+	if (!Exists(L"ApplicationInit"))
+	{
+		ApplicationData::Current->LocalFolder->CreateFileAsync(Filename);
+		writeToText(Filename, "0,0,0,0,0");
 
-	create_task(ApplicationData::Current->LocalFolder->GetFileAsync(Filename)).then([this](task<StorageFile^> getFileTask)
-	{
-		try
-		{
-			StorageFile^ s = getFileTask.get();
-			return true;
-		}
-		catch (Exception^)
-		{
-			return false;
-		}
-	}, task_continuation_context::use_arbitrary()).then([this, Filename](bool filefound)
-	{
-		if (!filefound)
-			ApplicationData::Current->LocalFolder->CreateFileAsync(Filename);
-	});
+		Save(L"ApplicationInit", true);
+	}
 
 
 }
+//deprecated will be removed
 void DirectXPage::LoadText(String^ Filename)
 {
 	create_task(ApplicationData::Current->LocalFolder->GetFileAsync(Filename)).then([](StorageFile^  file)
@@ -181,8 +164,6 @@ void DirectXPage::LoadHighScores(String^ Filename)
 
 	}, task_continuation_context::use_arbitrary()).then([this](String^ filecontents)
 	{
-		//test->Text = filecontents;
-
 		std::wstring fooW(filecontents->Begin());
 		std::string fooA(fooW.begin(), fooW.end());
 		auto separated_string = split(fooA, ',');
@@ -191,7 +172,6 @@ void DirectXPage::LoadHighScores(String^ Filename)
 		{
 			scores.push_front(atoi((*str_score).c_str()));
 		}
-
 		ShowScores(-1);
 	});
 
@@ -212,8 +192,6 @@ void DirectXPage::HandleGameOver()
 		i++;
 	}
 
-	//std::sort(scores.begin(), scores.end(), std::greater<int>());
-
 	if (scores.size() > 5)
 		scores.erase(scores.end() - 1);
 
@@ -224,7 +202,7 @@ void DirectXPage::HandleGameOver()
 	{
 		newSave += (*score).ToString() + ",";
 	}
-	writeToText("highscoresfile.dat", newSave);
+	writeToText(SAVEFILE, newSave);
 	ShowScores(i);
 
 	m_renderer->LoadLevel("Menu.xml");
@@ -269,7 +247,6 @@ void DirectXPage::writeToText(String^ Filename, String^ text)
 			return FileIO::WriteTextAsync(file, text);
 		}, task_continuation_context::use_arbitrary()).then([this]()
 		{
-			//test->Text = "The following text was written to '" + test;
 		});
 	}
 
@@ -294,20 +271,31 @@ void DirectXPage::UpdateWindowSize()
 
 	if (m_renderer->m_renderTargetSize.Width < 600)
 		visibility = false;
+
 	if (visibility)
 	{
-		if (m_renderer->gamestate == GameState::Paused && !popupPaused->IsOpen)
+		if (m_renderer->gamestate == GameState::Paused)
 		{
 			m_timer->Reset(time_at_pause);
 			m_renderer->gamestate = previous_state;
+
 			active_UI->Visibility = Windows::UI::Xaml::Visibility::Visible;
 			PausedScreen->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 		}
 	}
 	else
 	{
-		time_at_pause = m_timer->CurrentTime;
+
+		if (popupPaused->IsOpen){
+			popupPaused->IsOpen = false;
+			previous_state = GameState::Playing;
+		}
+		else
+		{
+			time_at_pause = m_timer->CurrentTime;
+		}
 		previous_state = m_renderer->gamestate;
+
 		m_renderer->gamestate = GameState::Paused;
 		active_UI->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 		PausedScreen->Visibility = Windows::UI::Xaml::Visibility::Visible;
@@ -369,8 +357,7 @@ void DirectXPage::OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEv
 
 	m_renderer->LoadLevel("Menu.xml");
 	LoadSettings();
- 
-	LoadHighScores("highscoresfile.dat");
+	LoadHighScores(SAVEFILE);
 	LoadLevels(L"Level Data\\Levels.xml");
 	IsInitialDataLoaded = true;
 }
@@ -388,11 +375,11 @@ void DirectXPage::OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::
 	{
 		m_renderer->spaceship->ProcessKeyDown(e);
 
-		if (e->Key == VirtualKey::A)
-			m_renderer->spaceShipLight->m_currentEffect = m_renderer->spaceShipLight->m_pointSpecularEffect;
+		//if (e->Key == VirtualKey::A)
+		//	m_renderer->spaceShipLight->m_currentEffect = m_renderer->spaceShipLight->m_pointSpecularEffect;
 
-		if (e->Key == VirtualKey::B)
-			m_renderer->spaceShipLight->m_currentEffect = m_renderer->spaceShipLight->m_spotSpecularEffect;
+		//if (e->Key == VirtualKey::B)
+		//	m_renderer->spaceShipLight->m_currentEffect = m_renderer->spaceShipLight->m_spotSpecularEffect;
 	}
 }
 
@@ -832,19 +819,18 @@ void GameEngine::DirectXPage::OnPointerReleased(Platform::Object ^sender, Window
 void GameEngine::DirectXPage::OnUnPauseTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
 {
 	popupPaused->IsOpen = false;
+	m_renderer->gamestate = previous_state;
+	m_timer->Reset(time_at_pause);
 }
 
 
 void GameEngine::DirectXPage::OnClosed(Platform::Object ^sender, Platform::Object ^args)
 {
-	m_renderer->gamestate = previous_state;
-	m_timer->Reset(time_at_pause);
-
 }
 
 
 void GameEngine::DirectXPage::OnQuitTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
-{ 
+{
 
 
 

@@ -355,6 +355,7 @@
     <ClInclude Include="DXCore\SizeEnums.h" />
     <ClInclude Include="Entities\BasicShapes.h" />
     <ClInclude Include="Entities\SizeEnums.h" />
+    <ClInclude Include="GameEngine\Explosion.h" />
     <ClInclude Include="GameEngine\PassiveObject.h" />
     <ClInclude Include="GameEngine\CollidingObject.h" />
     <ClInclude Include="GameEngine\Direct2DlightEffect.h" />
@@ -444,6 +445,7 @@
     <ClCompile Include="Audio\AudioEngine.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="Audio\MediaStreamer.cpp" />
+    <ClCompile Include="GameEngine\Explosion.cpp" />
     <ClCompile Include="GameEngine\PassiveObject.cpp" />
     <ClCompile Include="GameEngine\CollidingObject.cpp" />
     <ClCompile Include="GameEngine\Direct2Dlighteffect.cpp" />

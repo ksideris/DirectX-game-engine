@@ -5,6 +5,8 @@
 #include "Helpers\Timer.h"  
 #include "Audio\AudioManager.h"
 
+#define SAVEFILE "highscores.dat"
+
 using namespace Windows::UI::ViewManagement;
 using namespace Windows::UI::Xaml::Media::Animation;
 using namespace Windows::UI::Xaml::Controls;
@@ -30,6 +32,8 @@ namespace GameEngine
 		std::deque<int> scores;
 
 		GameState previous_state;
+
+		Windows::Storage::StorageFile^  save_file;
 
 		Windows::Foundation::EventRegistrationToken	WindowActivationToken;
 

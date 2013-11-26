@@ -56,7 +56,7 @@ void SpriteGame::CreateProjectile()
 	AudioManager::AudioEngineInstance.StopSoundEffect(Shoot);
 	AudioManager::AudioEngineInstance.PlaySoundEffect(Shoot);
 }
- 
+
 void SpriteGame::LoadLevel(Platform::String^ level_xml)
 {
 	if (level != NULL)
@@ -195,14 +195,14 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			if (gamestate == Playing &&  dist(enemyparticle->GetPos(), spaceship->GetPos()) < enemyparticle->textureSize.Width*enemyparticle->GetScale().x*2.0)
 			{
 				if (PolygonCollision(spaceship->getCollisionGeometry(), enemyparticle->getCollisionGeometry()))
-				{ 
-					spaceship->health -=   10.f;
+				{
+					spaceship->health -= 10.f;
 					AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
 					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
 
-						enemyparticle = enemy->bullets.erase(enemyparticle);
+					enemyparticle = enemy->bullets.erase(enemyparticle); // erase particles out of screen issue?
 
-						if (enemyparticle == enemy->bullets.end())
+					if (enemyparticle == enemy->bullets.end())
 						break;
 				}
 			}
@@ -308,7 +308,10 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 			if (particle == m_particleData.end())
 				break;
 		}
-
+	}
+	for (auto particle = m_explosionData.begin(); particle != m_explosionData.end(); particle++)
+	{
+		particle->Update(timeDelta);
 
 
 	}
@@ -340,7 +343,19 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	for (int i = 0; i < level->enemies.size(); i++)
 	{
 		if (level->enemies[i].dead)
+		{
+
+			Explosion data; 
+			data.SetPos(level->enemies[i].GetPos()); 
+			data.SetScale(float2(1.0f, 1.0f));
+			data.SetTexture(m_particle); 
+			data.SetWindowSize(m_windowBounds);
+			m_explosionData.push_back(data);
+
 			level->enemies.erase(level->enemies.begin() + i);
+
+
+		}
 	}
 
 }
@@ -375,7 +390,10 @@ void SpriteGame::Render()
 		enemy->Draw(m_spriteBatch);
 		enemy->DebugDraw(m_spriteBatch, m_debug_point);
 	}
-
+	for (auto particle = m_explosionData.begin(); particle != m_explosionData.end(); particle++)
+	{
+		particle->Draw(m_spriteBatch);
+	}
 	CollisionGeometry sg = spaceship->getCollisionGeometry();
 	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
 	{
@@ -389,10 +407,6 @@ void SpriteGame::Render()
 	m_spriteBatch->End();
 }
 
-void SpriteGame::CheckScreenType()
-{
-
-}
 
 
 

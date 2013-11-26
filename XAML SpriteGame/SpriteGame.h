@@ -15,6 +15,7 @@
 #include "GameEngine\Direct2DlightEffect.h"
 #include "GameEngine\Enemy.h"
 #include "GameEngine\Level.h"
+#include "GameEngine\Explosion.h"
 
 
  
@@ -74,14 +75,13 @@ internal:
 	  
 	std::vector<PassiveObject> m_asteroidFragments;
 	std::vector<FireBall> m_particleData;
+	std::vector<Explosion> m_explosionData;
 
 
 	int m_numParticlesToDraw; 
 
 	 
-	void				LoadScreen();
-	void				CheckScreenType(); 
-
+	void				LoadScreen(); 
 	 
 
 };
