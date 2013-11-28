@@ -1,7 +1,6 @@
 
 #pragma once
-#include "ParticleSystem.h"
-#include "CollidingObject.h"
+#include "BaseParticleSystem.h" 
 
 class RocketFire :public ParticleSystem
 {
@@ -9,7 +8,6 @@ class RocketFire :public ParticleSystem
 
 public:
 
-	GameObject* ParentObject;
  
 	RocketFire();
 	void Update(float timeDelta);

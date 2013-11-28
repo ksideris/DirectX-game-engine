@@ -79,10 +79,10 @@ void FireBall::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 }
 
 float2 FireBall::GetTopLeft(){
-	return float2(pos.x - size.x, pos.y - size.y);
+	return float2(pos.x - scale.x, pos.y - scale.y);
 }
 float2 FireBall::GetBottomRight(){
-	return float2(pos.x + size.x, pos.y + size.y);
+	return float2(pos.x + scale.x, pos.y + scale.y);
 }
 
 void FireBall::UpdateCollisionGeometry(float2 prevPos, float2 pos, float rot)

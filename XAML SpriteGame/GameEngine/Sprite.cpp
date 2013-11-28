@@ -52,14 +52,24 @@ bool Sprite::IsOutOfVisibleArea()
 	{
 		return true;
 	}
-	if (pos.x < 0)
+	if (pos.x < -textureSize.Width  * scale.x)
 	{
 		return true;
 	}
-	if (pos.y <0)
+	if (pos.y < 0)
 	{
 		return true;
 	}
+
+	return false;
+}
+bool Sprite::IsPastPlayer()
+{
+	 
+	if (pos.x < -textureSize.Width  * scale.x)
+	{
+		return true;
+	} 
 
 	return false;
 }

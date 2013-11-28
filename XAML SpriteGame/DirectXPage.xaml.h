@@ -101,5 +101,9 @@ namespace GameEngine
 		void OnClosed(Platform::Object ^sender, Platform::Object ^args);
 		void OnQuitTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
 		void OnSettingsTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
+
+
+		void UpdateScores();
+
 	};
 }

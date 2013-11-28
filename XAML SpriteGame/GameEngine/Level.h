@@ -2,17 +2,14 @@
 #pragma once
 #include "Sprite.h"
 
-
- 
-
-#include "HorizontalSliderPlayer.h"
-#include "PassiveObject.h" 
-#include "SlidingBackgroundSprite.h" 
-#include "RocketFire.h"
-#include "FireBall.h"
+#include "Background.h" 
+#include "GameObjects/GamePlayElement.h" 
+#include "Backgrounds/SlidingBackgroundSprite.h" 
+#include "ParticleEffects/RocketFire.h"
+#include "ParticleEffects/FireBall.h"
 #include "Direct2DlightEffect.h"
-#include "Enemy.h"
-#include "Ground.h"
+#include "GameObjects/Characters/Enemy.h" 
+#include "GameObjects/Characters/HorizontalSliderPlayer.h" 
 
 using namespace DXCore;
 using namespace  DXCore::BasicSprites;
@@ -23,25 +20,30 @@ class Level
 public:
 	SlidingBackgroundSprite * background;
 	SlidingBackgroundSprite * foreground;
+ 
 
-	std::vector<PassiveObject> passive_objects;
-	std::vector<Enemy> enemies;
+	float finish_pos;
+
+	std::vector <GameObject*> all_gameobjects;
+	std::vector <Background*> all_backgrounds;
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_foreground;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_foreground2;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_ring; 
-	Microsoft::WRL::ComPtr<ID3D11Texture2D>		_projectile;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_ring;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_fline;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_projectile;
 		 
-	std::vector <std::pair< std::pair<int, int>, float>> Enemies;
- 
+	std::vector <std::pair< std::pair<int, int>, float>> Enemies;  
 	std::vector <std::pair<int, float>> AsteroidFields;
-
-	std::vector < std::pair<int, float>> Rings;
+	std::vector <std::pair<int, float>> Rings;
 	
 	std::vector < Microsoft::WRL::ComPtr<ID3D11Texture2D>   > EnemyTextures;
+
+
 	void SetWindowDependentProperties(Windows::Foundation::Rect  m_windowBounds);
 	void Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch, BasicLoader^ loader);
 	void Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  m_windowBounds);
+	~Level();
 };

@@ -8,7 +8,8 @@ using namespace BasicSprites;
 
 GameObject::GameObject()
 { 
-	dead = false;
+	_dead = false;
+	_lifetime = -1;
 }
 
 float2 GameObject::GetTopLeft(){
@@ -38,8 +39,29 @@ float   GameObject::GetRotVel(){
 	return rotVel;
 }
 
+float	GameObject::GetLifeTime(){
+	return _lifetime;
+}
+void	GameObject::SetLifeTime(float newLifeTime){
+	_lifetime = newLifeTime;
+}
 
+void	GameObject::SetDead(){
+	_dead = true;
+}
+bool	GameObject::IsAlive(){
+	return !_dead;
+}
 
+void GameObject::UpdateLifeTime()
+{
+	if (_lifetime > 0)
+		_lifetime--;
+
+	if (_lifetime == 0 )
+		_dead = true;
+	 
+}
 void GameObject::Update(float timeDelta)
 {
 
@@ -58,9 +80,11 @@ void GameObject::Update(float timeDelta)
 	{
 		rot += 2.0f * PI_F;
 	}
-
+	UpdateLifeTime();
 	UpdateChildren(timeDelta);
 	UpdateCollisionGeometry(prevPos, pos, prevRot-rot);
+	if (IsPastPlayer())
+		_dead = true;
 
 }
 void GameObject::UpdateChildren(float timeDelta)
@@ -110,4 +134,13 @@ void GameObject::SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D>  texture)
 
 	setRectangleCollisionGeometry(GetTopLeft(), GetBottomRight());
 
+}
+float GameObject::GetImpactSize()
+{
+	return .001f*textureSize.Width*scale.x *textureSize.Height*scale.y;
+}
+ImpactResult GameObject::ProcessHit(float ImpactFactor)
+{
+	_dead = true;
+	return ImpactResult::death;
 }

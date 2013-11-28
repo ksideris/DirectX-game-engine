@@ -76,10 +76,10 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 
 					loader->LoadTexture(
 						final_data,
-						&_projectile,
+						&m_projectile,
 						nullptr
 						);
-					m_spriteBatch->AddTexture(_projectile.Get());
+					m_spriteBatch->AddTexture(m_projectile.Get());
 
 
 
@@ -137,7 +137,7 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 
 
 				}
-				if (!strcmp("RingT", xml->getNodeName()))
+				if (!strcmp("RingTexture", xml->getNodeName()))
 				{
 					stringdata = xml->getAttributeValue("Texture");
 
@@ -199,8 +199,8 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 				}
 				if (!strcmp("Enemy", xml->getNodeName()))
 				{
-					stringdata2 = xml->getAttributeValue("Movem");
-					stringdata = xml->getAttributeValue("Type");
+					stringdata = xml->getAttributeValue("Movem");
+					stringdata2 = xml->getAttributeValue("Type");
 					std::pair<int, int> attributes = std::pair<int, int>(atoi(stringdata2.c_str()), atoi(stringdata.c_str()));
 
 					stringdata = xml->getAttributeValue("Pos");
@@ -208,8 +208,28 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 
 
 				}
-				break;
+				if (!strcmp("LevelEnd", xml->getNodeName()))
+				{
+					stringdata2 = xml->getAttributeValue("Pos");
 
+					stringdata = xml->getAttributeValue("Texture");
+					StringToWString(wstringdata, stringdata);
+					final_data = L"Assets\\GameObjects\\" + ref new Platform::String(wstringdata.c_str());
+
+					Microsoft::WRL::ComPtr<ID3D11Texture2D> etexture;
+
+					loader->LoadTexture(
+						final_data,
+						&m_fline,
+						nullptr
+						);
+					m_spriteBatch->AddTexture(m_fline.Get());
+
+					finish_pos = (float) atof(stringdata2.c_str());
+
+
+				}
+				break;
 						}
 		}
 	}
@@ -237,24 +257,21 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 		{
 			for (int i = 0; i < field->first; i++)
 			{
-				PassiveObject data;
-				data.type = PassiveObjectType::ASTEROID;
-
-				data.SetPos(float2(m_windowBounds.Width + 200, RandFloat(0.0f, m_windowBounds.Height)));
+				GameObject *data = new GameObject(); 
+				data->SetPos(float2(m_windowBounds.Width + 200, RandFloat(0.0f, m_windowBounds.Height)));
 				float tempRot = RandFloat(-PI_F, PI_F);
 				float tempMag = RandFloat(60.0f, 100.0f);
 				float tempScale = RandFloat(0.1f, 1.0f);
-
-				data.SetVel(float2(-tempMag, 0.f));
-				data.SetRot(0);
-				data.SetScale(float2(tempScale, tempScale));
-				data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
-				data.SetTexture(m_asteroid);
-				data.SetWindowSize(m_windowBounds);
-
-
-				data.lifeTime = -1;
-				passive_objects.push_back(data);
+				data->SetLifeTime(-1);
+				data->SetVel(float2(-tempMag, 0.f));
+				data->SetRot(0);
+				data->SetScale(float2(tempScale, tempScale));
+				data->SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
+				data->SetTexture(m_asteroid);
+				data->SetWindowSize(m_windowBounds);
+				 
+				//passive_objects.push_back(data);
+				all_gameobjects.push_back(data);
 			}
 		}
 	}
@@ -264,23 +281,20 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 		{
 			for (int i = 0; i < ring->first; i++)
 			{
-				PassiveObject data;
-				data.type = PassiveObjectType::RING;
-
-				data.SetPos(float2(m_windowBounds.Width + 200, RandFloat(m_windowBounds.Height / 4, 3 * m_windowBounds.Height / 4)));
+				GamePlayElement* data = new GamePlayElement();
+				data->SetLifeTime(-1);
+				data->type = GamePlayType::RING;
+				data->SetPos(float2(m_windowBounds.Width + 200, RandFloat(m_windowBounds.Height / 4, 3 * m_windowBounds.Height / 4)));
 				float tempRot = RandFloat(-PI_F, PI_F);
 				float tempMag = RandFloat(60.0f, 100.0f);
-
-				data.SetVel(float2(-tempMag, 0.f));
-				data.SetRot(tempRot);
-				data.SetScale(float2(.15f, .15f));
-				data.SetRotVel(0);
-				data.SetTexture(m_ring);
-				data.SetWindowSize(m_windowBounds);
-
-
-				data.lifeTime = -1;
-				passive_objects.push_back(data);
+				data->SetVel(float2(-tempMag, 0.f));
+				data->SetRot(tempRot);
+				data->SetScale(float2(.15f, .15f));
+				data->SetRotVel(0);
+				data->SetTexture(m_ring);
+				data->SetWindowSize(m_windowBounds);
+			
+				all_gameobjects.push_back(data);
 			}
 		}
 	}
@@ -288,24 +302,45 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 	{
 		if (timeTotal > enemy->second   && timeTotal < enemy->second + timeDelta)
 		{
-			(enemy->first).first;
-			(enemy->first).second;
-			Enemy data(EnemyMovement((enemy->first).second));
 
-			data.SetPos(float2(m_windowBounds.Width + 200, RandFloat(m_windowBounds.Height / 4, 3 * m_windowBounds.Height / 4)));
-
-
-			data.SetVel(float2(0.f, 0.f));
-			data._projectile = _projectile;
-			data.SetScale(float2(.75f, .75f));
-			data.SetRotVel(0);
-			data.SetTarget(data.GetPos());
-			data.SetTexture(EnemyTextures[(enemy->first).first]);
-			data.SetWindowSize(m_windowBounds);
-
-
-			enemies.push_back(data);
+			Enemy *data = new Enemy(EnemyMovement((enemy->first).second));
+			data->SetLifeTime(-1);
+			data->SetPos(float2(m_windowBounds.Width + 200, RandFloat(m_windowBounds.Height / 4, 3 * m_windowBounds.Height / 4)));
+			data->SetVel(float2(0.f, 0.f));
+			data->_projectile = m_projectile;
+			data->SetScale(float2(.75f, .75f));
+			data->SetRotVel(0);
+			data->SetTarget(data->GetPos());
+			data->SetTexture(EnemyTextures[(enemy->first).first]);
+			data->SetWindowSize(m_windowBounds);
+			all_gameobjects.push_back(data);
 
 		}
 	}
+	if (timeTotal > finish_pos  && timeTotal < finish_pos + timeDelta)
+	{
+		GamePlayElement*  data = new GamePlayElement();
+		data->SetLifeTime(-1);
+		data->type = GamePlayType::FINISHLINE;
+		data->SetTexture(m_fline);
+		data->SetPos(float2(m_windowBounds.Width + data->textureSize.Width / 2.f, m_windowBounds.Height / 2));
+		data->SetVel(float2(-100, 0));
+		data->SetScale(float2(m_windowBounds.Height / data->textureSize.Height, m_windowBounds.Height / data->textureSize.Height));
+		data->SetRotVel(0);
+		data->SetWindowSize(m_windowBounds);
+		 
+		all_gameobjects.push_back(data);
+	}
+}
+
+
+Level::~Level()
+{
+
+	for (auto object = all_gameobjects.begin(); object != all_gameobjects.end(); object++)
+	{
+		delete (*object);
+	}
+	all_gameobjects.clear();
+
 }

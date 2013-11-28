@@ -7,15 +7,14 @@
 
 #include "Audio\AudioManager.h"
 
-#include "GameEngine\HorizontalSliderPlayer.h"
-#include "GameEngine\PassiveObject.h" 
-#include "GameEngine\SlidingBackgroundSprite.h"
-#include "GameEngine\RocketFire.h"
-#include "GameEngine\FireBall.h"
+#include "GameEngine\GameObject.h"
+#include "GameEngine\Background.h"  
 #include "GameEngine\Direct2DlightEffect.h"
-#include "GameEngine\Enemy.h"
 #include "GameEngine\Level.h"
-#include "GameEngine\Explosion.h"
+
+#include "GameEngine\ParticleEffects\RocketFire.h"
+#include "GameEngine\ParticleEffects\FireBall.h"
+#include "GameEngine\ParticleEffects\Explosion.h"
 
 
  
@@ -46,7 +45,7 @@ public:
 
 internal: 
 
-
+	
 	GameState gamestate;
 	Level* level;
 	 
@@ -64,24 +63,26 @@ internal:
 
 
 	float time_passed;
-	int score = 0;
+	int score;
 
 
 	HorizontalSliderPlayer* spaceship;
 	RocketFire * rocketFuel;
 	d2dLightEffect * spaceShipLight;
 
-
-	  
-	std::vector<PassiveObject> m_asteroidFragments;
+	 
 	std::vector<FireBall> m_particleData;
 	std::vector<Explosion> m_explosionData;
 
+	vector < pair<GameObject*, GameObject*>> colliding;
 
 	int m_numParticlesToDraw; 
 
-	 
-	void				LoadScreen(); 
+
+	void DetectCollisions();
+	void HandleCollisions();
+	void RemoveDead();
+	void LoadScreen(); 
 	 
 
 };

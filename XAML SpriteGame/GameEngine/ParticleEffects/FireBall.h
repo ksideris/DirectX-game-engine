@@ -1,10 +1,8 @@
-#pragma once
-#include "Sprite.h"  
-#include "ParticleSystem.h"  
-#include "CollidingObject.h"
+#pragma once 
+#include "BaseParticleSystem.h"   
  
 
-class FireBall :public ParticleSystem, public CollidingObject
+class FireBall :public ParticleSystem 
 {
 protected:
 	 

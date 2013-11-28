@@ -1,11 +1,13 @@
 #pragma once
  
-#include "ParticleSystem.h" 
+#include "BaseParticleSystem.h" 
 
 class Explosion :public ParticleSystem
 {
 	float4 color;
 public:
+
+	int lifetime;
 	Explosion();
 	Explosion(float2 _size, float4 _color);
 	void Update(float timeDelta);

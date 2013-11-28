@@ -359,8 +359,7 @@ void DirectXBase::CreateWindowSizeDependentResources()
 		);
 
 	// So now we can set the Direct2D render target.
-	m_d2dContext->SetTarget(m_d2dTargetBitmap.Get());
-
+	m_d2dContext->SetTarget(m_d2dTargetBitmap.Get()); 
 	// Set D2D text anti-alias mode to Grayscale to ensure proper rendering of text on intermediate surfaces.
 	m_d2dContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
 }

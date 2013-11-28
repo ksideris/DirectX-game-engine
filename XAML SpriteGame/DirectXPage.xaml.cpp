@@ -180,6 +180,27 @@ void DirectXPage::LoadHighScores(String^ Filename)
 
 void DirectXPage::HandleGameOver()
 {
+	m_renderer->gamestate = GameState::GameOver;
+	if (m_timer->Total >= m_renderer->level->finish_pos)
+	{
+		m_renderer->spaceship->SetTarget(float2(m_renderer->m_windowBounds.Width, m_renderer->m_windowBounds.Height)*.5f);
+
+	}
+	else
+	{
+		Explosion data;
+		data.lifetime = 100;
+		data.SetPos(m_renderer->spaceship->GetPos());
+		data.SetScale(float2(1.0f, 1.0f));
+		data.SetTexture(m_renderer->m_particle);
+		data.SetWindowSize(m_renderer->m_windowBounds);
+		m_renderer->m_explosionData.push_back(data);
+	 
+	}
+	 
+}
+void DirectXPage::UpdateScores()
+{
 	int i = 0;
 	for (auto score = scores.begin(); score != scores.end(); score++)
 	{
@@ -195,8 +216,6 @@ void DirectXPage::HandleGameOver()
 	if (scores.size() > 5)
 		scores.erase(scores.end() - 1);
 
-
-
 	String^ newSave = "";
 	for (auto score = scores.begin(); score != scores.end(); score++)
 	{
@@ -204,10 +223,6 @@ void DirectXPage::HandleGameOver()
 	}
 	writeToText(SAVEFILE, newSave);
 	ShowScores(i);
-
-	m_renderer->LoadLevel("Menu.xml");
-	m_renderer->gamestate = GameState::Menu;
-
 }
 void DirectXPage::ShowScores(int highLightIndex)
 {
@@ -336,10 +351,9 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 		{
 			HandleGameOver();
 		}
-		else
-		if (m_renderer->spaceship->health != health)
+		else if (m_renderer->spaceship->health != health)
 			PlayerHitAnimation->Begin();
-
+		 
 		HealthBar->Width = max(m_renderer->spaceship->health, 0) * 350 / 100.f;
 		health = m_renderer->spaceship->health;
 
@@ -388,8 +402,6 @@ void  DirectXPage::OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::K
 	if (m_renderer->gamestate == Playing)
 	{
 		m_renderer->spaceship->ProcessKeyUp(e);
-		if (e->Key == VirtualKey::Space)
-			m_renderer->CreateProjectile();
 	}
 }
 

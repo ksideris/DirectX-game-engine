@@ -1,15 +1,10 @@
 
 #pragma once
-#include "Sprite.h"
+#include "../Background.h"
 
-enum BackgroundRenderMode{
-	ORIGINAL = 1,
-	STRETCH_HEIGHT = 2,
-	STRETCH_WIDTH = 3,
-	STRETCH = 4
-};
+ 
 
-class SlidingBackgroundSprite : public Sprite
+class SlidingBackgroundSprite : public Background 
 {
 	float2 vel;
 	float2 second_pos;

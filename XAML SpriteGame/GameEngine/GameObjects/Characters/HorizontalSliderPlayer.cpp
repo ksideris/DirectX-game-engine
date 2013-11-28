@@ -9,10 +9,14 @@ using namespace Windows::UI::Core;
 
 HorizontalSliderPlayer::HorizontalSliderPlayer()
 {
-	Player::Player();
+ 
 	TargetPos = float2(-1, -1);
 	vel = float2(0, 0);
 	accel.y = 1000;
+}
+
+void HorizontalSliderPlayer::SetTarget(float2 newTarget){
+	TargetPos = newTarget;
 }
 
 void HorizontalSliderPlayer::Update(float timeDelta)
@@ -83,7 +87,6 @@ void HorizontalSliderPlayer::ProcessKeyDown(Windows::UI::Xaml::Input::KeyRoutedE
 		vel.y =  500;
 	}
 
-
 	if (!args->KeyStatus.WasKeyDown)
 		keys_down += 1;
 
@@ -96,6 +99,11 @@ void HorizontalSliderPlayer::ProcessKeyUp(Windows::UI::Xaml::Input::KeyRoutedEve
 	keys_down -= 1;
 	if (keys_down == 0)
 		vel = (0.f, 0.f);
+
+	if (args->Key == VirtualKey::Space)
+	{
+		Shoot();
+	}
 }
 
 

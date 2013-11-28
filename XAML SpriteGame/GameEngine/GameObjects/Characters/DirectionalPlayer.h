@@ -1,32 +1,32 @@
 
-#pragma once
-#include "GameObject.h"
+#pragma once 
+#include "ControllableCharacter.h"
 using namespace DXCore;
 using namespace DXCore::BasicSprites;
 
 
-class Player :public GameObject
+class DirectionalPlayer : public ControllableCharacter
 {
-	int keys_down;
-	float lightUpdate;
+	int keys_down; 
 	float2 TargetPos;
 
-
+	float z;
 public:
 
-	int health;
-	float z;
-
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> spot_texture;
- 
-	Player();
+
+	DirectionalPlayer();
+
+
 	void Update(float timeDelta);
+
 	void KeepInBounds();
+
+
 	void ProcessKeyDown(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args);
 	void ProcessKeyUp(Windows::UI::Xaml::Input::KeyRoutedEventArgs^ args);
 	void ProcessPointerPressed(Windows::UI::Input::PointerPoint^ pt);
 	void ProcessPointerReleased(Windows::UI::Input::PointerPoint^ pt);
-	void ProcessPointerMoved(Windows::UI::Input::PointerPoint^ pt);
-	void Player::Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
+	void ProcessPointerMoved(Windows::UI::Input::PointerPoint^ pt); 
 
 };

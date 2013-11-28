@@ -28,31 +28,6 @@ void SpriteGame::CreateDeviceIndependentResources()
 
 void SpriteGame::CreateProjectile()
 {
-	FireBall data(false);
-	data.SetPos(spaceship->GetPos());
-	data.vel = float2(1000.0f* cos(spaceship->GetRot()), -1000.0f*sin(spaceship->GetRot()));
-	data.SetScale(float2(1.0f, 1.0f));
-	data.SetTexture(m_particle);
-	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
-	data.SetWindowSize(m_windowBounds);
-	m_particleData.push_back(data);
-	/*
-	FireBall data2(false);
-	data2.SetPos(spaceship->GetPos() - float2(spaceship->textureSize.Width*spaceship->GetScale().x / 2.0, spaceship->textureSize.Height*spaceship->GetScale().y / 2.0));
-	data2.vel = float2(1000.0f* cos(spaceship->GetRot()), -1000.0f*sin(spaceship->GetRot()));
-	data2.SetScale(float2(1.0f, 1.0f));
-	data2.SetTexture(m_particle);
-	data2.setCollisionGeometryForParticle(float2(20, 20), data2.GetPos());
-	data2.SetWindowSize(m_windowBounds);
-	m_particleData.push_back(data2);
-	FireBall data3(false);
-	data3.SetPos(spaceship->GetPos() + float2(-spaceship->textureSize.Width*spaceship->GetScale().x / 2.0, spaceship->textureSize.Height*spaceship->GetScale().y / 2.0));
-	data3.vel = float2(1000.0f* cos(spaceship->GetRot()), -1000.0f*sin(spaceship->GetRot()));
-	data3.SetScale(float2(1.0f, 1.0f));
-	data3.SetTexture(m_particle);
-	data3.setCollisionGeometryForParticle(float2(20, 20), data3.GetPos());
-	data3.SetWindowSize(m_windowBounds);
-	m_particleData.push_back(data3);*/
 	AudioManager::AudioEngineInstance.StopSoundEffect(Shoot);
 	AudioManager::AudioEngineInstance.PlaySoundEffect(Shoot);
 }
@@ -81,7 +56,7 @@ void SpriteGame::CreateDeviceResources()
 	DirectXBase::CreateDeviceResources();
 
 	m_spriteBatch = ref new SpriteBatch();
-	unsigned int capacity = 10000;
+	unsigned int capacity = 60000;
 
 	m_spriteBatch->Initialize(
 		m_d3dDevice.Get(),
@@ -143,13 +118,14 @@ void SpriteGame::CreateDeviceResources()
 	spaceship->SetRotVel(0);
 	spaceship->SetScale(float2(.35, .35));
 
+	spaceship->_projectile = m_particle;
+
 
 }
 
 void SpriteGame::CreateWindowSizeDependentResources()
 {
 	DirectXBase::CreateWindowSizeDependentResources();
-
 
 	spaceship->SetWindowSize(m_windowBounds);
 
@@ -160,19 +136,13 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
 	spaceship->AddChild(float2(spaceship->textureSize.Width / 2.0f*spaceship->GetScale().x, spaceship->textureSize.Height / 2.0f*spaceship->GetScale().y), rocketFuel);
 
-
-
 	rocketFuel->SetPos(spaceship->GetPos());
 
 	if (level != NULL)
 	{
 		level->background->SetWindowSize(m_windowBounds);
 	}
-
-	//spaceShipLight->InitWindowDependentProperties(m_renderTargetSize);
-
-	//level->ground->SetWindowSize(m_windowBounds);
-
+	 
 
 }
 
@@ -182,182 +152,116 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 
 	level->background->Update(timeDelta);
 	level->foreground->Update(timeDelta);
-	level->Update(timeTotal, timeDelta, m_windowBounds);
+
+	for (auto object = level->all_gameobjects.begin(); object != level->all_gameobjects.end(); object++) // update level objects
+		(*object)->Update(timeDelta);
+
+	for (auto object = m_explosionData.begin(); object != m_explosionData.end(); object++) // update explosions
+		object->Update(timeDelta);
+
+
+	if (gamestate == GameState::Playing) //if playing , create new level objects
+		level->Update(timeTotal, timeDelta, m_windowBounds);
 
 	spaceship->Update(timeDelta);
-	rocketFuel->Update(timeDelta);
-	for (auto enemy = level->enemies.begin(); enemy != level->enemies.end(); enemy++)
+
+	DetectCollisions();
+	HandleCollisions();
+	RemoveDead();
+	 
+
+}
+void SpriteGame::DetectCollisions(){
+
+	colliding.clear();
+	for (auto pobject = level->all_gameobjects.begin(); pobject != level->all_gameobjects.end(); pobject++)  // process all player collisions
 	{
-		enemy->Update(timeDelta);
-		for (auto enemyparticle = enemy->bullets.begin(); enemyparticle != enemy->bullets.end(); enemyparticle++)
+		if (dynamic_cast<Enemy*>((*pobject)) != NULL) // if it is an enemy we need to add the bullets 
 		{
-			enemyparticle->Update(timeDelta);
-			if (gamestate == Playing &&  dist(enemyparticle->GetPos(), spaceship->GetPos()) < enemyparticle->textureSize.Width*enemyparticle->GetScale().x*2.0)
+			Enemy* en = dynamic_cast<Enemy*>((*pobject));
+			for (auto bullet = en->bullets.begin(); bullet != en->bullets.end(); bullet++) // add enemy bullets to the collision list
 			{
-				if (PolygonCollision(spaceship->getCollisionGeometry(), enemyparticle->getCollisionGeometry()))
+
+				if (dist(bullet->GetPos(), spaceship->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0) // prune collision list based on distance
 				{
-					spaceship->health -= 10.f;
-					AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
-					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
-
-					enemyparticle = enemy->bullets.erase(enemyparticle); // erase particles out of screen issue?
-
-					if (enemyparticle == enemy->bullets.end())
-						break;
+					if (PolygonCollision(bullet->getCollisionGeometry(), spaceship->getCollisionGeometry())) //checkCollision
+						colliding.push_back(pair<GameObject*, GameObject*>(spaceship, &(*bullet)));
 				}
 			}
 		}
-		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
+		if (dist((*pobject)->GetPos(), spaceship->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0) // prune collision list based on distance
 		{
-			if (gamestate == Playing &&  dist(particle->GetPos(), enemy->GetPos()) < enemy->textureSize.Width*enemy->GetScale().x*2.0)
-			{
-				if (PolygonCollision(particle->getCollisionGeometry(), enemy->getCollisionGeometry()))
-				{
-					enemy->ProcessHit(10);
+			if (PolygonCollision((*pobject)->getCollisionGeometry(), spaceship->getCollisionGeometry())) //checkCollision
+				colliding.push_back(pair<GameObject*, GameObject*>(spaceship, *pobject));
 
-					particle = m_particleData.erase(particle);
-
-
-					if (particle == m_particleData.end())
-						break;
-				}
-			}
 		}
 	}
-	for (auto pobject = level->passive_objects.begin(); pobject != level->passive_objects.end(); pobject++)
+
+	for (auto pobject = level->all_gameobjects.begin(); pobject != level->all_gameobjects.end(); pobject++) // process all enemy collisions
 	{
-		pobject->Update(timeDelta);
-
-
-		if (pobject->lifeTime > 0)
-			pobject->lifeTime--;
-
-		if (pobject->lifeTime == 0 || pobject->GetPos().x < -200)
+		for (auto bullet = spaceship->bullets.begin(); bullet != spaceship->bullets.end(); bullet++) //against player bullets
 		{
-			pobject->dead = true;
-
-		}
-		if (gamestate == Playing && dist(spaceship->GetPos(), pobject->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0)
-		{
-			if ((pobject->type == PassiveObjectType::RING || pobject->type == PassiveObjectType::ASTEROID) && PolygonCollision(spaceship->getCollisionGeometry(), pobject->getCollisionGeometry()))
+			if ( dynamic_cast<GamePlayElement*>((*pobject)) == NULL )  // We only want to hit Enemies & asteroids, not gameplay stuff
 			{
-				if (pobject->type == PassiveObjectType::ASTEROID){
-					spaceship->health -= (int) pobject->GetScale().x * 10.f;
-					AudioManager::AudioEngineInstance.StopSoundEffect(Crash);
-					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
-				}
-				else if (pobject->type == PassiveObjectType::RING)
+				if (dist((*pobject)->GetPos(), bullet->GetPos()) < (*pobject)->textureSize.Width*(*pobject)->GetScale().x*2.0) // prune collision list based on distance
 				{
-					AudioManager::AudioEngineInstance.StopSoundEffect(Star);
-					AudioManager::AudioEngineInstance.PlaySoundEffect(Star);
-					score++;
-				}
-
-				pobject->dead = true;
-			}
-		}
-
-		for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
-		{
-			if (gamestate == Playing &&  dist(particle->GetPos(), pobject->GetPos()) < pobject->textureSize.Width*pobject->GetScale().x*2.0)
-			{
-				if (pobject->lifeTime == -1 && pobject->type == PassiveObjectType::ASTEROID && PolygonCollision(particle->getCollisionGeometry(), pobject->getCollisionGeometry()))
-				{
-
-					AudioManager::AudioEngineInstance.PlaySoundEffect(Crash);
-
-					particle = m_particleData.erase(particle);
-
-					for (int i = 0; i < 5; i++)
-					{
-						PassiveObject  data;
-						data.lifeTime = 20;
-						data.type = PassiveObjectType::FRAGMENT;
-						data.SetPos(pobject->GetPos());
-						float tempRot = RandFloat(-PI_F, PI_F);
-						float tempMag = RandFloat(60.0f, 80.0f);
-						data.SetVel(float2(tempMag * cosf(tempRot), tempMag * sinf(tempRot)));
-						data.SetRot(0);
-						data.SetScale(pobject->GetScale() / 4.f);
-
-						data.SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * pobject->GetScale().x));
-						data.size = (180.f, 110.f);
-						data.SetTexture(m_asteroid);
-						data.SetWindowSize(m_windowBounds);
-						m_asteroidFragments.push_back(data);
-					}
-
-
-					pobject->dead = true;
-
-					if (particle == m_particleData.end())
-						break;
+					if (PolygonCollision((*pobject)->getCollisionGeometry(), bullet->getCollisionGeometry())) //checkCollision
+						colliding.push_back(pair<GameObject*, GameObject*>( &(*bullet), *pobject));
 
 				}
 			}
 		}
 	}
-	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
-	{
-		particle->Update(timeDelta);
 
-		if (particle->IsOutOfVisibleArea())
+}
+void SpriteGame::HandleCollisions()
+{
+	for (auto c = colliding.begin(); c != colliding.end(); c++)
+	{
+
+		ImpactResult res1 = c->first->ProcessHit(c->second->GetImpactSize());
+
+		ImpactResult res2 = c->second->ProcessHit(c->first->GetImpactSize());
+
+		if (res1 == ImpactResult::score || res2 == ImpactResult::score)
+			score += 1;
+
+		if (res1 == ImpactResult::explosion)
 		{
-			particle = m_particleData.erase(particle);
-
-			if (particle == m_particleData.end())
-				break;
-		}
-	}
-	for (auto particle = m_explosionData.begin(); particle != m_explosionData.end(); particle++)
-	{
-		particle->Update(timeDelta);
-
-
-	}
-	for (auto asteroid = m_asteroidFragments.begin(); asteroid != m_asteroidFragments.end(); asteroid++)
-	{
-		asteroid->Update(timeDelta);
-
-		if (asteroid->lifeTime > 0)
-			asteroid->lifeTime--;
-
-		if (asteroid->lifeTime == 0)
-		{
-
-			asteroid = m_asteroidFragments.erase(asteroid);
-
-			if (asteroid == m_asteroidFragments.end())
-				break;
-			continue;
-		}
-	}
-	//spaceShipLight->Update(spaceship);
-
-	for (int i = 0; i < level->passive_objects.size(); i++)
-	{
-		if (level->passive_objects[i].dead)
-			level->passive_objects.erase(level->passive_objects.begin() + i);
-	}
-
-	for (int i = 0; i < level->enemies.size(); i++)
-	{
-		if (level->enemies[i].dead)
-		{
-
-			Explosion data; 
-			data.SetPos(level->enemies[i].GetPos()); 
-			data.SetScale(float2(1.0f, 1.0f));
-			data.SetTexture(m_particle); 
+			Explosion data;
+			data.lifetime = 30;
+			data.SetPos(c->first->GetPos());
+			data.SetScale(float2(20.0f, 20.0f));
+			data.SetTexture(m_particle);
 			data.SetWindowSize(m_windowBounds);
 			m_explosionData.push_back(data);
-
-			level->enemies.erase(level->enemies.begin() + i);
-
-
+		}
+		if (res2 == ImpactResult::explosion)
+		{
+			Explosion data;
+			data.lifetime = 30;
+			data.SetPos(c->first->GetPos());
+			data.SetScale(float2(20.0f, 20.0f));
+			data.SetTexture(m_particle);
+			data.SetWindowSize(m_windowBounds);
+			m_explosionData.push_back(data);
 		}
 	}
 
+}
+void SpriteGame::RemoveDead()
+{
+	for (auto pobject = level->all_gameobjects.begin(); pobject != level->all_gameobjects.end(); pobject++)
+	{
+		if (!(*pobject)->IsAlive())
+		{
+			delete *(pobject);
+			pobject = level->all_gameobjects.erase(pobject);
+
+			if (pobject == level->all_gameobjects.end())
+				break;
+		}
+	}
 }
 
 void SpriteGame::Render()
@@ -368,42 +272,16 @@ void SpriteGame::Render()
 
 	m_spriteBatch->Begin();
 	level->background->Draw(m_spriteBatch);
-
 	level->foreground->Draw(m_spriteBatch);
-	for (auto asteroid = level->passive_objects.begin(); asteroid != level->passive_objects.end(); asteroid++)
-	{
-		asteroid->Draw(m_spriteBatch);
-		//asteroid->DebugDraw(m_spriteBatch, m_debug_point);
 
-	}
-	for (auto asteroid = m_asteroidFragments.begin(); asteroid != m_asteroidFragments.end(); asteroid++)
-	{
-		asteroid->Draw(m_spriteBatch);
-
-	}
-	//m_spriteBatch->End();
-
-	//spaceShipLight->Draw();
-	//m_spriteBatch->Begin();
-	for (auto enemy = level->enemies.begin(); enemy != level->enemies.end(); enemy++)
-	{
-		enemy->Draw(m_spriteBatch);
-		enemy->DebugDraw(m_spriteBatch, m_debug_point);
-	}
+	for (auto object = level->all_gameobjects.begin(); object != level->all_gameobjects.end(); object++)
+			(*object)->Draw(m_spriteBatch);
+ 
 	for (auto particle = m_explosionData.begin(); particle != m_explosionData.end(); particle++)
-	{
-		particle->Draw(m_spriteBatch);
-	}
-	CollisionGeometry sg = spaceship->getCollisionGeometry();
-	for (auto particle = m_particleData.begin(); particle != m_particleData.end(); particle++)
-	{
-		particle->Draw(m_spriteBatch);
-
-		//particle->DebugDraw(m_spriteBatch, m_debug_point);
-	}
+			particle->Draw(m_spriteBatch);
+ 
 	spaceship->Draw(m_spriteBatch);
-
-	//spaceship->DebugDraw(m_spriteBatch, m_debug_point);
+	 
 	m_spriteBatch->End();
 }
 
