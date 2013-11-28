@@ -39,8 +39,7 @@ void Enemy::Update(float timeDelta)
 		{
 		case EnemyMovement::RANDOM:
 			{
-				if (dist(TargetPos, pos) < 5)
-					TargetPos = float2(RandFloat(_windowRect.Width / 2, _windowRect.Width - textureSize.Width), RandFloat(textureSize.Height, _windowRect.Height - textureSize.Height));
+				TargetPos = float2(RandFloat(_windowRect.Width / 2, _windowRect.Width - textureSize.Width), RandFloat(textureSize.Height, _windowRect.Height - textureSize.Height));
 				break;
 								  }
 		case EnemyMovement::UP_DOWN:
@@ -64,4 +63,8 @@ void Enemy::Update(float timeDelta)
 	UpdateCollisionGeometry(prevPos, pos, prevRot - rot);
 	
 }
- 
+
+float Enemy::GetImpactSize()
+{
+	return 10.f;
+}

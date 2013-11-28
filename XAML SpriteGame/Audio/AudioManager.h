@@ -16,7 +16,7 @@ namespace AudioEngine
 		static void SetMainMenuMusic();
 		static void SetGameWonMusic();
 		static void CheckStates();
-		static void SetGamePlayMusic();
+		static void SetGamePlayMusic(const wchar_t* musicurl);
 
 		static void SetMusicVolume(int percent);
 		static void SetSFXVolume(int percent);

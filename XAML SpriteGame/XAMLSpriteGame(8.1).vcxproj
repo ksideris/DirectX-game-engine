@@ -355,6 +355,7 @@
     <ClInclude Include="DXCore\SizeEnums.h" />
     <ClInclude Include="Entities\BasicShapes.h" />
     <ClInclude Include="Entities\SizeEnums.h" />
+    <ClInclude Include="GameEngine\Backgrounds\FlashingBackground.h" />
     <ClInclude Include="GameEngine\GameObjects\Characters\ControllableCharacter.h" />
     <ClInclude Include="GameEngine\GameObjects\GamePlayElement.h" />
     <ClInclude Include="GameEngine\ParticleEffects\BaseParticleSystem.h" />
@@ -408,6 +409,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\GameObjects\andromeda.png" />
+    <Image Include="Assets\GameObjects\badhealth.png" />
+    <Image Include="Assets\GameObjects\bad_health.png" />
     <Image Include="Assets\GameObjects\debug.png" />
     <Image Include="Assets\GameObjects\Enemy1.png" />
     <Image Include="Assets\GameObjects\Enemy2.png" />
@@ -420,11 +423,13 @@
     <Image Include="Assets\GameObjects\ground.png" />
     <Image Include="Assets\GameObjects\HeightMap.png" />
     <Image Include="Assets\GameObjects\ida.dds" />
+    <Image Include="Assets\GameObjects\life_upgrade.png" />
     <Image Include="Assets\GameObjects\m32.png" />
     <Image Include="Assets\GameObjects\particle.png" />
     <Image Include="Assets\GameObjects\ring.png" />
     <Image Include="Assets\GameObjects\SpaceShip.png" />
     <Image Include="Assets\GameObjects\spotlight.png" />
+    <Image Include="Assets\GameObjects\weapons_upgrade.png" />
     <Image Include="Assets\Icons\150x150Tile.scale-100.png" />
     <Image Include="Assets\Icons\150x150Tile.scale-140.png" />
     <Image Include="Assets\Icons\150x150Tile.scale-180.png" />
@@ -437,6 +442,7 @@
     <Image Include="Assets\UI\clockHud.png" />
     <Image Include="Assets\UI\heartHud.png" />
     <Image Include="Assets\UI\pauseButton.png" />
+    <Image Include="Assets\UI\shootButton.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DXCore\DirectXLinker.h" />
@@ -447,6 +453,7 @@
     <ClCompile Include="Audio\AudioEngine.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="Audio\MediaStreamer.cpp" />
+    <ClCompile Include="GameEngine\Backgrounds\FlashingBackground.cpp" />
     <ClCompile Include="GameEngine\GameObjects\GamePlayElement.cpp" />
     <ClCompile Include="GameEngine\ParticleEffects\Explosion.cpp" />
     <ClCompile Include="GameEngine\ParticleEffects\FireBall.cpp" />
@@ -623,6 +630,8 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Media Include="Assets\Music\DST-10Class.wav" />
+    <Media Include="Assets\Music\DST-BeyondTheseForests.wav" />
     <Media Include="Assets\Music\maintheme.wav" />
     <Media Include="Assets\Sounds\Coin1.wav" />
     <Media Include="Assets\Sounds\Crash.wav" />

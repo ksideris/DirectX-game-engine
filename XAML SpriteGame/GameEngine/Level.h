@@ -34,12 +34,17 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_ring;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_fline;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_projectile;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_health_text;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_weapons_text;
 		 
 	std::vector <std::pair< std::pair<int, int>, float>> Enemies;  
 	std::vector <std::pair<int, float>> AsteroidFields;
 	std::vector <std::pair<int, float>> Rings;
-	
-	std::vector < Microsoft::WRL::ComPtr<ID3D11Texture2D>   > EnemyTextures;
+
+	std::vector <float> Powerups;
+	std::vector <float> Health_upg;
+
+	std::vector < Microsoft::WRL::ComPtr<ID3D11Texture2D>   > EnemyTextures; 
 
 
 	void SetWindowDependentProperties(Windows::Foundation::Rect  m_windowBounds);

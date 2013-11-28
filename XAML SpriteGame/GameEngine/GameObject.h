@@ -19,6 +19,8 @@ enum ImpactResult
 	explosion = 6,
 	bigexplosion = 7,
 	shatter = 8,
+	health = 9,
+	weapon_upgrade = 10,
 
 };
 

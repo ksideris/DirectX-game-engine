@@ -7,7 +7,8 @@ enum GamePlayType
 	RING = 1,
 	ASTEROID = 2, 
 	UPGRADE = 4,
-	FINISHLINE = 5
+	HEALTH = 5,
+	FINISHLINE = 6
 
 };
 

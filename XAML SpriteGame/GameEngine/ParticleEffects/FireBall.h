@@ -17,5 +17,6 @@ public:
 	float2 GetBottomRight();
 	void UpdateCollisionGeometry(float2 prevPos, float2 pos, float rot);
 	void setCollisionGeometryForParticle(float2 size, float2 _pos);
+	ImpactResult ProcessHit(float ImpactFactor);
 
 };

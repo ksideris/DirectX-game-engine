@@ -142,5 +142,7 @@ float GameObject::GetImpactSize()
 ImpactResult GameObject::ProcessHit(float ImpactFactor)
 {
 	_dead = true;
+	AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::Crash);
+	AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::Crash);
 	return ImpactResult::death;
 }

@@ -4,9 +4,9 @@
 
 class Explosion :public ParticleSystem
 {
-	float4 color;
 public:
 
+	float4 color;
 	int lifetime;
 	Explosion();
 	Explosion(float2 _size, float4 _color);

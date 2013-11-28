@@ -24,6 +24,7 @@ public:
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> spot_texture;
  
+	virtual void Reset();
 	virtual void Update(float timeDelta)=0;
 	virtual void SetTarget(float2 newTarget);
 	void KeepInBounds(); 

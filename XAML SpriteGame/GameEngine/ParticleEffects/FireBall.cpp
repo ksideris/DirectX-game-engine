@@ -68,7 +68,7 @@ void FireBall::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 			_texture.Get(),
 			posoffset,
 			PositionUnits::DIPs,
-			float2(20.0f, 20.0f)* abs(abs(particle->x) - 49.f) / 50.f,
+			scale*float2(20.0f, 20.0f)* abs(abs(particle->x) - 49.f) / 50.f,
 			SizeUnits::DIPs,
 			color,
 			0.0f,
@@ -89,4 +89,11 @@ void FireBall::UpdateCollisionGeometry(float2 prevPos, float2 pos, float rot)
 {
 	translateCollisionGeometry(pos - prevPos);
 
+}
+
+
+ImpactResult FireBall::ProcessHit(float ImpactFactor)
+{
+	_dead = true;
+	return ImpactResult::explosion;
 }

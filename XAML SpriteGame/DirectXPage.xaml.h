@@ -27,7 +27,7 @@ namespace GameEngine
 		bool IsInitialDataLoaded;
 		void UpdateWindowSize();
 		bool hudIsClicked;
-
+		bool Paused;
 		std::vector<float> framerate;
 		std::deque<int> scores;
 
@@ -64,6 +64,7 @@ namespace GameEngine
 		void OnCommandsRequested(Windows::UI::ApplicationSettings::SettingsPane ^sender, Windows::UI::ApplicationSettings::SettingsPaneCommandsRequestedEventArgs ^args);
 		void OnSettingsSelected(Windows::UI::Popups::IUICommand^ command);
 		void OnTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
+		void OnShootTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
 		void OnLevelTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
 		void OnTappedShare(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
 
@@ -105,5 +106,10 @@ namespace GameEngine
 
 		void UpdateScores();
 
+		void OnShootPointerEntered(Platform::Object ^sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^e);
+		void OnShootPointerExited(Platform::Object ^sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^e);
+
+		void Pause();
+		void Unpause();
 	};
 }

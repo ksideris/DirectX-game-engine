@@ -9,7 +9,6 @@ class SlidingBackgroundSprite : public Background
 	float2 vel;
 	float2 second_pos;
 	float2 tscale;
-	BackgroundRenderMode rendermode;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D>		 _texture_b;
 public:
 	SlidingBackgroundSprite();

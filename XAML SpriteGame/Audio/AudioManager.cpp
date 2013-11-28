@@ -27,7 +27,7 @@ void AudioManager::SetGameOverMusic()
 	AudioEngineInstance.~Audio();
 	AudioEngineInstance.Initialize();
 
-	AudioEngineInstance.ReInitializeStreamer(L"Assets\\Music\\maintheme.wav");
+	AudioEngineInstance.ReInitializeStreamer(L"Assets\\Music\\DST-BeyondTheseForests.wav");
 
 	SetVolume();
 	AudioEngineInstance.Start();
@@ -49,13 +49,13 @@ void AudioManager::SetMainMenuMusic()
 
  
 
-void AudioManager::SetGamePlayMusic()
+void AudioManager::SetGamePlayMusic(const wchar_t* musicurl)
 {
 
 	AudioEngineInstance.~Audio();
 	AudioEngineInstance.Initialize();
 
-	AudioEngineInstance.ReInitializeStreamer(L"Assets\\Music\\maintheme.wav");
+	AudioEngineInstance.ReInitializeStreamer(  musicurl); 
 
 	SetVolume();
 	AudioEngineInstance.Start();

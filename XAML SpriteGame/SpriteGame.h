@@ -9,6 +9,7 @@
 
 #include "GameEngine\GameObject.h"
 #include "GameEngine\Background.h"  
+#include "GameEngine\Backgrounds\FlashingBackground.h"  
 #include "GameEngine\Direct2DlightEffect.h"
 #include "GameEngine\Level.h"
 
@@ -23,7 +24,10 @@ enum GameState
 	Menu = 1,
 	Playing = 2,
 	GameOver = 3,
-	Paused = 4
+	Paused = 4,
+	LevelComplete = 5,
+	LevelWon = 6,
+	LevelLost = 7
 };
 
 ref class SpriteGame sealed : public DirectXBase
@@ -40,8 +44,7 @@ public:
 
 	void Update(float timeTotal, float timeDelta);
 
-
-	void CreateProjectile();
+	 
 
 internal: 
 
@@ -49,7 +52,7 @@ internal:
 	GameState gamestate;
 	Level* level;
 	 
-
+	float last_explosion;
 	property SpriteBatch^									CurrentSpriteBatch;
 	  
 	BasicSprites::SpriteBatch^ m_spriteBatch;
@@ -69,6 +72,7 @@ internal:
 	HorizontalSliderPlayer* spaceship;
 	RocketFire * rocketFuel;
 	d2dLightEffect * spaceShipLight;
+	FlashingBackground * bad_health_background;
 
 	 
 	std::vector<FireBall> m_particleData;

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <Level>
+  <Theme track="DST-10Class.wav" ></Theme>
   <Background   Texture="m32.png">  </Background>
   <Foreground   Texture="GeometrySprite.png" Texture2="GeometrySprite2.png"  >  </Foreground>
   <Asteroid     Texture="ida.dds">  </Asteroid>
@@ -10,6 +11,8 @@
   <EnemyType Texture="Enemy2.png"></EnemyType>
   <EnemyType Texture="Enemy3.png"></EnemyType>
   <EnemyType Texture="Enemy4.png"></EnemyType>
+  <HealthTexture Texture="life_upgrade.png"></HealthTexture>
+  <PowerupTexture Texture="weapons_upgrade.png"></PowerupTexture>
 
 
   <Enemy Type="0" Pos="3" Movem="0"></Enemy>
@@ -67,6 +70,13 @@
   <Ring    Pos="100" Count="15">  </Ring>
   <Ring    Pos="140" Count="10">  </Ring>
   <Ring    Pos="160" Count="15">  </Ring> 
+
+  <Powerup  Pos="10"  ></Powerup>
+  <Powerup  Pos="187"  ></Powerup>
+  
+  
+  <Health  Pos="5"  ></Health>
+  <Health  Pos="10"  ></Health>
 
 
   <LevelEnd   Pos="200" Texture="finishline.png"></LevelEnd>

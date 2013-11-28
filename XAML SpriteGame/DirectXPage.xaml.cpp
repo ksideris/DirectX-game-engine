@@ -56,9 +56,11 @@ DirectXPage::DirectXPage()
 		this,
 		DisplayProperties::LogicalDpi
 		);
-
+	Paused = false;
 
 	MenuButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Visible;
+	GamePlayGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	LevelButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 
 	// wire the event for screen size monitoring. Important for retargeting the renderer and pausing 
 	Window::Current->CoreWindow->SizeChanged +=
@@ -78,6 +80,12 @@ DirectXPage::DirectXPage()
 	UpdateWindowSize();
 	WireUpUIEvents();
 	active_UI = MenuButtonsGrid;
+
+	Windows::Devices::Input::TouchCapabilities^ t =ref new Windows::Devices::Input::TouchCapabilities();
+	if (t->TouchPresent == 0)
+	{
+		ShootButton->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	} 
 }
 
 void DirectXPage::WireUpUIEvents()
@@ -100,13 +108,16 @@ void DirectXPage::WireUpUIEvents()
 	dismissAbout->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnDismissAboutTapped);
 	dismissPrivacy->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnDismissPrivacyTapped);
 
-	Pause->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnPauseTapped);
+	PauseButton->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnPauseTapped);
 	dismissPaused->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnUnPauseTapped);
 	popupPaused->Closed += ref new Windows::Foundation::EventHandler<Platform::Object ^>(this, &GameEngine::DirectXPage::OnClosed);
-	Unpause->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnUnPauseTapped);
+	UnpauseButton->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnUnPauseTapped);
 	SettingsBut->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnSettingsTapped);
 	Quit->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnQuitTapped);
 
+	ShootButton->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnShootTapped);
+	ShootButton->PointerEntered += ref new Windows::UI::Xaml::Input::PointerEventHandler(this, &GameEngine::DirectXPage::OnShootPointerEntered);
+	ShootButton->PointerExited += ref new Windows::UI::Xaml::Input::PointerEventHandler(this, &GameEngine::DirectXPage::OnShootPointerExited);
 	//Charm bar events
 	auto dataTransferManager = Windows::ApplicationModel::DataTransfer::DataTransferManager::GetForCurrentView();
 	dataTransferManager->DataRequested += ref new Windows::Foundation::TypedEventHandler<Windows::ApplicationModel::DataTransfer::DataTransferManager ^, Windows::ApplicationModel::DataTransfer::DataRequestedEventArgs ^>(this, &GameEngine::DirectXPage::OnDataRequested);
@@ -180,24 +191,23 @@ void DirectXPage::LoadHighScores(String^ Filename)
 
 void DirectXPage::HandleGameOver()
 {
-	m_renderer->gamestate = GameState::GameOver;
-	if (m_timer->Total >= m_renderer->level->finish_pos)
+
+	if (m_renderer->gamestate == GameState::GameOver)
 	{
-		m_renderer->spaceship->SetTarget(float2(m_renderer->m_windowBounds.Width, m_renderer->m_windowBounds.Height)*.5f);
+		AudioManager::SetGameOverMusic();
+		m_renderer->gamestate = GameState::LevelLost;
 
 	}
-	else
+	else if (m_renderer->gamestate == GameState::LevelComplete)
 	{
-		Explosion data;
-		data.lifetime = 100;
-		data.SetPos(m_renderer->spaceship->GetPos());
-		data.SetScale(float2(1.0f, 1.0f));
-		data.SetTexture(m_renderer->m_particle);
-		data.SetWindowSize(m_renderer->m_windowBounds);
-		m_renderer->m_explosionData.push_back(data);
-	 
+		UpdateScores();
+		m_renderer->gamestate = GameState::LevelWon;
 	}
-	 
+
+	GamePlayGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	MenuButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Visible;
+
+
 }
 void DirectXPage::UpdateScores()
 {
@@ -247,10 +257,7 @@ void DirectXPage::ShowScores(int highLightIndex)
 		HighScoresPanel->Children->Append(t);
 		i++;
 	}
-	GamePlayGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
-	MenuButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Visible;
-	LevelButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
-	active_UI = MenuButtonsGrid;
+	//active_UI = MenuButtonsGrid;
 
 }
 void DirectXPage::writeToText(String^ Filename, String^ text)
@@ -291,30 +298,16 @@ void DirectXPage::UpdateWindowSize()
 	{
 		if (m_renderer->gamestate == GameState::Paused)
 		{
-			m_timer->Reset(time_at_pause);
-			m_renderer->gamestate = previous_state;
-
-			active_UI->Visibility = Windows::UI::Xaml::Visibility::Visible;
-			PausedScreen->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+			Unpause();
+			active_UI->Visibility		= Windows::UI::Xaml::Visibility::Visible;
+			PausedScreen->Visibility	= Windows::UI::Xaml::Visibility::Collapsed;
 		}
 	}
 	else
 	{
-
-		if (popupPaused->IsOpen){
-			popupPaused->IsOpen = false;
-			previous_state = GameState::Playing;
-		}
-		else
-		{
-			time_at_pause = m_timer->CurrentTime;
-		}
-		previous_state = m_renderer->gamestate;
-
-		m_renderer->gamestate = GameState::Paused;
 		active_UI->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 		PausedScreen->Visibility = Windows::UI::Xaml::Visibility::Visible;
-
+		Pause(); 		 
 	}
 
 
@@ -324,12 +317,11 @@ void DirectXPage::OnLogicalDpiChanged(Platform::Object^ sender)
 {
 	m_renderer->SetDpi(DisplayProperties::LogicalDpi);
 }
-
 //handles render loop
 void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 {
 
-	if (m_renderer->gamestate != GameState::Paused)
+	if (!Paused)
 	{
 		m_timer->Update();
 
@@ -344,16 +336,16 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 			fps += _fps;
 
 		fps /= framerate.size();
-		Clock->Text = ((int) m_timer->Total).ToString();
+		Clock->Text = (((int) m_timer->Total) / 60).ToString();
+		Clock->Text += ":" + (((int) m_timer->Total) % 60).ToString();
 		Score->Text = m_renderer->score.ToString();
 
-		if (m_renderer->spaceship->health <= 0 && m_renderer->gamestate == GameState::Playing)
+		if (m_renderer->gamestate == GameState::GameOver || m_renderer->gamestate == GameState::LevelComplete)
 		{
 			HandleGameOver();
 		}
-		else if (m_renderer->spaceship->health != health)
-			PlayerHitAnimation->Begin();
-		 
+
+
 		HealthBar->Width = max(m_renderer->spaceship->health, 0) * 350 / 100.f;
 		health = m_renderer->spaceship->health;
 
@@ -412,7 +404,7 @@ void DirectXPage::OnDataRequested(Windows::ApplicationModel::DataTransfer::DataT
 	auto request = args->Request;
 	request->Data->Properties->Title = "Share your Score";
 	request->Data->Properties->Description = "Tell your friends how much you scored in the game engine";
-	request->Data->SetText("I just scored ! ");
+	request->Data->SetText("I just scored ! " + scores[0]);
 }
 void DirectXPage::OnSettingsSelected(Windows::UI::Popups::IUICommand^ command)
 {
@@ -455,8 +447,6 @@ void DirectXPage::OnCommandsRequested(Windows::UI::ApplicationSettings::Settings
 
 void GameEngine::DirectXPage::OnDismissAboutTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
 {
-
-
 	popupAbout->IsOpen = false;
 }
 
@@ -493,7 +483,6 @@ void GameEngine::DirectXPage::OnLevelTapped(Platform::Object ^sender, Windows::U
 
 	m_renderer->LoadLevel(((Button^) sender)->Tag + ".xml");
 
-	health = m_renderer->spaceship->health;
 	m_timer->Reset();
 	m_renderer->gamestate = Playing;
 
@@ -541,6 +530,10 @@ void DirectXPage::LoadSettings()
 	{
 		MusicEnabled = (bool) Read(L"MusicEnabled");
 	}
+	else
+	{
+		MusicEnabled = true;
+	}
 
 	if (MusicEnabled)
 	{
@@ -556,6 +549,8 @@ void DirectXPage::LoadSettings()
 		{
 			sldMusicVolume->Value = 100;
 			volume = 100;
+			Save(L"MusicVolume", volume);
+
 		}
 
 	}
@@ -570,6 +565,10 @@ void DirectXPage::LoadSettings()
 	{
 		SFXEnabled = (bool) Read(L"SFXEnabled");
 	}
+	else
+	{
+		SFXEnabled = true;
+	}
 
 	if (SFXEnabled)
 	{
@@ -583,8 +582,11 @@ void DirectXPage::LoadSettings()
 		}
 		else
 		{
-			sldSFXVolume->Value = 100;
-			sfxvolume = 100;
+			sldSFXVolume->Value = 60;
+			sfxvolume = 60;
+
+			Save(L"SFXVolume", sfxvolume);
+
 		}
 
 	}
@@ -641,6 +643,7 @@ void GameEngine::DirectXPage::OnToggled(Platform::Object ^sender, Windows::UI::X
 			{
 				AudioEngine::AudioManager::SetMusicVolume(100);
 				sldMusicVolume->Value = 100;
+				Save(L"MusicVolume", 100);
 			}
 			Save(L"MusicEnabled", true);
 		}
@@ -663,7 +666,8 @@ void GameEngine::DirectXPage::OnToggled(Platform::Object ^sender, Windows::UI::X
 			else
 			{
 				AudioEngine::AudioManager::SetSFXVolume(100);
-				sldSFXVolume->Value = 100;
+				sldSFXVolume->Value = 60;
+				Save(L"SFXVolume", 60);
 			}
 			Save(L"SFXEnabled", true);
 		}
@@ -756,12 +760,7 @@ void DirectXPage::LoadLevels(String^ levels_xml)
 					b->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnLevelTapped);
 					LevelsPanel->Children->Append(b);
 				}
-
-
-
-
 				break;
-
 						}
 		}
 	}
@@ -776,12 +775,8 @@ void DirectXPage::LoadLevels(String^ levels_xml)
 void GameEngine::DirectXPage::OnPauseTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
 {
 	hudIsClicked = true;
-	time_at_pause = m_timer->CurrentTime;
-	popupPaused->Width = 346.0f;
-	grdPaused->Height = m_renderer->m_renderTargetSize.Height;
-	popupPaused->IsOpen = true;
-	previous_state = m_renderer->gamestate;
-	m_renderer->gamestate = GameState::Paused;
+
+	Pause();
 }
 
 
@@ -830,26 +825,57 @@ void GameEngine::DirectXPage::OnPointerReleased(Platform::Object ^sender, Window
 
 void GameEngine::DirectXPage::OnUnPauseTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
 {
-	popupPaused->IsOpen = false;
-	m_renderer->gamestate = previous_state;
-	m_timer->Reset(time_at_pause);
+	Unpause();  
 }
-
-
 void GameEngine::DirectXPage::OnClosed(Platform::Object ^sender, Platform::Object ^args)
 {
 }
-
-
 void GameEngine::DirectXPage::OnQuitTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
-{
-
-
-
+{ 
 }
-
-
 void GameEngine::DirectXPage::OnSettingsTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
 {
 	SettingsPane::GetForCurrentView()->Show();
+}
+void GameEngine::DirectXPage::OnShootTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
+{
+	m_renderer->spaceship->Shoot();
+}
+void GameEngine::DirectXPage::OnShootPointerEntered(Platform::Object ^sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^e)
+{
+	hudIsClicked = true;
+}
+void GameEngine::DirectXPage::OnShootPointerExited(Platform::Object ^sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^e)
+{
+	hudIsClicked = false;
+}
+void  GameEngine::DirectXPage::Pause()
+{
+	if (!Paused)
+	{
+		if (PausedScreen->Visibility == Windows::UI::Xaml::Visibility::Collapsed)
+		{
+			popupPaused->IsOpen = true;
+			popupPaused->Width = 346.0f;
+			grdPaused->Height = m_renderer->m_renderTargetSize.Height;
+		}
+		time_at_pause = m_timer->CurrentTime;
+		previous_state = m_renderer->gamestate;
+		m_renderer->gamestate = GameState::Paused; 
+		Paused = true;
+	}
+	if (PausedScreen->Visibility == Windows::UI::Xaml::Visibility::Visible)
+	{
+		popupPaused->IsOpen = false; 
+	}
+}
+void  GameEngine::DirectXPage::Unpause()
+{
+	if (Paused)
+	{
+		popupPaused->IsOpen = false;
+		Paused = false;
+		m_renderer->gamestate = previous_state;
+		m_timer->Reset(time_at_pause);
+	}
 }

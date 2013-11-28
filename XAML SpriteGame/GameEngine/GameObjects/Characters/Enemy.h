@@ -22,4 +22,6 @@ public:
 	void SetTarget(float2 newTarget);
 	void Update(float timeDelta) ;
 
+	virtual float GetImpactSize();
+
 };

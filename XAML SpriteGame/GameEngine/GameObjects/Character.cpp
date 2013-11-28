@@ -13,8 +13,18 @@ Character::Character()
 	TargetPos = (-1.f, -1.f);
 
 }
+void Character::Reset(){
+	health = 100;
+	TargetPos = (-1.f, -1.f);
+	_dead = false;
+}
 void Character::Shoot()
 {
+
+
+	AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::Shoot);
+	AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::Shoot);
+
 	FireBall data(false);
 	data.SetPos(pos);
 	data.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
@@ -32,8 +42,7 @@ void Character::Shoot()
 	data2.SetScale(float2(1.0f, 1.0f));
 	data2.SetTexture(_projectile);
 	data2.setCollisionGeometryForParticle(float2(20, 20), data2.GetPos());
-	data2.SetWindowSize(_windowRect);
-
+	data2.SetWindowSize(_windowRect); 
 
 	bullets.push_back(data2);
 
@@ -45,7 +54,6 @@ void Character::Shoot()
 	data3.SetTexture(_projectile);
 	data3.setCollisionGeometryForParticle(float2(20, 20), data3.GetPos());
 	data3.SetWindowSize(_windowRect);
-
 
 	bullets.push_back(data3);
 
@@ -70,12 +78,18 @@ void Character::UpdateChildren(float timeDelta)
 ImpactResult Character::ProcessHit(float ImpactFactor)
 {
 	health -= ImpactFactor;
-	hit = 10;
+	if (ImpactFactor>0)
+		hit = 10;
 	if (health < 0)
 	{
 		_dead = true;
-		return ImpactResult::explosion;
+		AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::EnemyDead);
+		AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::EnemyDead);
+		return ImpactResult::bigexplosion;
 	}
+
+	AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::Crash);
+	AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::Crash);
 	return ImpactResult::hit;
 }
 void Character::KeepInBounds()
