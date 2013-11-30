@@ -5,10 +5,10 @@
 Enemy::Enemy(EnemyMovement _moveType)
 {
 	GameObject::GameObject();
-	movementType = _moveType; 
- 
+	movementType = _moveType;
+
 	vel = float2(0.f, 0.f);
-	health = 100.f; 
+	health = 100.f;
 	TargetPos = (-1, -1);
 }
 void Enemy::Shoot()
@@ -30,7 +30,7 @@ void Enemy::SetTarget(float2 newTarget){  //Why does it not work with the parent
 }
 void Enemy::Update(float timeDelta)
 {
-	 
+
 	if (dist(TargetPos, pos) < 5)
 	{
 
@@ -58,12 +58,27 @@ void Enemy::Update(float timeDelta)
 	else
 		pos = pos + vel * timeDelta;
 
-	KeepInBounds();
 	UpdateChildren(timeDelta);
 	UpdateCollisionGeometry(prevPos, pos, prevRot - rot);
-	
-}
 
+}
+ImpactResult Enemy::ProcessHit(float ImpactFactor)
+{
+	health -= ImpactFactor;
+	if (ImpactFactor>0)
+		hit = 10;
+	if (health < 0)
+	{
+		_dead = true;
+		AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::EnemyDead);
+		AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::EnemyDead);
+		return ImpactResult::bigexplosion;
+	}
+
+	AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::Crash);
+	AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::Crash);
+	return ImpactResult::hit;
+}
 float Enemy::GetImpactSize()
 {
 	return 10.f;

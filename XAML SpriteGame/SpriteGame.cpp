@@ -45,6 +45,8 @@ void SpriteGame::LoadLevel(Platform::String^ level_xml)
 
 	spaceship->SetTarget(float2(0.f, m_windowBounds.Height / 2.f));
 	level->SetWindowDependentProperties(m_windowBounds);
+
+	 
 	time_passed = 0;
 	score = 0;
 }
@@ -54,7 +56,7 @@ void SpriteGame::CreateDeviceResources()
 	DirectXBase::CreateDeviceResources();
 
 	m_spriteBatch = ref new SpriteBatch();
-	unsigned int capacity = 60000;
+	unsigned int capacity = 15000;
 
 	m_spriteBatch->Initialize(
 		m_d3dDevice.Get(),
@@ -107,14 +109,11 @@ void SpriteGame::CreateDeviceResources()
 		nullptr
 		);
 	m_spriteBatch->AddTexture(m_background.Get());
-
+	 
 
 
 	spaceship = new HorizontalSliderPlayer();
 	rocketFuel = new RocketFire();
-
-	//spaceShipLight = new d2dLightEffect();
-	//spaceShipLight->initWithImageFromFile(m_d2dContext, m_wicFactory);
 
 	spaceship->SetVel(float2(0, 0));
 	spaceship->SetRot(0);
@@ -125,7 +124,9 @@ void SpriteGame::CreateDeviceResources()
 
 	bad_health_background = new FlashingBackground();
 	bad_health_background->SetTexture(m_background);
-	
+
+
+
 }
 
 void SpriteGame::CreateWindowSizeDependentResources()
@@ -142,10 +143,12 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	spaceship->AddChild(float2(spaceship->textureSize.Width / 2.0f*spaceship->GetScale().x, spaceship->textureSize.Height / 2.0f*spaceship->GetScale().y), rocketFuel);
 
 	rocketFuel->SetPos(spaceship->GetPos());
-
+	 
 	if (level != NULL)
 		level->background->SetWindowSize(m_windowBounds);
-	
+
+
+ 
 	bad_health_background->SetWindowSize(m_windowBounds);
 
 }
@@ -157,7 +160,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	level->background->Update(timeDelta);
 	level->foreground->Update(timeDelta);
 	bad_health_background->Update(timeDelta);
-	spaceship->Update(timeDelta);
+	spaceship->Update(timeDelta); 
 
 	for (auto object = level->all_gameobjects.begin(); object != level->all_gameobjects.end(); object++) // update level objects
 		(*object)->Update(timeDelta);
@@ -182,7 +185,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 		Explosion data;
 		data.SetLifeTime(100);
 		data.SetPos(spaceship->GetPos());
-		data.color = float4(1.f,0.3f,.0f, 1.f);
+		data.color = float4(1.f, 0.3f, .0f, 1.f);
 		data.SetScale(float2(30.0f, 30.0f));
 		data.SetTexture(m_particle);
 		data.SetWindowSize(m_windowBounds);
@@ -261,7 +264,7 @@ void SpriteGame::HandleCollisions()
 
 		if (res1 == ImpactResult::explosion || res2 == ImpactResult::explosion || res1 == ImpactResult::bigexplosion || res2 == ImpactResult::bigexplosion)
 		{
- 			Explosion data;
+			Explosion data;
 			if (res1 == ImpactResult::explosion || res1 == ImpactResult::bigexplosion)
 				data.SetPos(c->first->GetPos());
 			else
@@ -281,7 +284,7 @@ void SpriteGame::HandleCollisions()
 			data.SetWindowSize(m_windowBounds);
 			m_explosionData.push_back(data);
 		}
-	
+
 
 		if (res1 == ImpactResult::finish || res2 == ImpactResult::finish)
 		{
@@ -331,20 +334,20 @@ void SpriteGame::Render()
 	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::AntiqueWhite)));
 
 	m_spriteBatch->Begin();
+
 	level->background->Draw(m_spriteBatch);
 	level->foreground->Draw(m_spriteBatch);
 
 	for (auto object = level->all_gameobjects.begin(); object != level->all_gameobjects.end(); object++)
 		(*object)->Draw(m_spriteBatch);
-
-	if(spaceship->IsAlive())
+	
+	if (spaceship->IsAlive())
 		spaceship->Draw(m_spriteBatch);
 
-	if (spaceship->health < 30 && spaceship->health>0)
-	{
+	if (spaceship->health < 30 && spaceship->health>0 && gamestate == GameState::Playing)
 		bad_health_background->Draw(m_spriteBatch);
-	}
-		
+
+
 	for (auto particle = m_explosionData.begin(); particle != m_explosionData.end(); particle++)
 		particle->Draw(m_spriteBatch);
 

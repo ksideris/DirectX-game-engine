@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include="DirectXPage.xaml.cpp" />
+    <ClCompile Include="Audio\AudioEngine.cpp" />
+    <ClCompile Include="Audio\AudioManager.cpp" />
+    <ClCompile Include="Audio\MediaStreamer.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="SpriteGame.cpp" />
+    <ClCompile Include="GameEngine\Backgrounds\FlashingBackground.cpp" />
+    <ClCompile Include="GameEngine\Backgrounds\SlidingBackgroundSprite.cpp" />
+    <ClCompile Include="GameEngine\GameObjects\Characters\DirectionalPlayer.cpp" />
+    <ClCompile Include="GameEngine\GameObjects\Characters\Enemy.cpp" />
+    <ClCompile Include="GameEngine\GameObjects\Characters\HorizontalSliderPlayer.cpp" />
+    <ClCompile Include="GameEngine\GameObjects\Character.cpp" />
+    <ClCompile Include="GameEngine\GameObjects\GamePlayElement.cpp" />
+    <ClCompile Include="GameEngine\ParticleEffects\Explosion.cpp" />
+    <ClCompile Include="GameEngine\ParticleEffects\FireBall.cpp" />
+    <ClCompile Include="GameEngine\ParticleEffects\RocketFire.cpp" />
+    <ClCompile Include="GameEngine\CollidingObject.cpp" />
+    <ClCompile Include="GameEngine\Direct2Dlighteffect.cpp" />
+    <ClCompile Include="GameEngine\GameObject.cpp" />
+    <ClCompile Include="GameEngine\Level.cpp" />
+    <ClCompile Include="GameEngine\Sprite.cpp" />
+    <ClCompile Include="IrrXML\irrXML.cpp" />
+    <ClCompile Include=".\DXCore\DirectXBase.cpp" />
+    <ClCompile Include=".\DXCore\BasicLoader.cpp" />
+    <ClCompile Include=".\DXCore\DDSTextureLoader.cpp" />
+    <ClCompile Include="Helpers\Geometry.cpp" />
+    <ClCompile Include="Helpers\LocalDiagnostics.cpp" />
+    <ClCompile Include="Helpers\RWContract.cpp" />
+    <ClCompile Include="Helpers\Timer.cpp" />
+    <ClCompile Include=".\DXCore\SpriteWorks.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="DirectXPage.xaml.h" />
+    <ClInclude Include="Audio\AudioEngine.h" />
+    <ClInclude Include="Audio\AudioManager.h" />
+    <ClInclude Include="Audio\MediaStreamer.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="SpriteGame.h" />
+    <ClInclude Include="GameEngine\Backgrounds\FlashingBackground.h" />
+    <ClInclude Include="GameEngine\Backgrounds\SlidingBackgroundSprite.h" />
+    <ClInclude Include="GameEngine\GameObjects\Characters\ControllableCharacter.h" />
+    <ClInclude Include="GameEngine\GameObjects\Characters\DirectionalPlayer.h" />
+    <ClInclude Include="GameEngine\GameObjects\Characters\Enemy.h" />
+    <ClInclude Include="GameEngine\GameObjects\Characters\HorizontalSliderPlayer.h" />
+    <ClInclude Include="GameEngine\GameObjects\Character.h" />
+    <ClInclude Include="GameEngine\GameObjects\GamePlayElement.h" />
+    <ClInclude Include="GameEngine\ParticleEffects\BaseParticleSystem.h" />
+    <ClInclude Include="GameEngine\ParticleEffects\Explosion.h" />
+    <ClInclude Include="GameEngine\ParticleEffects\FireBall.h" />
+    <ClInclude Include="GameEngine\ParticleEffects\RocketFire.h" />
+    <ClInclude Include="GameEngine\Background.h" />
+    <ClInclude Include="GameEngine\CollidingObject.h" />
+    <ClInclude Include="GameEngine\Direct2DlightEffect.h" />
+    <ClInclude Include="GameEngine\GameObject.h" />
+    <ClInclude Include="GameEngine\Level.h" />
+    <ClInclude Include="GameEngine\Sprite.h" />
+    <ClInclude Include="IrrXML\CXMLReaderImpl.h" />
+    <ClInclude Include="IrrXML\fast_atof.h" />
+    <ClInclude Include="IrrXML\heapsort.h" />
+    <ClInclude Include="IrrXML\irrArray.h" />
+    <ClInclude Include="IrrXML\irrString.h" />
+    <ClInclude Include="IrrXML\irrTypes.h" />
+    <ClInclude Include="IrrXML\irrXML.h" />
+    <ClInclude Include=".\DXCore\BasicLoader.h" />
+    <ClInclude Include=".\DXCore\DDSTextureLoader.h" />
+    <ClInclude Include="DXCore\SizeEnums.h" />
+    <ClInclude Include="Entities\BasicShapes.h" />
+    <ClInclude Include="Entities\SizeEnums.h" />
+    <ClInclude Include="Helpers\BasicMath.h" />
+    <ClInclude Include="Helpers\BasicShapes.h" />
+    <ClInclude Include="Helpers\GameConstants.h" />
+    <ClInclude Include="Helpers\Geometry.h" />
+    <ClInclude Include="Helpers\LocalDiagnostics.h" />
+    <ClInclude Include="Helpers\RWContract.h" />
+    <ClInclude Include="Helpers\SizeEnums.h" />
+    <ClInclude Include="Helpers\Timer.h" />
+    <ClInclude Include=".\DXCore\SpriteWorks.h" />
+    <ClInclude Include=".\DXCore\DirectXLinker.h" />
+    <ClInclude Include=".\DXCore\DirectXBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Level Data\Geometry.xml" />
+    <Xml Include="Level Data\Levels.xml" />
+    <Xml Include="Level Data\Menu.xml" />
+    <Xml Include="Level Data\Geometry3.xml" />
+    <Xml Include="Level Data\Geometry2.xml" />
+    <Xml Include="Level Data\Galaxy3.xml" />
+    <Xml Include="Level Data\Galaxy2.xml" />
+    <Xml Include="Level Data\Galaxy1.xml" />
+    <Xml Include="Level Data\Andromeda3.xml" />
+    <Xml Include="Level Data\Andromeda2.xml" />
+    <Xml Include="Level Data\Andromeda.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="PackageManifest(8.1)\Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="StandardStyles.xaml" />
+    <Page Include="DirectXPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\GameObjects\andromeda.png" />
+    <Image Include="Assets\GameObjects\bad_health.png" />
+    <Image Include="Assets\GameObjects\debug.png" />
+    <Image Include="Assets\GameObjects\Enemy1.png" />
+    <Image Include="Assets\GameObjects\Enemy2.png" />
+    <Image Include="Assets\GameObjects\Enemy3.png" />
+    <Image Include="Assets\GameObjects\Enemy4.png" />
+    <Image Include="Assets\GameObjects\Enemy5.png" />
+    <Image Include="Assets\GameObjects\finishline.png" />
+    <Image Include="Assets\GameObjects\GeometrySprite.png" />
+    <Image Include="Assets\GameObjects\GeometrySprite2.png" />
+    <Image Include="Assets\GameObjects\HeightMap.png" />
+    <Image Include="Assets\GameObjects\ida.dds" />
+    <Image Include="Assets\GameObjects\life_upgrade.png" />
+    <Image Include="Assets\GameObjects\m32.png" />
+    <Image Include="Assets\GameObjects\particle.png" />
+    <Image Include="Assets\GameObjects\ring.png" />
+    <Image Include="Assets\GameObjects\SpaceShip.png" />
+    <Image Include="Assets\GameObjects\spotlight.png" />
+    <Image Include="Assets\GameObjects\weapons_upgrade.png" />
+    <Image Include="Assets\Icons\30x30Tile.png" />
+    <Image Include="Assets\Icons\50x50Tile.png" />
+    <Image Include="Assets\Icons\150x150Tile.scale-80.png" />
+    <Image Include="Assets\Icons\150x150Tile.scale-100.png" />
+    <Image Include="Assets\Icons\150x150Tile.scale-140.png" />
+    <Image Include="Assets\Icons\150x150Tile.scale-180.png" />
+    <Image Include="Assets\Icons\310x150Tile.scale-100.png" />
+    <Image Include="Assets\Icons\SplashScreen.png" />
+    <Image Include="Assets\UI\buttonHud.png" />
+    <Image Include="Assets\UI\clockHud.png" />
+    <Image Include="Assets\UI\heartHud.png" />
+    <Image Include="Assets\UI\pauseButton.png" />
+    <Image Include="Assets\UI\shootButton.png" />
+    <Image Include="Assets\GameObjects\dark_background.png" />
+    <Image Include="Assets\GameObjects\galaxy.png" />
+    <Image Include="Assets\GameObjects\planets.png" />
+    <Image Include="Assets\GameObjects\planets2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Music\DST-10Class.wav" />
+    <Media Include="Assets\Music\DST-BeyondTheseForests.wav" />
+    <Media Include="Assets\Music\maintheme.wav" />
+    <Media Include="Assets\Sounds\Coin1.wav" />
+    <Media Include="Assets\Sounds\Crash.wav" />
+    <Media Include="Assets\Sounds\EnemyDead1.wav" />
+    <Media Include="Assets\Sounds\EnemyDead2.wav" />
+    <Media Include="Assets\Sounds\EnemyDead3.wav" />
+    <Media Include="Assets\Sounds\GenericPowerup.wav" />
+    <Media Include="Assets\Sounds\Shoot.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\GeometryShader.gs.hlsl" />
+    <FxCompile Include="Shaders\GeometryShader.vs.hlsl" />
+    <FxCompile Include="Shaders\Instancing.vs.hlsl" />
+    <FxCompile Include="Shaders\PixelShader.hlsl" />
+    <FxCompile Include="Shaders\Replication.vs.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+</Project>

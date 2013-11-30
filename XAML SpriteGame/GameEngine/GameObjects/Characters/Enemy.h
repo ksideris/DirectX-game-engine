@@ -11,16 +11,16 @@ enum EnemyMovement{
 class Enemy :public Character
 { 
 	float2 TargetPos;
-	int hit = 0;
+	int hit;
 	void Shoot();
 
 public:
-	
 	EnemyMovement movementType;
 
 	Enemy(EnemyMovement _moveType);
 	void SetTarget(float2 newTarget);
-	void Update(float timeDelta) ;
+	void Update(float timeDelta);
+	ImpactResult ProcessHit(float ImpactFactor);
 
 	virtual float GetImpactSize();
 

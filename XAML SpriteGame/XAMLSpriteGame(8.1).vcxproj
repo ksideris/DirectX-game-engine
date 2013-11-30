@@ -330,8 +330,8 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - x64|Win32'">W8_1;_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - Release|Win32'">W8_1;W8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - Debug|Win32'">W8_1;_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='ARM - Debug|ARM'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='ARM - Release|ARM'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='ARM - Debug|ARM'">W8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='ARM - Release|ARM'">W8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - x64|ARM'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -409,8 +409,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\GameObjects\andromeda.png" />
-    <Image Include="Assets\GameObjects\badhealth.png" />
+    <Image Include="Assets\GameObjects\galaxy.png" />
+    <Image Include="Assets\GameObjects\planets.png" />
+    <Image Include="Assets\GameObjects\planets2.png" />
     <Image Include="Assets\GameObjects\bad_health.png" />
+    <Image Include="Assets\GameObjects\dark_background.png" />
     <Image Include="Assets\GameObjects\debug.png" />
     <Image Include="Assets\GameObjects\Enemy1.png" />
     <Image Include="Assets\GameObjects\Enemy2.png" />
@@ -420,7 +423,6 @@
     <Image Include="Assets\GameObjects\finishline.png" />
     <Image Include="Assets\GameObjects\GeometrySprite.png" />
     <Image Include="Assets\GameObjects\GeometrySprite2.png" />
-    <Image Include="Assets\GameObjects\ground.png" />
     <Image Include="Assets\GameObjects\HeightMap.png" />
     <Image Include="Assets\GameObjects\ida.dds" />
     <Image Include="Assets\GameObjects\life_upgrade.png" />
@@ -642,8 +644,15 @@
     <Media Include="Assets\Sounds\Shoot.wav" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="Level Data\Andromeda.xml" />
+    <Xml Include="Level Data\Andromeda2.xml" />
+    <Xml Include="Level Data\Andromeda3.xml" />
+    <Xml Include="Level Data\Galaxy1.xml" />
+    <Xml Include="Level Data\Galaxy2.xml" />
+    <Xml Include="Level Data\Galaxy3.xml" />
     <Xml Include="Level Data\Geometry.xml" />
-    <Xml Include="Level Data\Level 2.xml" />
+    <Xml Include="Level Data\Geometry2.xml" />
+    <Xml Include="Level Data\Geometry3.xml" />
     <Xml Include="Level Data\Levels.xml">
       <SubType>Designer</SubType>
     </Xml>

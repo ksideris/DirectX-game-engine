@@ -181,8 +181,16 @@ void DirectXBase::SetDpi(float dpi)
 void DirectXBase::UpdateForWindowSizeChange()
 {
 	// Only handle window size changed if there is no pending DPI change.
+
+#ifdef W8_1
+
+	if (m_dpi != DisplayInformation::GetForCurrentView()->LogicalDpi)
+		return;
+
+#else
 	if (m_dpi != DisplayProperties::LogicalDpi)
 		return;
+#endif		
 
 	m_d2dContext->SetTarget(nullptr);
 	m_d2dTargetBitmap = nullptr;

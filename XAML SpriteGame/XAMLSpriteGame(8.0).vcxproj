@@ -382,13 +382,6 @@
     </ClInclude>
     <ClInclude Include=".\DXCore\SpriteWorks.h" />
     <ClInclude Include="SpriteGame.h" />
-    <ClInclude Include="XML\CXMLReaderImpl.h" />
-    <ClInclude Include="XML\fast_atof.h" />
-    <ClInclude Include="XML\heapsort.h" />
-    <ClInclude Include="XML\irrArray.h" />
-    <ClInclude Include="XML\irrString.h" />
-    <ClInclude Include="XML\irrTypes.h" />
-    <ClInclude Include="XML\irrXML.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -401,6 +394,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\GameObjects\andromeda.png" />
+    <Image Include="Assets\GameObjects\Backgrounds\galaxy.png" />
+    <Image Include="Assets\GameObjects\Backgrounds\planets.png" />
+    <Image Include="Assets\GameObjects\Backgrounds\planets2.png" />
     <Image Include="Assets\GameObjects\bad_health.png" />
     <Image Include="Assets\GameObjects\debug.png" />
     <Image Include="Assets\GameObjects\Enemy1.png" />
@@ -411,7 +407,6 @@
     <Image Include="Assets\GameObjects\finishline.png" />
     <Image Include="Assets\GameObjects\GeometrySprite.png" />
     <Image Include="Assets\GameObjects\GeometrySprite2.png" />
-    <Image Include="Assets\GameObjects\ground.png" />
     <Image Include="Assets\GameObjects\HeightMap.png" />
     <Image Include="Assets\GameObjects\ida.dds" />
     <Image Include="Assets\GameObjects\life_upgrade.png" />
@@ -476,7 +471,6 @@
     </ClCompile>
     <ClCompile Include=".\DXCore\SpriteWorks.cpp" />
     <ClCompile Include="SpriteGame.cpp" />
-    <ClCompile Include="XML\irrXML.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\GeometryShader.gs.hlsl">
@@ -629,9 +623,16 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="IrrXML\config.xml" />
+    <Xml Include="Level Data\Andromeda.xml" />
+    <Xml Include="Level Data\Andromeda2.xml" />
+    <Xml Include="Level Data\Andromeda3.xml" />
+    <Xml Include="Level Data\Galaxy1.xml" />
+    <Xml Include="Level Data\Galaxy2.xml" />
+    <Xml Include="Level Data\Galaxy3.xml" />
     <Xml Include="Level Data\Geometry.xml" />
+    <Xml Include="Level Data\Geometry2.xml" />
+    <Xml Include="Level Data\Geometry3.xml" />
     <Xml Include="Level Data\Level 1.xml" />
-    <Xml Include="Level Data\Level 2.xml" />
     <Xml Include="Level Data\Levels.xml" />
     <Xml Include="Level Data\Menu.xml" />
   </ItemGroup>

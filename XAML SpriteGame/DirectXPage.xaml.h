@@ -5,6 +5,7 @@
 #include "Helpers\Timer.h"  
 #include "Audio\AudioManager.h"
 
+#include "IrrXML\irrXML.h"
 #define SAVEFILE "highscores.dat"
 
 using namespace Windows::UI::ViewManagement;
@@ -20,6 +21,9 @@ namespace GameEngine
 	{
 	public:
 		DirectXPage();
+		void Suspend();
+		void Resume();
+
 
 	private:
 		LONGLONG time_at_pause;
@@ -40,12 +44,17 @@ namespace GameEngine
 
 		void OnWindowSizeChanged(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::WindowSizeChangedEventArgs^ args);
 		void OnWindowActivated(Object^ sender, Windows::UI::Core::WindowActivatedEventArgs^ e);
+
+#ifdef W8_1
+		void OnDpiChanged(Windows::Graphics::Display::DisplayInformation ^sender, Platform::Object ^args);
+#else
 		void OnLogicalDpiChanged(Platform::Object^ sender);
+#endif
 		void OnRendering(Object^ sender, Object^ args);
 
 
 		Windows::Foundation::EventRegistrationToken m_eventToken;
-		ApplicationViewState PreviousState;
+	 
 
 		Windows::UI::Xaml::Controls::Grid^ active_UI;
 
@@ -111,5 +120,7 @@ namespace GameEngine
 
 		void Pause();
 		void Unpause();
-	};
+		void OnVisibilityChanged(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::VisibilityChangedEventArgs ^args);
+		void OnBackToMenuTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e);
+};
 }

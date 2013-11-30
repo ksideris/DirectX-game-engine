@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<Level>
+  <Theme track="DST-10Class.wav" ></Theme>
+  <Background   Texture="m32.png">  </Background>
+  <Foreground   Texture="GeometrySprite.png" Texture2="GeometrySprite2.png"  >  </Foreground>
+  <Asteroid     Texture="ida.dds">  </Asteroid>
+  <RingTexture  Texture="ring.png">  </RingTexture>
+  <Projectile   Texture="particle.png">  </Projectile>
+  
+  <IsDark Value="1"></IsDark>
+
+  <EnemyType Texture="Enemy1.png"></EnemyType>
+  <EnemyType Texture="Enemy2.png"></EnemyType>
+  <EnemyType Texture="Enemy3.png"></EnemyType>
+  <EnemyType Texture="Enemy4.png"></EnemyType>
+  <HealthTexture Texture="life_upgrade.png"></HealthTexture>
+  <PowerupTexture Texture="weapons_upgrade.png"></PowerupTexture>
+
+
+  <Enemy Type="0" Pos="3" Movem="0"></Enemy>
+  <Enemy Type="0" Pos="15" Movem="1"></Enemy>
+  <Enemy Type="0" Pos="22" Movem="0" ></Enemy>
+  <Enemy Type="0" Pos="30" Movem="0"></Enemy>
+  <Enemy Type="3" Pos="35" Movem="1"></Enemy>
+  <Enemy Type="2" Pos="35" Movem="0" ></Enemy>
+  <Enemy Type="0" Pos="39" Movem="0"></Enemy>
+  <Enemy Type="1" Pos="45" Movem="1"></Enemy>
+  <Enemy Type="0" Pos="47" Movem="0" ></Enemy>
+  <Enemy Type="0" Pos="52" Movem="0"></Enemy>
+  <Enemy Type="1" Pos="55" Movem="1"></Enemy>
+  <Enemy Type="2" Pos="67" Movem="0" ></Enemy>
+  <Enemy Type="1" Pos="85" Movem="1"></Enemy>
+  <Enemy Type="0" Pos="87" Movem="0" ></Enemy>
+  <Enemy Type="2" Pos="92" Movem="0"></Enemy>
+  <Enemy Type="3" Pos="95" Movem="1"></Enemy>
+  <Enemy Type="0" Pos="97" Movem="0" ></Enemy>
+  <Enemy Type="1" Pos="85" Movem="1"></Enemy>
+  <Enemy Type="2" Pos="87" Movem="0" ></Enemy>
+  <Enemy Type="3" Pos="92" Movem="0"></Enemy>
+  <Enemy Type="0" Pos="100" Movem="0"></Enemy>
+  <Enemy Type="3" Pos="105" Movem="1"></Enemy>
+  <Enemy Type="2" Pos="110" Movem="0" ></Enemy>
+  <Enemy Type="0" Pos="139" Movem="0"></Enemy>
+  <Enemy Type="3" Pos="145" Movem="1"></Enemy>
+  <Enemy Type="0" Pos="147" Movem="0" ></Enemy>
+  <Enemy Type="0" Pos="152" Movem="0"></Enemy>
+  <Enemy Type="1" Pos="155" Movem="1"></Enemy>
+  <Enemy Type="1" Pos="175" Movem="1"></Enemy>
+  <Enemy Type="0" Pos="187" Movem="0" ></Enemy>
+
+
+  <AsteroidField    Pos="10" Count="10">  </AsteroidField>
+  <AsteroidField    Pos="20" Count="30">  </AsteroidField>
+  <AsteroidField    Pos="30" Count="30">  </AsteroidField>
+  <AsteroidField    Pos="35" Count="30">  </AsteroidField>
+  <AsteroidField    Pos="60" Count="10">  </AsteroidField>
+  <AsteroidField    Pos="65" Count="30">  </AsteroidField>
+  <AsteroidField    Pos="120" Count="30">  </AsteroidField>
+  <AsteroidField    Pos="130" Count="30">  </AsteroidField>
+  <AsteroidField    Pos="165" Count="40">  </AsteroidField>
+  <AsteroidField    Pos="100" Count="30">  </AsteroidField>
+  <AsteroidField    Pos="150" Count="10">  </AsteroidField>
+  
+  <Ring    Pos="1" Count="10">  </Ring>
+  <Ring    Pos="20" Count="10">  </Ring>
+  <Ring    Pos="30" Count="10">  </Ring>
+  <Ring    Pos="45" Count="10">  </Ring>
+  <Ring    Pos="60" Count="20">  </Ring>
+  <Ring    Pos="120" Count="10">  </Ring>
+  <Ring    Pos="150" Count="15">  </Ring>
+  <Ring    Pos="170" Count="10">  </Ring>
+  <Ring    Pos="100" Count="15">  </Ring>
+  <Ring    Pos="140" Count="10">  </Ring>
+  <Ring    Pos="160" Count="15">  </Ring>
+
+  <Powerup  Pos="10"  ></Powerup>
+  <Powerup  Pos="67"  ></Powerup>
+  <Powerup  Pos="90"  ></Powerup>
+  <Powerup  Pos="130"  ></Powerup>
+
+
+  <Health  Pos="5"  ></Health>
+  <Health  Pos="50"  ></Health>
+  <Health  Pos="100"  ></Health>
+  <Health  Pos="150"  ></Health>
+
+
+  <LevelEnd   Pos="200" Texture="finishline.png"></LevelEnd>
+
+</Level>

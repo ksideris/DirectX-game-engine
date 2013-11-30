@@ -5,7 +5,6 @@
 
 
 //related to xml
-#include "IrrXML\irrXML.h"
 using namespace irr;
 using namespace io;
 //end xml imports
@@ -20,7 +19,7 @@ int StringToWString(std::wstring &ws, const std::string &s)
 }
 void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch, BasicLoader^ loader)
 {
-
+	isDark = false;
 	//xml testing
 	IrrXMLReader* xml = createIrrXMLReader(level_loc.c_str());
 
@@ -134,6 +133,11 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 					stringdata = xml->getAttributeValue("Pos");
 					stringdata2 = xml->getAttributeValue("Count");
 					AsteroidFields.push_back(std::pair<int, float>(atoi(stringdata2.c_str()), (float) atof(stringdata.c_str())));
+				}
+				if (!strcmp("IsDark", xml->getNodeName()))
+				{
+					stringdata = xml->getAttributeValue("Value"); 
+					isDark=(bool)atoi(stringdata.c_str()) ;
 				}
 				if (!strcmp("Powerup", xml->getNodeName()))
 				{

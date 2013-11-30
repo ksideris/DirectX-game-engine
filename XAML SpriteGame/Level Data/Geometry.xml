@@ -6,6 +6,8 @@
   <Asteroid     Texture="ida.dds">  </Asteroid>
   <RingTexture  Texture="ring.png">  </RingTexture>
   <Projectile   Texture="particle.png">  </Projectile>
+  
+  <IsDark Value="1"></IsDark>
 
   <EnemyType Texture="Enemy1.png"></EnemyType>
   <EnemyType Texture="Enemy2.png"></EnemyType>
@@ -69,14 +71,18 @@
   <Ring    Pos="170" Count="10">  </Ring>
   <Ring    Pos="100" Count="15">  </Ring>
   <Ring    Pos="140" Count="10">  </Ring>
-  <Ring    Pos="160" Count="15">  </Ring> 
+  <Ring    Pos="160" Count="15">  </Ring>
 
   <Powerup  Pos="10"  ></Powerup>
-  <Powerup  Pos="187"  ></Powerup>
-  
-  
+  <Powerup  Pos="67"  ></Powerup>
+  <Powerup  Pos="90"  ></Powerup>
+  <Powerup  Pos="130"  ></Powerup>
+
+
   <Health  Pos="5"  ></Health>
-  <Health  Pos="10"  ></Health>
+  <Health  Pos="50"  ></Health>
+  <Health  Pos="100"  ></Health>
+  <Health  Pos="150"  ></Health>
 
 
   <LevelEnd   Pos="200" Texture="finishline.png"></LevelEnd>

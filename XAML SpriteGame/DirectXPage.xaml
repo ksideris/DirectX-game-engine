@@ -10,24 +10,14 @@
     mc:Ignorable="d" Loaded="OnLoaded" KeyDown="OnKeyDown" KeyUp="OnKeyUp" PointerPressed="OnPointerPressed"  PointerReleased="OnPointerReleased" 
     PointerMoved="OnPointerMoved"  >
 
+ 
 
-    <SwapChainBackgroundPanel.Resources>
-        <Storyboard x:Name="PlayerHitAnimation"  >
-            <ColorAnimation Duration="0" To="Transparent" Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="RedFlashScreen" d:IsOptimized="True"/>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RedFlashScreen">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0.94"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-    </SwapChainBackgroundPanel.Resources>
-
-    <Grid x:Name="GamePlayGrid" Visibility="Visible" Width="Auto" Height ="Auto"    >
+    <Grid x:Name="GamePlayGrid" Visibility="Collapsed" Width="Auto" Height ="Auto"    >
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="100" />
+            <RowDefinition Height="150" />
         </Grid.RowDefinitions>
 
         <Grid x:Name="HUD" Grid.Row="0" Background="Gray" Height="50" Margin="0,0,0,0"   VerticalAlignment="Top" Width="Auto"  >
@@ -60,7 +50,7 @@
             </StackPanel>
 
         </Grid>
-        <Button Canvas.ZIndex="0" x:Name="ShootButton" Grid.Row="2"    HorizontalAlignment="Right"   Height="100"  >
+        <Button Canvas.ZIndex="0" x:Name="ShootButton" Grid.Row="2"    HorizontalAlignment="Right"   Height="150"  >
             <Button.Template>
                 <ControlTemplate>
                     <Image Source="Assets/UI/shootButton.png"></Image>
@@ -70,41 +60,11 @@
 
 
     </Grid>
-
-    <Rectangle  IsHitTestVisible="False" x:Name="RedFlashScreen" Opacity="0"   Width="Auto" Height ="Auto"   Margin="0,0,0,0" Stroke="Black"   RadiusX="78">
-        <Rectangle.Fill>
-            <LinearGradientBrush EndPoint="1.469,0.708" StartPoint="0.772,0.715">
-                <GradientStop Color="#62CB3131" Offset="0"/>
-                <GradientStop Color="White" Offset="1"/>
-            </LinearGradientBrush>
-        </Rectangle.Fill>
-    </Rectangle>
+ 
 
     <Grid x:Name="MenuButtonsGrid" Visibility="Collapsed" Width="Auto" Height ="Auto"   Grid.RowSpan="2"    >
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="288" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="100" />
-            <RowDefinition Height="100" />
-            <RowDefinition Height="60"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="520" />
-            <ColumnDefinition Width="593*"/>
-
-        </Grid.ColumnDefinitions>
-
-        <Button  Grid.Column="0" Grid.Row="2" Background="Gray" x:Name="PlayButton"    HorizontalAlignment="Left" Height="60"  Margin="0,10,0,0"   VerticalAlignment="Top" Width="400"   Grid.ColumnSpan="2" Content="Play"   FontSize="23" />
-        <Button  Grid.Column="0" Grid.Row="3" Background="Gray"  x:Name="ShareButton"  HorizontalAlignment="Left" Height="60"  Margin="0,10,0,0"   VerticalAlignment="Top" Width="400"   Grid.ColumnSpan="2" Content="Share"  FontSize="23"/>
-
-        <StackPanel x:Name="HighScoresPanel" Grid.ColumnSpan="2" Grid.Row="1" Width="Auto" Height="Auto"  HorizontalAlignment="Center"  ></StackPanel>
-    </Grid>
-
-    <Grid x:Name="LevelButtonsGrid" Visibility="Visible" Grid.RowSpan="2">
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="288" />
+            <RowDefinition Height="120" />
             <RowDefinition Height="*" />
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
@@ -112,6 +72,33 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0"  TextAlignment="Center"  FontSize="100" HorizontalAlignment="Center" Margin="0, 0,0,0" TextWrapping="Wrap" FontStretch="Expanded" FontWeight="SemiBold"   VerticalAlignment="Center" Height="114"   Text="Galactic Wars"/>
+
+        <StackPanel x:Name="ButtonsPanel"  Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" >
+
+            <Button  Grid.Column="0" Grid.Row="2" Background="Gray" x:Name="PlayButton"    HorizontalAlignment="Left" Height="60"  Margin="0,10,0,0"   VerticalAlignment="Top" Width="400"   Grid.ColumnSpan="2" Content="Play"   FontSize="23" />
+            <Button  Grid.Column="0" Grid.Row="3" Background="Gray"  x:Name="ShareButton"  HorizontalAlignment="Left" Height="60"  Margin="0,10,0,0"   VerticalAlignment="Top" Width="400"   Grid.ColumnSpan="2" Content="Share"  FontSize="23"/>
+        </StackPanel>
+
+
+        <StackPanel x:Name="HighScoresPanel" Grid.ColumnSpan="2" Grid.Row="1" Width="Auto" Height="Auto"  HorizontalAlignment="Center"  VerticalAlignment="Center" ></StackPanel>
+    </Grid>
+
+    <Grid x:Name="LevelButtonsGrid" Visibility="Visible" Grid.RowSpan="2">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Row="0"  Margin="0" VerticalAlignment="Center" x:Name="backToMenu" Style="{StaticResource BackButtonStyle}" ></Button>
+        <TextBlock Grid.Row="0"  TextAlignment="Center"  FontSize="100" HorizontalAlignment="Center" Margin="0, 0,0,0" TextWrapping="Wrap" FontStretch="Expanded" FontWeight="SemiBold"   VerticalAlignment="Center" Height="114"   Text="Levels"/>
+
         <StackPanel x:Name="LevelsPanel"  Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" >
         </StackPanel>
     </Grid>
@@ -244,7 +231,17 @@
                 <TextBlock FontSize="30"  Margin="0,0,0,0" Height="Auto" VerticalAlignment="Center" >About</TextBlock>
             </StackPanel>
             <TextBlock  TextWrapping="WrapWholeWords"  Grid.Row="1"  Margin="20,0,20,0"  FontSize="20" Height="Auto"  Width="Auto" VerticalAlignment="Center" Foreground="AntiqueWhite" >
-                AsteroidBlaster v1.0. </TextBlock>
+                Galactic Wars v1.0.  <LineBreak/> Music by 
+                <Hyperlink NavigateUri="http://www.nosoapradio.us/ ">nosoapradio</Hyperlink> licensed under
+                <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">creative commons</Hyperlink>
+                
+                <LineBreak/> Graphics by 
+                <Hyperlink NavigateUri="http://unrestrictedstock.com/ ">unrestrictedstock/</Hyperlink> licensed under
+                <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">creative commons</Hyperlink>
+                
+            
+            </TextBlock>
+            
 
         </Grid>
     </Popup>

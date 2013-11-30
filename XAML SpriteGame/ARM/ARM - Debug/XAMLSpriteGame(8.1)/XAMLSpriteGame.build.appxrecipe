@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>COSTAS</Machine>
+    <WindowsUser>Konstantinos</WindowsUser>
+    <SolutionConfiguration>ARM - Debug|ARM</SolutionConfiguration>
+    <PackageArchitecture>arm</PackageArchitecture>
+    <PackageIdentityName>GameEngine.CS188</PackageIdentityName>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\XAMLSpriteGame.exe">
+      <PackagePath>XAMLSpriteGame.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\GameEngine.winmd">
+      <PackagePath>GameEngine.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\GeometryShader.gs.cso">
+      <PackagePath>GeometryShader.gs.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\GeometryShader.vs.cso">
+      <PackagePath>GeometryShader.vs.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\Instancing.vs.cso">
+      <PackagePath>Instancing.vs.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\PixelShader.cso">
+      <PackagePath>PixelShader.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\Replication.vs.cso">
+      <PackagePath>Replication.vs.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Andromeda.xml">
+      <PackagePath>Level Data\Andromeda.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Andromeda2.xml">
+      <PackagePath>Level Data\Andromeda2.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Andromeda3.xml">
+      <PackagePath>Level Data\Andromeda3.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Galaxy1.xml">
+      <PackagePath>Level Data\Galaxy1.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Galaxy2.xml">
+      <PackagePath>Level Data\Galaxy2.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Galaxy3.xml">
+      <PackagePath>Level Data\Galaxy3.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Geometry.xml">
+      <PackagePath>Level Data\Geometry.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Geometry2.xml">
+      <PackagePath>Level Data\Geometry2.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Geometry3.xml">
+      <PackagePath>Level Data\Geometry3.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Levels.xml">
+      <PackagePath>Level Data\Levels.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Level Data\Menu.xml">
+      <PackagePath>Level Data\Menu.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\andromeda.png">
+      <PackagePath>Assets\GameObjects\andromeda.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\galaxy.png">
+      <PackagePath>Assets\GameObjects\galaxy.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\planets.png">
+      <PackagePath>Assets\GameObjects\planets.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\planets2.png">
+      <PackagePath>Assets\GameObjects\planets2.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\bad_health.png">
+      <PackagePath>Assets\GameObjects\bad_health.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\dark_background.png">
+      <PackagePath>Assets\GameObjects\dark_background.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\debug.png">
+      <PackagePath>Assets\GameObjects\debug.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\Enemy1.png">
+      <PackagePath>Assets\GameObjects\Enemy1.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\Enemy2.png">
+      <PackagePath>Assets\GameObjects\Enemy2.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\Enemy3.png">
+      <PackagePath>Assets\GameObjects\Enemy3.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\Enemy4.png">
+      <PackagePath>Assets\GameObjects\Enemy4.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\Enemy5.png">
+      <PackagePath>Assets\GameObjects\Enemy5.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\finishline.png">
+      <PackagePath>Assets\GameObjects\finishline.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\GeometrySprite.png">
+      <PackagePath>Assets\GameObjects\GeometrySprite.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\GeometrySprite2.png">
+      <PackagePath>Assets\GameObjects\GeometrySprite2.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\HeightMap.png">
+      <PackagePath>Assets\GameObjects\HeightMap.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\life_upgrade.png">
+      <PackagePath>Assets\GameObjects\life_upgrade.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\m32.png">
+      <PackagePath>Assets\GameObjects\m32.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\particle.png">
+      <PackagePath>Assets\GameObjects\particle.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\ring.png">
+      <PackagePath>Assets\GameObjects\ring.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\SpaceShip.png">
+      <PackagePath>Assets\GameObjects\SpaceShip.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\spotlight.png">
+      <PackagePath>Assets\GameObjects\spotlight.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\weapons_upgrade.png">
+      <PackagePath>Assets\GameObjects\weapons_upgrade.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Icons\150x150Tile.scale-100.png">
+      <PackagePath>Assets\Icons\150x150Tile.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Icons\150x150Tile.scale-140.png">
+      <PackagePath>Assets\Icons\150x150Tile.scale-140.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Icons\150x150Tile.scale-180.png">
+      <PackagePath>Assets\Icons\150x150Tile.scale-180.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Icons\150x150Tile.scale-80.png">
+      <PackagePath>Assets\Icons\150x150Tile.scale-80.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Icons\30x30Tile.png">
+      <PackagePath>Assets\Icons\30x30Tile.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Icons\310x150Tile.scale-100.png">
+      <PackagePath>Assets\Icons\310x150Tile.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Icons\50x50Tile.png">
+      <PackagePath>Assets\Icons\50x50Tile.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Icons\SplashScreen.png">
+      <PackagePath>Assets\Icons\SplashScreen.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\UI\buttonHud.png">
+      <PackagePath>Assets\UI\buttonHud.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\UI\clockHud.png">
+      <PackagePath>Assets\UI\clockHud.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\UI\heartHud.png">
+      <PackagePath>Assets\UI\heartHud.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\UI\pauseButton.png">
+      <PackagePath>Assets\UI\pauseButton.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\UI\shootButton.png">
+      <PackagePath>Assets\UI\shootButton.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\GameObjects\ida.dds">
+      <PackagePath>Assets\GameObjects\ida.dds</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Music\DST-10Class.wav">
+      <PackagePath>Assets\Music\DST-10Class.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Music\DST-BeyondTheseForests.wav">
+      <PackagePath>Assets\Music\DST-BeyondTheseForests.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Music\maintheme.wav">
+      <PackagePath>Assets\Music\maintheme.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Sounds\Coin1.wav">
+      <PackagePath>Assets\Sounds\Coin1.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Sounds\Crash.wav">
+      <PackagePath>Assets\Sounds\Crash.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Sounds\EnemyDead1.wav">
+      <PackagePath>Assets\Sounds\EnemyDead1.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Sounds\EnemyDead2.wav">
+      <PackagePath>Assets\Sounds\EnemyDead2.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Sounds\EnemyDead3.wav">
+      <PackagePath>Assets\Sounds\EnemyDead3.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Sounds\GenericPowerup.wav">
+      <PackagePath>Assets\Sounds\GenericPowerup.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\Assets\Sounds\Shoot.wav">
+      <PackagePath>Assets\Sounds\Shoot.wav</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\DirectXPage.xbf">
+      <PackagePath>DirectXPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\StandardStyles.xbf">
+      <PackagePath>StandardStyles.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Konstantinos\Documents\GitHub\Direct2D-game-engine\XAML SpriteGame\ARM\ARM - Debug\XAMLSpriteGame%288.1%29\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>ARM</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\ARM\Microsoft.VCLibs.ARM.Debug.12.00.appx</AppxLocation>
+      <MoreInfo></MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>x64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\x64\Microsoft.VCLibs.x64.Debug.12.00.appx</AppxLocation>
+      <MoreInfo></MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>x86</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\x86\Microsoft.VCLibs.x86.Debug.12.00.appx</AppxLocation>
+      <MoreInfo></MoreInfo>
+    </ResolvedSDKReference>
+  </ItemGroup>
+</Project>

@@ -1,15 +1,9 @@
 <?xml version="1.0"?>
 <Level>
-  <Background  Texture="m32.png">  </Background>
-  <Foreground  Texture="GeometrySprite.png" Texture2="GeometrySprite2.png"  >  </Foreground>
-  <Asteroid    Texture="ida.dds">  </Asteroid> 
-  <RingT       Texture="ring.png">  </RingT>
+  <Theme track="maintheme.wav" ></Theme>
+  <Background   Texture="andromeda.png">  </Background>
+  <Foreground   Texture="planets.png" Texture2="planets2.png"  >  </Foreground>
  
-
-  <AsteroidField    Pos="10" Count="10">  </AsteroidField>
-  <AsteroidField    Pos="20" Count="30">  </AsteroidField>
-  <Ring    Pos="50" Count="10">  </Ring>
-  <Ring    Pos="15" Count="10">  </Ring>
-
+ 
 
 </Level>

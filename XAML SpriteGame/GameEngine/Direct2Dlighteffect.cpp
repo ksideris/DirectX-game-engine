@@ -130,9 +130,9 @@ void d2dLightEffect::InitWindowDependentProperties(Size      m_renderTargetSize)
 	ThrowIfFailed(m_spotDiffuseEffect->SetValue(D2D1_SPOTDIFFUSE_PROP_POINTS_AT, pointsAt));
 	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_SURFACE_SCALE, 10.f));
 
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_FOCUS, 15.4f));
+	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_FOCUS, 60.4f));
 	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_SPECULAR_CONSTANT, 1.2f));
-	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_LIMITING_CONE_ANGLE, 70.0f));
+	ThrowIfFailed(m_spotSpecularEffect->SetValue(D2D1_SPOTSPECULAR_PROP_LIMITING_CONE_ANGLE, 45.0f));
 
 
 	ThrowIfFailed(m_pointSpecularEffect->SetValue(D2D1_POINTSPECULAR_PROP_SURFACE_SCALE, 10.f));
@@ -146,7 +146,7 @@ void d2dLightEffect::Update(GameObject *parent)
 	D2D1_VECTOR_3F lighttarget = D2D1::Vector3F(parent->GetPos().x + (200)*cos(parent->GetRot()), parent->GetPos().y - (200)*sin(parent->GetRot()),40 - 10);//+ tan(spaceship->lightAngle* 3.14 / 180.0) * 100
 
 
-	D2D1_VECTOR_3F lightPosition = D2D1::Vector3F(parent->GetPos().x + (-70)*cos(parent->GetRot()), parent->GetPos().y - (-70)*sin(parent->GetRot()),40);
+	D2D1_VECTOR_3F lightPosition = D2D1::Vector3F(parent->GetPos().x + (-200)*cos(parent->GetRot()), parent->GetPos().y - (-200)*sin(parent->GetRot()),40);
 	 
 	// The DistantSpecular and DistantDiffuse effects do not have a LightPosition property. 
 	ThrowIfFailed(m_pointSpecularEffect->SetValue(D2D1_POINTSPECULAR_PROP_LIGHT_POSITION, lightPosition));
@@ -164,8 +164,7 @@ void d2dLightEffect::Draw()
 	_m_d2dContext->DrawImage(
 		m_currentEffect.Get(),
 		D2D1_INTERPOLATION_MODE_LINEAR,
-
-		D2D1_COMPOSITE_MODE_DESTINATION_ATOP
+		D2D1_COMPOSITE_MODE_DESTINATION_IN
 		);
 
 	// We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device

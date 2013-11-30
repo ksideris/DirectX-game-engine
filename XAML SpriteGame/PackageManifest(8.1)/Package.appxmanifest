@@ -28,7 +28,4 @@
       </m2:VisualElements>
     </Application>
   </Applications>
-  <Capabilities>
-    <Capability Name="picturesLibrary" />
-  </Capabilities>
 </Package>

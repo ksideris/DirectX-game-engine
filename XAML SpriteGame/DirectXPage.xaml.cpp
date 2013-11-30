@@ -7,9 +7,6 @@
 #include "DirectXPage.xaml.h"  
 #include <map>
 
-
-//related to xml
-#include "IrrXML\irrXML.h"
 using namespace irr;
 using namespace io;
 //end xml imports
@@ -51,11 +48,29 @@ DirectXPage::DirectXPage()
 	//init the directX renderer 
 	m_renderer = ref new SpriteGame();
 
+#ifdef W8_1
+	auto info = DisplayInformation::GetForCurrentView();
+	m_renderer->Initialize(
+		Window::Current->CoreWindow,
+		this,
+		info->LogicalDpi
+		);
+	info->DpiChanged+=ref new Windows::Foundation::TypedEventHandler<Windows::Graphics::Display::DisplayInformation ^, Platform::Object ^>(this, &GameEngine::DirectXPage::OnDpiChanged);
+
+#else
 	m_renderer->Initialize(
 		Window::Current->CoreWindow,
 		this,
 		DisplayProperties::LogicalDpi
 		);
+
+	//notify renderer of changes in DPI
+	DisplayProperties::LogicalDpiChanged +=
+		ref new DisplayPropertiesEventHandler(this, &DirectXPage::OnLogicalDpiChanged);
+
+#endif 
+	 
+ 
 	Paused = false;
 
 	MenuButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Visible;
@@ -66,9 +81,8 @@ DirectXPage::DirectXPage()
 	Window::Current->CoreWindow->SizeChanged +=
 		ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &DirectXPage::OnWindowSizeChanged);
 
-	//notify renderer of changes in DPI
-	DisplayProperties::LogicalDpiChanged +=
-		ref new DisplayPropertiesEventHandler(this, &DirectXPage::OnLogicalDpiChanged);
+	Window::Current->CoreWindow->VisibilityChanged+=ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow ^, Windows::UI::Core::VisibilityChangedEventArgs ^>(this, &GameEngine::DirectXPage::OnVisibilityChanged);
+
 
 	// main rendering event handler
 	m_eventToken = CompositionTarget::Rendering += ref new EventHandler<Object^>(this, &DirectXPage::OnRendering);
@@ -81,11 +95,13 @@ DirectXPage::DirectXPage()
 	WireUpUIEvents();
 	active_UI = MenuButtonsGrid;
 
-	Windows::Devices::Input::TouchCapabilities^ t =ref new Windows::Devices::Input::TouchCapabilities();
+	Windows::Devices::Input::TouchCapabilities^ t = ref new Windows::Devices::Input::TouchCapabilities();
+
+
 	if (t->TouchPresent == 0)
 	{
 		ShootButton->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
-	} 
+	}
 }
 
 void DirectXPage::WireUpUIEvents()
@@ -118,6 +134,9 @@ void DirectXPage::WireUpUIEvents()
 	ShootButton->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnShootTapped);
 	ShootButton->PointerEntered += ref new Windows::UI::Xaml::Input::PointerEventHandler(this, &GameEngine::DirectXPage::OnShootPointerEntered);
 	ShootButton->PointerExited += ref new Windows::UI::Xaml::Input::PointerEventHandler(this, &GameEngine::DirectXPage::OnShootPointerExited);
+
+	backToMenu->Tapped+=ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnBackToMenuTapped);
+
 	//Charm bar events
 	auto dataTransferManager = Windows::ApplicationModel::DataTransfer::DataTransferManager::GetForCurrentView();
 	dataTransferManager->DataRequested += ref new Windows::Foundation::TypedEventHandler<Windows::ApplicationModel::DataTransfer::DataTransferManager ^, Windows::ApplicationModel::DataTransfer::DataRequestedEventArgs ^>(this, &GameEngine::DirectXPage::OnDataRequested);
@@ -287,36 +306,46 @@ void DirectXPage::UpdateWindowSize()
 
 	bool visibility = true;
 
-	if (ApplicationView::Value == ApplicationViewState::Snapped)
-		visibility = false;
-
-
+#ifdef W8_1
 	if (m_renderer->m_renderTargetSize.Width < 600)
 		visibility = false;
+#else
+	if (ApplicationView::Value == ApplicationViewState::Snapped)
+		visibility = false;
+#endif
 
 	if (visibility)
 	{
 		if (m_renderer->gamestate == GameState::Paused)
 		{
 			Unpause();
-			active_UI->Visibility		= Windows::UI::Xaml::Visibility::Visible;
-			PausedScreen->Visibility	= Windows::UI::Xaml::Visibility::Collapsed;
+			active_UI->Visibility = Windows::UI::Xaml::Visibility::Visible;
+			PausedScreen->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 		}
 	}
 	else
 	{
 		active_UI->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 		PausedScreen->Visibility = Windows::UI::Xaml::Visibility::Visible;
-		Pause(); 		 
+		Pause();
 	}
 
 
 }
 
+#ifdef W8_1
+void GameEngine::DirectXPage::OnDpiChanged(Windows::Graphics::Display::DisplayInformation ^sender, Platform::Object ^args)
+{
+	m_renderer->SetDpi(DisplayInformation::GetForCurrentView()->LogicalDpi);
+}
+
+#else
 void DirectXPage::OnLogicalDpiChanged(Platform::Object^ sender)
 {
 	m_renderer->SetDpi(DisplayProperties::LogicalDpi);
 }
+#endif
+
 //handles render loop
 void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 {
@@ -402,9 +431,9 @@ void  DirectXPage::OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::K
 void DirectXPage::OnDataRequested(Windows::ApplicationModel::DataTransfer::DataTransferManager ^sender, Windows::ApplicationModel::DataTransfer::DataRequestedEventArgs ^args)
 {
 	auto request = args->Request;
-	request->Data->Properties->Title = "Share your Score";
+	request->Data->Properties->Title = "Share your Score!";
 	request->Data->Properties->Description = "Tell your friends how much you scored in the game engine";
-	request->Data->SetText("I just scored ! " + scores[0]);
+	request->Data->SetText("I just collected " + scores[0] + " stars in GameEngine!! ");
 }
 void DirectXPage::OnSettingsSelected(Windows::UI::Popups::IUICommand^ command)
 {
@@ -736,32 +765,32 @@ void DirectXPage::LoadLevels(String^ levels_xml)
 		{
 
 		case EXN_ELEMENT:
-			{
-				if (!strcmp("Level", xml->getNodeName()))
-				{
-					Button^ b = ref new Button();
+		{
+							if (!strcmp("Level", xml->getNodeName()))
+							{
+								Button^ b = ref new Button();
 
-					stringdata = xml->getAttributeValue("Name");
-					std::wstring wsTmp(stringdata.begin(), stringdata.end());
+								stringdata = xml->getAttributeValue("Name");
+								std::wstring wsTmp(stringdata.begin(), stringdata.end());
 
-					b->Content = ref new String(wsTmp.c_str());
+								b->Content = ref new String(wsTmp.c_str());
 
-					stringdata = xml->getAttributeValue("Data");
-					std::wstring wsTmp2(stringdata.begin(), stringdata.end());
+								stringdata = xml->getAttributeValue("Data");
+								std::wstring wsTmp2(stringdata.begin(), stringdata.end());
 
-					b->Tag = ref new String(wsTmp2.c_str());
-					b->Background = ref new SolidColorBrush(Windows::UI::Colors::Gray);
-					b->HorizontalAlignment = Windows::UI::Xaml::HorizontalAlignment::Left;
-					b->VerticalAlignment = Windows::UI::Xaml::VerticalAlignment::Top;
-					b->Width = 400;
-					b->Height = 60;
-					b->Margin = Windows::UI::Xaml::Thickness(0, 10, 0, 0);
-					b->FontSize = 23;
-					b->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnLevelTapped);
-					LevelsPanel->Children->Append(b);
-				}
-				break;
-						}
+								b->Tag = ref new String(wsTmp2.c_str());
+								b->Background = ref new SolidColorBrush(Windows::UI::Colors::Gray);
+								b->HorizontalAlignment = Windows::UI::Xaml::HorizontalAlignment::Left;
+								b->VerticalAlignment = Windows::UI::Xaml::VerticalAlignment::Top;
+								b->Width = 400;
+								b->Height = 60;
+								b->Margin = Windows::UI::Xaml::Thickness(0, 10, 0, 0);
+								b->FontSize = 23;
+								b->Tapped += ref new Windows::UI::Xaml::Input::TappedEventHandler(this, &GameEngine::DirectXPage::OnLevelTapped);
+								LevelsPanel->Children->Append(b);
+							}
+							break;
+		}
 		}
 	}
 
@@ -788,12 +817,8 @@ void GameEngine::DirectXPage::OnPointerPressed(Platform::Object ^sender, Windows
 		{
 			m_renderer->spaceship->ProcessPointerPressed(e->GetCurrentPoint((DirectXPage^) sender));
 		}
-
 	}
-
 }
-
-
 void GameEngine::DirectXPage::OnPointerMoved(Platform::Object ^sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^e)
 {
 	if (m_renderer->gamestate == Playing && !hudIsClicked)
@@ -825,13 +850,20 @@ void GameEngine::DirectXPage::OnPointerReleased(Platform::Object ^sender, Window
 
 void GameEngine::DirectXPage::OnUnPauseTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
 {
-	Unpause();  
+	Unpause();
 }
 void GameEngine::DirectXPage::OnClosed(Platform::Object ^sender, Platform::Object ^args)
 {
 }
 void GameEngine::DirectXPage::OnQuitTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
-{ 
+{
+	Unpause();
+	m_renderer->LoadLevel("Menu.xml");
+	MenuButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Visible;
+	LevelButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	GamePlayGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	active_UI = MenuButtonsGrid;
+	 
 }
 void GameEngine::DirectXPage::OnSettingsTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
 {
@@ -861,12 +893,12 @@ void  GameEngine::DirectXPage::Pause()
 		}
 		time_at_pause = m_timer->CurrentTime;
 		previous_state = m_renderer->gamestate;
-		m_renderer->gamestate = GameState::Paused; 
+		m_renderer->gamestate = GameState::Paused;
 		Paused = true;
 	}
 	if (PausedScreen->Visibility == Windows::UI::Xaml::Visibility::Visible)
 	{
-		popupPaused->IsOpen = false; 
+		popupPaused->IsOpen = false;
 	}
 }
 void  GameEngine::DirectXPage::Unpause()
@@ -878,4 +910,30 @@ void  GameEngine::DirectXPage::Unpause()
 		m_renderer->gamestate = previous_state;
 		m_timer->Reset(time_at_pause);
 	}
+}
+
+void GameEngine::DirectXPage::Suspend()
+{
+	Pause();
+}
+
+
+void GameEngine::DirectXPage::Resume()
+{
+	Unpause();
+}
+void GameEngine::DirectXPage::OnVisibilityChanged(Windows::UI::Core::CoreWindow ^sender, Windows::UI::Core::VisibilityChangedEventArgs ^args)
+{
+	if (args->Visible)
+		Unpause();
+	else
+		Pause();
+}
+
+
+void GameEngine::DirectXPage::OnBackToMenuTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
+{
+	MenuButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Visible;
+	LevelButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	active_UI = MenuButtonsGrid;
 }

@@ -137,7 +137,7 @@ void GameObject::SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D>  texture)
 }
 float GameObject::GetImpactSize()
 {
-	return .001f*textureSize.Width*scale.x *textureSize.Height*scale.y;
+	return .0005f*textureSize.Width*scale.x *textureSize.Height*scale.y;
 }
 ImpactResult GameObject::ProcessHit(float ImpactFactor)
 {

@@ -2,6 +2,7 @@
 #pragma once
 #include "Sprite.h"
 
+#include "IrrXML\irrXML.h"
 #include "Background.h" 
 #include "GameObjects/GamePlayElement.h" 
 #include "Backgrounds/SlidingBackgroundSprite.h" 
@@ -21,7 +22,7 @@ public:
 	SlidingBackgroundSprite * background;
 	SlidingBackgroundSprite * foreground;
  
-
+	bool isDark;
 	float finish_pos;
 
 	std::vector <GameObject*> all_gameobjects;

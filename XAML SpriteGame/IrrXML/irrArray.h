@@ -214,7 +214,7 @@ public:
 	//! Direct access operator
 	T& operator [](u32 index)
 	{
-		_IRR_DEBUG_BREAK_IF(index>=used) // access violation
+		//_IRR_DEBUG_BREAK_IF(index>=used) // access violation
 
 		return data[index];
 	}
@@ -224,7 +224,7 @@ public:
 	//! Direct access operator
 	const T& operator [](u32 index) const
 	{
-		_IRR_DEBUG_BREAK_IF(index>=used) // access violation
+		//_IRR_DEBUG_BREAK_IF(index >= used); // access violation
 
 		return data[index];
 	}
@@ -232,7 +232,7 @@ public:
     //! Gets last frame
 	const T& getLast() const
 	{
-		_IRR_DEBUG_BREAK_IF(!used) // access violation
+		//_IRR_DEBUG_BREAK_IF(!used); // access violation
 
 		return data[used-1];
 	}
@@ -240,7 +240,7 @@ public:
     //! Gets last frame
 	T& getLast()
 	{
-		_IRR_DEBUG_BREAK_IF(!used) // access violation
+		//_IRR_DEBUG_BREAK_IF(!used); // access violation
 
 		return data[used-1];
 	}

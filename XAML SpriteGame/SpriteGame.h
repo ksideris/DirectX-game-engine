@@ -10,7 +10,8 @@
 #include "GameEngine\GameObject.h"
 #include "GameEngine\Background.h"  
 #include "GameEngine\Backgrounds\FlashingBackground.h"  
-#include "GameEngine\Direct2DlightEffect.h"
+#include "GameEngine\Backgrounds\ParentControlledBackground.h"  
+
 #include "GameEngine\Level.h"
 
 #include "GameEngine\ParticleEffects\RocketFire.h"
@@ -62,7 +63,7 @@ internal:
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_particle;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_player;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_player_spot;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_debug_point;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_debug_point; 
 
 
 	float time_passed;
@@ -70,11 +71,8 @@ internal:
 
 
 	HorizontalSliderPlayer* spaceship;
-	RocketFire * rocketFuel;
-	d2dLightEffect * spaceShipLight;
-	FlashingBackground * bad_health_background;
-
-	 
+	RocketFire * rocketFuel; 
+	FlashingBackground * bad_health_background; 
 	std::vector<FireBall> m_particleData;
 	std::vector<Explosion> m_explosionData;
 

@@ -377,8 +377,11 @@ void SpriteBatch::Begin()
         static_cast<float>(renderTargetTextureDesc.Width),
         static_cast<float>(renderTargetTextureDesc.Height)
         ); 
-    m_dpi = Windows::Graphics::Display::DisplayProperties::LogicalDpi;
- 
+#ifdef W8_1
+	m_dpi = Windows::Graphics::Display::DisplayInformation::GetForCurrentView()->LogicalDpi;
+#else
+	m_dpi = Windows::Graphics::Display::DisplayProperties::LogicalDpi;
+#endif
 	 
 }
 
