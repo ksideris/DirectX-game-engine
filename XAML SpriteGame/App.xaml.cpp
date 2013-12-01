@@ -5,6 +5,7 @@
 
 #include "pch.h"
 #include "DirectXPage.xaml.h"
+#include "App.xaml.h"
 
 using namespace GameEngine;
 using namespace Helpers;
@@ -31,6 +32,7 @@ App::App()
 {
 	InitializeComponent();
 	Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
+	Resuming+=ref new Windows::Foundation::EventHandler<Platform::Object ^>(this, &GameEngine::App::OnResuming);
 }
 
 /// <summary>
@@ -47,7 +49,8 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 	}
 
 	// Place the frame in the current Window and ensure that it is active
-	Window::Current->Content = ref new DirectXPage();
+	page =  ref new DirectXPage();
+	Window::Current->Content = page;
 	Window::Current->Activate();
 }
 
@@ -58,8 +61,14 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 /// <param name="args">Details about the suspending event.</param>
 void App::OnSuspending(Platform::Object^ sender, SuspendingEventArgs^ e)
 {
+	page->Suspend();
 	(void) sender;	// Unused parameter
 	(void) e;	// Unused parameter
 	  
 	//TODO: Save application state and stop any background activity
+}
+
+void GameEngine::App::OnResuming(Platform::Object ^sender, Platform::Object ^args)
+{
+	page->Resume();
 }

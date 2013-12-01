@@ -19,8 +19,8 @@ public:
 
 	Enemy(EnemyMovement _moveType);
 	void SetTarget(float2 newTarget);
-	void Update(float timeDelta);
-	ImpactResult ProcessHit(float ImpactFactor);
+	void Update(float timeDelta);/*
+	ImpactResult ProcessHit(float ImpactFactor);*/
 
 	virtual float GetImpactSize();
 

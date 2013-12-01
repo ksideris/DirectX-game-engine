@@ -282,11 +282,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <PackageCertificateKeyFile>Coding4Fun.FallFury_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxPackageDir>C:\work\coding4fun\fallfury\Packages\1.0.40\</AppxPackageDir>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-    <PackageCertificateThumbprint>7C415F23F79351A526EFBD00F72C4F019A892BA5</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>395C32054E1A56EE29F1E031EDE387243BEB7FBB</PackageCertificateThumbprint>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateKeyFile>XAMLSpriteGame_StoreKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ARM - Debug|ARM'">
     <CustomBuildAfterTargets>BscMake</CustomBuildAfterTargets>
@@ -341,7 +342,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='ARM - Release|x64'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - x64|x64'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - x64|x64'">W8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - Release|x64'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Desktop - Debug|x64'">_W_8_1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -644,6 +645,7 @@
     <Media Include="Assets\Sounds\Shoot.wav" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="XAMLSpriteGame_StoreKey.pfx" />
     <Xml Include="Level Data\Andromeda.xml" />
     <Xml Include="Level Data\Andromeda2.xml" />
     <Xml Include="Level Data\Andromeda3.xml" />
@@ -657,6 +659,7 @@
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="Level Data\Menu.xml" />
+    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

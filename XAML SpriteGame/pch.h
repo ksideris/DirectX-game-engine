@@ -1,12 +1,18 @@
 #pragma once
-
-#define WINDOWS_8_1
+ 
 
 #include <wrl.h>
+#ifdef W8_1
+
+#include <d3d11_2.h>
+#include <d2d1_2.h>
+#include <dwrite_2.h>
+#else
 #include <d3d11_1.h>
 #include <d2d1_1.h>
-#include <d2d1effects.h>
 #include <dwrite_1.h>
+#endif
+#include <d2d1effects.h>
 #include <wincodec.h>
 #include <ppltasks.h>
 #include <agile.h>

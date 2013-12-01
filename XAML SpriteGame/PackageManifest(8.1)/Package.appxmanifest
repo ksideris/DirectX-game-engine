@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="GameEngine.CS188" Publisher="CN=TYREX" Version="1.0.0.40" />
+  <Identity Name="55378k.sid.GalacticWars" Publisher="CN=5FE7A094-CC4C-4F6A-A097-86DCF6EF6478" Version="1.1.0.29" />
   <Properties>
-    <DisplayName>GameEngine.CS188</DisplayName>
+    <DisplayName>Galactic Wars</DisplayName>
     <PublisherDisplayName>k.sid</PublisherDisplayName>
     <Logo>Assets\Icons\50x50Tile.png</Logo>
   </Properties>
@@ -15,14 +15,11 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="GameEngine.App">
-      <m2:VisualElements DisplayName="GameEngine" Description="CS188" BackgroundColor="#404040" ForegroundText="light" Square150x150Logo="Assets\Icons\150x150Tile.png" Square30x30Logo="Assets\Icons\30x30Tile.png">
-        <m2:DefaultTile ShortName="Direct2D game engine" Wide310x150Logo="Assets\Icons\310x150Tile.png">
+      <m2:VisualElements DisplayName="Galactic Wars" Description="Explore the worlds of Galactic Wars while collecting valuable coins! Can you handle the hordes of space robots that will try to stop you?" BackgroundColor="#404040" ForegroundText="light" Square150x150Logo="Assets\Icons\150x150Tile.png" Square30x30Logo="Assets\Icons\30x30Tile.png">
+        <m2:DefaultTile ShortName="Galactic Wars" Wide310x150Logo="Assets\Icons\310x150Tile.png">
         </m2:DefaultTile>
         <m2:InitialRotationPreference>
-          <m2:Rotation Preference="portrait" />
           <m2:Rotation Preference="landscape" />
-          <m2:Rotation Preference="portraitFlipped" />
-          <m2:Rotation Preference="landscapeFlipped" />
         </m2:InitialRotationPreference>
         <m2:SplashScreen BackgroundColor="#404040" Image="Assets\Icons\SplashScreen.png" />
       </m2:VisualElements>

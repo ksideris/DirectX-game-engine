@@ -407,3 +407,17 @@ float DirectXBase::ConvertDipsToPixels(float dips)
 	static const float dipsPerInch = 96.0f;
 	return floor(dips * m_dpi / dipsPerInch + 0.5f); // Round to nearest integer.
 }
+// Call this method when the app suspends to hint to the driver that the app is entering an idle state
+// and that its memory can be used temporarily for other apps.
+
+
+#ifdef W8_1
+
+void DirectXBase::Trim()
+{
+	ComPtr<IDXGIDevice3> dxgiDevice;
+	m_d3dDevice.As(&dxgiDevice);
+
+	dxgiDevice->Trim();
+}
+#endif

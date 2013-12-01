@@ -24,8 +24,9 @@ namespace DXCore
 		virtual void Render() = 0;
 		virtual void Present();
 		virtual float ConvertDipsToPixels(float dips);
-
-
+#ifdef W8_1
+		virtual void Trim(); //required in 8_1
+#endif
 		virtual void OnPointerMoved(Windows::UI::Core::CoreWindow^ window, Windows::UI::Core::PointerEventArgs^ pArgs);
 		virtual void OnPointerReleased(Windows::UI::Core::CoreWindow^ window, Windows::UI::Core::PointerEventArgs^ pArgs);
 		virtual void OnPointerPressed(Windows::UI::Core::CoreWindow^ window, Windows::UI::Core::PointerEventArgs^ pArgs);

@@ -30,7 +30,6 @@ void SpriteGame::LoadLevel(Platform::String^ level_xml)
 {
 	if (level != NULL)
 	{
-
 		delete level;
 	}
 
@@ -45,10 +44,10 @@ void SpriteGame::LoadLevel(Platform::String^ level_xml)
 
 	spaceship->SetTarget(float2(0.f, m_windowBounds.Height / 2.f));
 	level->SetWindowDependentProperties(m_windowBounds);
-
 	 
 	time_passed = 0;
 	score = 0;
+	last_explosion = 0;
 }
 
 void SpriteGame::CreateDeviceResources()
@@ -242,7 +241,7 @@ void SpriteGame::DetectCollisions(){
 				if (dist((*pobject)->GetPos(), bullet->GetPos()) < (*pobject)->textureSize.Width*(*pobject)->GetScale().x*2.0) // prune collision list based on distance
 				{
 					if (PolygonCollision((*pobject)->getCollisionGeometry(), bullet->getCollisionGeometry())) //checkCollision
-						colliding.push_back(pair<GameObject*, GameObject*>(&(*bullet), *pobject));
+						colliding.push_back(pair<GameObject*, GameObject*>(&(*bullet),*pobject));
 
 				}
 			}
@@ -262,15 +261,13 @@ void SpriteGame::HandleCollisions()
 		if (res1 == ImpactResult::score || res2 == ImpactResult::score)
 			score += 1;
 
-		if (res1 == ImpactResult::explosion || res2 == ImpactResult::explosion || res1 == ImpactResult::bigexplosion || res2 == ImpactResult::bigexplosion)
+		if (res1 == ImpactResult::explosion || res1 == ImpactResult::bigexplosion  )
 		{
 			Explosion data;
-			if (res1 == ImpactResult::explosion || res1 == ImpactResult::bigexplosion)
-				data.SetPos(c->first->GetPos());
-			else
-				data.SetPos(c->second->GetPos());
+			data.SetPos(c->first->GetPos());
+			
 
-			if (res1 == ImpactResult::explosion || res2 == ImpactResult::explosion)
+			if (res1 == ImpactResult::explosion  )
 			{
 				data.SetScale(float2(20.f, 20.f));
 				data.SetLifeTime(10);
@@ -285,6 +282,26 @@ void SpriteGame::HandleCollisions()
 			m_explosionData.push_back(data);
 		}
 
+		if (res2 == ImpactResult::explosion || res2 == ImpactResult::bigexplosion  )
+		{
+			Explosion data;
+			data.SetPos(c->first->GetPos());
+
+
+			if (res2 == ImpactResult::explosion)
+			{
+				data.SetScale(float2(20.f, 20.f));
+				data.SetLifeTime(10);
+			}
+			else
+			{
+				data.SetScale(float2(30.f, 30.f));
+				data.SetLifeTime(100);
+			}
+			data.SetTexture(m_particle);
+			data.SetWindowSize(m_windowBounds);
+			m_explosionData.push_back(data);
+		}
 
 		if (res1 == ImpactResult::finish || res2 == ImpactResult::finish)
 		{

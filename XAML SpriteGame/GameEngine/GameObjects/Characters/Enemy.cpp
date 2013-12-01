@@ -62,23 +62,23 @@ void Enemy::Update(float timeDelta)
 	UpdateCollisionGeometry(prevPos, pos, prevRot - rot);
 
 }
-ImpactResult Enemy::ProcessHit(float ImpactFactor)
-{
-	health -= ImpactFactor;
-	if (ImpactFactor>0)
-		hit = 10;
-	if (health < 0)
-	{
-		_dead = true;
-		AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::EnemyDead);
-		AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::EnemyDead);
-		return ImpactResult::bigexplosion;
-	}
-
-	AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::Crash);
-	AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::Crash);
-	return ImpactResult::hit;
-}
+//ImpactResult Enemy::ProcessHit(float ImpactFactor)
+//{
+//	health -= ImpactFactor;
+//	if (ImpactFactor>0)
+//		hit = 10;
+//	if (health < 0)
+//	{
+//		_dead = true;
+//		AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::EnemyDead);
+//		AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::EnemyDead);
+//		return ImpactResult::bigexplosion;
+//	}
+//
+//	AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::Crash);
+//	AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::Crash);
+//	return ImpactResult::hit;
+//}
 float Enemy::GetImpactSize()
 {
 	return 10.f;

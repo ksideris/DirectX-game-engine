@@ -55,6 +55,8 @@ void HorizontalSliderPlayer::Shoot()
 		bullets.push_back(data);
 		break;
 	case WeaponsLevel::triple: 
+
+		data.SetPos(pos);
 		data.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data.SetScale(float2(1.0f, 1.0f));
 		data.SetTexture(_projectile);

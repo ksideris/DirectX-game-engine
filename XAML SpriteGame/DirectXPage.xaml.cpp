@@ -82,7 +82,8 @@ DirectXPage::DirectXPage()
 		ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &DirectXPage::OnWindowSizeChanged);
 
 	Window::Current->CoreWindow->VisibilityChanged+=ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow ^, Windows::UI::Core::VisibilityChangedEventArgs ^>(this, &GameEngine::DirectXPage::OnVisibilityChanged);
-
+	 
+	
 
 	// main rendering event handler
 	m_eventToken = CompositionTarget::Rendering += ref new EventHandler<Object^>(this, &DirectXPage::OnRendering);
@@ -915,6 +916,7 @@ void  GameEngine::DirectXPage::Unpause()
 void GameEngine::DirectXPage::Suspend()
 {
 	Pause();
+	m_renderer->Trim();
 }
 
 
@@ -936,4 +938,10 @@ void GameEngine::DirectXPage::OnBackToMenuTapped(Platform::Object ^sender, Windo
 	MenuButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Visible;
 	LevelButtonsGrid->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
 	active_UI = MenuButtonsGrid;
+}
+
+
+void GameEngine::DirectXPage::OnSuspending(Platform::Object ^sender, Windows::ApplicationModel::SuspendingEventArgs ^e)
+{
+	m_renderer->Trim();
 }
