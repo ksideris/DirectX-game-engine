@@ -391,8 +391,8 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 void DirectXPage::OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 
-	m_renderer->LoadLevel("Menu.xml");
 	LoadSettings();
+	m_renderer->LoadLevel("Menu.xml");
 	LoadHighScores(SAVEFILE);
 	LoadLevels(L"Level Data\\Levels.xml");
 	IsInitialDataLoaded = true;
