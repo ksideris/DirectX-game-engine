@@ -234,9 +234,9 @@ void DirectXPage::UpdateScores()
 	int i = 0;
 	for (auto score = scores.begin(); score != scores.end(); score++)
 	{
-		if (m_renderer->score >= *score)
+		if (GlobalHelper::getData()->score >= *score)
 		{
-			scores.insert(scores.begin() + i, m_renderer->score);
+			scores.insert(scores.begin() + i, GlobalHelper::getData()->score);
 
 			break;
 		}
@@ -368,7 +368,7 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 		fps /= framerate.size();
 		Clock->Text = (((int) m_timer->Total) / 60).ToString();
 		Clock->Text += ":" + (((int) m_timer->Total) % 60).ToString();
-		Score->Text = m_renderer->score.ToString();
+		Score->Text = GlobalHelper::getData()->score.ToString();
 
 		if (m_renderer->gamestate == GameState::GameOver || m_renderer->gamestate == GameState::LevelComplete)
 		{
@@ -376,8 +376,8 @@ void DirectXPage::OnRendering(Platform::Object^ sender, Platform::Object^ args)
 		}
 
 
-		HealthBar->Width = max(m_renderer->spaceship->health, 0) * 350 / 100.f;
-		health = m_renderer->spaceship->health;
+		HealthBar->Width = max(GlobalHelper::getData()->spaceship->health, 0) * 350 / 100.f;
+		health = GlobalHelper::getData()->spaceship->health;
 
 		AudioManager::AudioEngineInstance.Render();
 
@@ -409,7 +409,7 @@ void DirectXPage::OnKeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::
 {
 	if (m_renderer->gamestate == Playing)
 	{
-		m_renderer->spaceship->ProcessKeyDown(e);
+		GlobalHelper::getData()->spaceship->ProcessKeyDown(e);
 
 		//if (e->Key == VirtualKey::A)
 		//	m_renderer->spaceShipLight->m_currentEffect = m_renderer->spaceShipLight->m_pointSpecularEffect;
@@ -423,7 +423,7 @@ void  DirectXPage::OnKeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::K
 {
 	if (m_renderer->gamestate == Playing)
 	{
-		m_renderer->spaceship->ProcessKeyUp(e);
+		GlobalHelper::getData()->spaceship->ProcessKeyUp(e);
 	}
 }
 
@@ -816,7 +816,7 @@ void GameEngine::DirectXPage::OnPointerPressed(Platform::Object ^sender, Windows
 	{
 		if (e->Pointer->IsInContact && e->GetCurrentPoint(GamePlayGrid)->Position.Y > HUD->Height)
 		{
-			m_renderer->spaceship->ProcessPointerPressed(e->GetCurrentPoint((DirectXPage^) sender));
+			GlobalHelper::getData()->spaceship->ProcessPointerPressed(e->GetCurrentPoint((DirectXPage^) sender));
 		}
 	}
 }
@@ -828,7 +828,7 @@ void GameEngine::DirectXPage::OnPointerMoved(Platform::Object ^sender, Windows::
 		if (e->Pointer->IsInContact && e->GetCurrentPoint(GamePlayGrid)->Position.Y > HUD->Height)
 		{
 
-			m_renderer->spaceship->ProcessPointerMoved(e->GetCurrentPoint((DirectXPage^) sender));
+			GlobalHelper::getData()->spaceship->ProcessPointerMoved(e->GetCurrentPoint((DirectXPage^) sender));
 		}
 
 	}
@@ -842,7 +842,7 @@ void GameEngine::DirectXPage::OnPointerReleased(Platform::Object ^sender, Window
 		if (e->Pointer->IsInContact  && e->GetCurrentPoint(GamePlayGrid)->Position.Y > HUD->Height)
 		{
 
-			m_renderer->spaceship->ProcessPointerReleased(e->GetCurrentPoint((DirectXPage^) sender));
+			GlobalHelper::getData()->spaceship->ProcessPointerReleased(e->GetCurrentPoint((DirectXPage^) sender));
 		}
 	}
 	hudIsClicked = false;
@@ -872,7 +872,7 @@ void GameEngine::DirectXPage::OnSettingsTapped(Platform::Object ^sender, Windows
 }
 void GameEngine::DirectXPage::OnShootTapped(Platform::Object ^sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs ^e)
 {
-	m_renderer->spaceship->Shoot();
+	GlobalHelper::getData()->spaceship->Shoot();
 }
 void GameEngine::DirectXPage::OnShootPointerEntered(Platform::Object ^sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^e)
 {

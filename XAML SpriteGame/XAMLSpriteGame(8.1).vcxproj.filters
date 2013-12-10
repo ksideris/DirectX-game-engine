@@ -32,6 +32,7 @@
     <ClCompile Include="Helpers\RWContract.cpp" />
     <ClCompile Include="Helpers\Timer.cpp" />
     <ClCompile Include=".\DXCore\SpriteWorks.cpp" />
+    <ClCompile Include="GameEngine\GlobalData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
@@ -82,6 +83,7 @@
     <ClInclude Include=".\DXCore\SpriteWorks.h" />
     <ClInclude Include=".\DXCore\DirectXLinker.h" />
     <ClInclude Include=".\DXCore\DirectXBase.h" />
+    <ClInclude Include="GameEngine\GlobalData.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Level Data\Geometry.xml" />

@@ -359,6 +359,7 @@
     <ClInclude Include="GameEngine\Backgrounds\FlashingBackground.h" />
     <ClInclude Include="GameEngine\GameObjects\Characters\ControllableCharacter.h" />
     <ClInclude Include="GameEngine\GameObjects\GamePlayElement.h" />
+    <ClInclude Include="GameEngine\GlobalData.h" />
     <ClInclude Include="GameEngine\ParticleEffects\BaseParticleSystem.h" />
     <ClInclude Include="GameEngine\ParticleEffects\Explosion.h" />
     <ClInclude Include="GameEngine\ParticleEffects\FireBall.h" />
@@ -458,6 +459,7 @@
     <ClCompile Include="Audio\MediaStreamer.cpp" />
     <ClCompile Include="GameEngine\Backgrounds\FlashingBackground.cpp" />
     <ClCompile Include="GameEngine\GameObjects\GamePlayElement.cpp" />
+    <ClCompile Include="GameEngine\GlobalData.cpp" />
     <ClCompile Include="GameEngine\ParticleEffects\Explosion.cpp" />
     <ClCompile Include="GameEngine\ParticleEffects\FireBall.cpp" />
     <ClCompile Include="GameEngine\ParticleEffects\RocketFire.cpp" />

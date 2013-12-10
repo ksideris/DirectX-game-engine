@@ -17,7 +17,7 @@ using namespace DXCore;
 SpriteGame::SpriteGame()
 {
 	gamestate = Menu;
-	time_passed = 0;
+	GlobalHelper::getData()->time_passed = 0;
 }
 
 void SpriteGame::CreateDeviceIndependentResources()
@@ -28,31 +28,35 @@ void SpriteGame::CreateDeviceIndependentResources()
 
 void SpriteGame::LoadLevel(Platform::String^ level_xml)
 {
-	if (level != NULL)
+	GlobalData* gdata = GlobalHelper::getData();
+
+	if (gdata->level != NULL)
 	{
-		delete level;
+		delete gdata->level;
 	}
 
 	BasicLoader^ loader = ref new BasicLoader(m_d3dDevice.Get(), m_wicFactory.Get());
-	level = new Level();
+	gdata->level = new Level();
 	std::wstring level_xmlW(level_xml->Begin());
 	std::string level_xmlA(level_xmlW.begin(), level_xmlW.end());
-	level->Load("Level Data\\" + level_xmlA, m_spriteBatch, loader);
+	gdata->level->Load("Level Data\\" + level_xmlA, m_spriteBatch, loader);
 
-	spaceship->health = 100;
-	spaceship->Reset();
+	gdata->spaceship->health = 100;
+	gdata->spaceship->Reset();
 
-	spaceship->SetTarget(float2(0.f, m_windowBounds.Height / 2.f));
-	level->SetWindowDependentProperties(m_windowBounds);
+	gdata->spaceship->SetTarget(float2(0.f, m_windowBounds.Height / 2.f));
+	gdata->level->SetWindowDependentProperties(m_windowBounds);
 	 
-	time_passed = 0;
-	score = 0;
+	gdata->time_passed = 0;
+	gdata->score = 0;
 	last_explosion = 0;
 }
 
 void SpriteGame::CreateDeviceResources()
 {
 	DirectXBase::CreateDeviceResources();
+
+	GlobalData* gdata = GlobalHelper::getData();
 
 	m_spriteBatch = ref new SpriteBatch();
 	unsigned int capacity = 15000;
@@ -69,60 +73,60 @@ void SpriteGame::CreateDeviceResources()
 
 	loader->LoadTexture(
 		"Assets\\GameObjects\\spotlight.png",
-		&m_player_spot,
+		&gdata->m_player_spot,
 		nullptr
 		);
 
-	m_spriteBatch->AddTexture(m_player_spot.Get());
+	m_spriteBatch->AddTexture(gdata->m_player_spot.Get());
 
 	loader->LoadTexture(
 		"Assets\\GameObjects\\ida.dds",
-		&m_asteroid,
+		&gdata->m_asteroid,
 		nullptr
 		);
-	m_spriteBatch->AddTexture(m_asteroid.Get());
+	m_spriteBatch->AddTexture(gdata->m_asteroid.Get());
 
 	loader->LoadTexture(
 		"Assets\\GameObjects\\SpaceShip.png",
-		&m_player,
+		&gdata->m_player,
 		nullptr
 		);
-	m_spriteBatch->AddTexture(m_player.Get());
+	m_spriteBatch->AddTexture(gdata->m_player.Get());
 
 	loader->LoadTexture(
 		"Assets\\GameObjects\\particle.png",
-		&m_particle,
+		&gdata->m_particle,
 		nullptr
 		);
-	m_spriteBatch->AddTexture(m_particle.Get());
+	m_spriteBatch->AddTexture(gdata->m_particle.Get());
 
 	loader->LoadTexture(
 		"Assets\\GameObjects\\debug.png",
-		&m_debug_point,
+		&gdata->m_debug_point,
 		nullptr
 		);
-	m_spriteBatch->AddTexture(m_debug_point.Get());
+	m_spriteBatch->AddTexture(gdata->m_debug_point.Get());
 	loader->LoadTexture(
 		"Assets\\GameObjects\\bad_health.png",
-		&m_background,
+		&gdata->m_background,
 		nullptr
 		);
-	m_spriteBatch->AddTexture(m_background.Get());
+	m_spriteBatch->AddTexture(gdata->m_background.Get());
 	 
 
 
-	spaceship = new HorizontalSliderPlayer();
-	rocketFuel = new RocketFire();
+	gdata->spaceship = new HorizontalSliderPlayer();
+	gdata->rocketFuel = new RocketFire();
 
-	spaceship->SetVel(float2(0, 0));
-	spaceship->SetRot(0);
-	spaceship->SetRotVel(0);
-	spaceship->SetScale(float2(.35, .35));
+	gdata->spaceship->SetVel(float2(0, 0));
+	gdata->spaceship->SetRot(0);
+	gdata->spaceship->SetRotVel(0);
+	gdata->spaceship->SetScale(float2(.35, .35));
 
-	spaceship->_projectile = m_particle;
+	gdata->spaceship->_projectile = gdata->m_particle;
 
-	bad_health_background = new FlashingBackground();
-	bad_health_background->SetTexture(m_background);
+	gdata->bad_health_background = new FlashingBackground();
+	gdata->bad_health_background->SetTexture(gdata->m_background);
 
 
 
@@ -132,39 +136,42 @@ void SpriteGame::CreateWindowSizeDependentResources()
 {
 	DirectXBase::CreateWindowSizeDependentResources();
 
-	spaceship->SetWindowSize(m_windowBounds);
+	GlobalData* gdata = GlobalHelper::getData();
 
-	spaceship->SetPos(float2(0.f, m_windowBounds.Height / 2.0f));
+	gdata->spaceship->SetWindowSize(m_windowBounds);
 
-	spaceship->SetTexture(m_player);
-	rocketFuel->SetTexture(m_particle);
-	spaceship->setForwardTriangleCollisionGeometry(spaceship->GetTopLeft(), spaceship->GetBottomRight());
-	spaceship->AddChild(float2(spaceship->textureSize.Width / 2.0f*spaceship->GetScale().x, spaceship->textureSize.Height / 2.0f*spaceship->GetScale().y), rocketFuel);
+	gdata->spaceship->SetPos(float2(0.f, m_windowBounds.Height / 2.0f));
 
-	rocketFuel->SetPos(spaceship->GetPos());
+	gdata->spaceship->SetTexture(gdata->m_player);
+	gdata->rocketFuel->SetTexture(gdata->m_particle);
+	gdata->spaceship->setForwardTriangleCollisionGeometry(gdata->spaceship->GetTopLeft(), gdata->spaceship->GetBottomRight());
+	gdata->spaceship->AddChild(float2(gdata->spaceship->textureSize.Width / 2.0f*gdata->spaceship->GetScale().x, gdata->spaceship->textureSize.Height / 2.0f*gdata->spaceship->GetScale().y), gdata->rocketFuel);
+
+	gdata->rocketFuel->SetPos(gdata->spaceship->GetPos());
 	 
-	if (level != NULL)
-		level->background->SetWindowSize(m_windowBounds);
+	if (gdata->level != NULL)
+		gdata->level->background->SetWindowSize(m_windowBounds);
 
 
  
-	bad_health_background->SetWindowSize(m_windowBounds);
+	gdata->bad_health_background->SetWindowSize(m_windowBounds);
 
 }
 
 void SpriteGame::Update(float timeTotal, float timeDelta)
 {
-	time_passed += timeDelta;
+	GlobalData* gdata = GlobalHelper::getData();
+	gdata->time_passed += timeDelta;
 
-	level->background->Update(timeDelta);
-	level->foreground->Update(timeDelta);
-	bad_health_background->Update(timeDelta);
-	spaceship->Update(timeDelta); 
+	gdata->level->background->Update(timeDelta);
+	gdata->level->foreground->Update(timeDelta);
+	gdata->bad_health_background->Update(timeDelta);
+	gdata->spaceship->Update(timeDelta);
 
-	for (auto object = level->all_gameobjects.begin(); object != level->all_gameobjects.end(); object++) // update level objects
+	for (auto object = gdata->level->all_gameobjects.begin(); object != gdata->level->all_gameobjects.end(); object++) // update level objects
 		(*object)->Update(timeDelta);
 
-	for (auto object = m_explosionData.begin(); object != m_explosionData.end(); object++) // update explosions
+	for (auto object = gdata->m_explosionData.begin(); object != gdata->m_explosionData.end(); object++) // update explosions
 		object->Update(timeDelta);
 
 	if (gamestate == GameState::LevelWon &&   timeTotal - last_explosion > .1)
@@ -174,32 +181,32 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 		data.SetPos(float2(RandFloat(0, m_windowBounds.Width), RandFloat(0, m_windowBounds.Height)));
 		data.color = float4(RandFloat(0, 1), RandFloat(0, 1), RandFloat(0, 1), 1.f);
 		data.SetScale(float2(30.0f, 30.0f));
-		data.SetTexture(m_particle);
+		data.SetTexture(gdata->m_particle);
 		data.SetWindowSize(m_windowBounds);
-		m_explosionData.push_back(data);
+		gdata->m_explosionData.push_back(data);
 		last_explosion = timeTotal;
 	}
 	if (gamestate == GameState::LevelLost &&   timeTotal - last_explosion > .3)
 	{
 		Explosion data;
 		data.SetLifeTime(100);
-		data.SetPos(spaceship->GetPos());
+		data.SetPos(gdata->spaceship->GetPos());
 		data.color = float4(1.f, 0.3f, .0f, 1.f);
 		data.SetScale(float2(30.0f, 30.0f));
-		data.SetTexture(m_particle);
+		data.SetTexture(gdata->m_particle);
 		data.SetWindowSize(m_windowBounds);
-		m_explosionData.push_back(data);
+		gdata->m_explosionData.push_back(data);
 		last_explosion = timeTotal;
 	}
 
 	if (gamestate == GameState::Playing) //if playing , create new level objects
 	{
-		level->Update(timeTotal, timeDelta, m_windowBounds);
+		gdata->level->Update(timeTotal, timeDelta, m_windowBounds);
 
 		DetectCollisions();
 		HandleCollisions();
 
-		if (!spaceship->IsAlive())
+		if (!gdata->spaceship->IsAlive())
 			gamestate = GameState::GameOver;
 	}
 
@@ -208,8 +215,10 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 }
 void SpriteGame::DetectCollisions(){
 
+	GlobalData* gdata = GlobalHelper::getData();
+
 	colliding.clear();
-	for (auto pobject = level->all_gameobjects.begin(); pobject != level->all_gameobjects.end(); pobject++)  // process all player collisions
+	for (auto pobject = gdata->level->all_gameobjects.begin(); pobject != gdata->level->all_gameobjects.end(); pobject++)  // process all player collisions
 	{
 		if (dynamic_cast<Enemy*>((*pobject)) != NULL) // if it is an enemy we need to add the bullets 
 		{
@@ -217,24 +226,24 @@ void SpriteGame::DetectCollisions(){
 			for (auto bullet = en->bullets.begin(); bullet != en->bullets.end(); bullet++) // add enemy bullets to the collision list
 			{
 
-				if (dist(bullet->GetPos(), spaceship->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0) // prune collision list based on distance
+				if (dist(bullet->GetPos(), gdata->spaceship->GetPos()) < gdata->spaceship->textureSize.Width*gdata->spaceship->GetScale().x*2.0) // prune collision list based on distance
 				{
-					if (PolygonCollision(bullet->getCollisionGeometry(), spaceship->getCollisionGeometry())) //checkCollision
-						colliding.push_back(pair<GameObject*, GameObject*>(spaceship, &(*bullet)));
+					if (PolygonCollision(bullet->getCollisionGeometry(), gdata->spaceship->getCollisionGeometry())) //checkCollision
+						colliding.push_back(pair<GameObject*, GameObject*>(gdata->spaceship, &(*bullet)));
 				}
 			}
 		}
-		if (dist((*pobject)->GetPos(), spaceship->GetPos()) < spaceship->textureSize.Width*spaceship->GetScale().x*2.0) // prune collision list based on distance
+		if (dist((*pobject)->GetPos(), gdata->spaceship->GetPos()) < gdata->spaceship->textureSize.Width*gdata->spaceship->GetScale().x*2.0) // prune collision list based on distance
 		{
-			if (PolygonCollision((*pobject)->getCollisionGeometry(), spaceship->getCollisionGeometry())) //checkCollision
-				colliding.push_back(pair<GameObject*, GameObject*>(spaceship, *pobject));
+			if (PolygonCollision((*pobject)->getCollisionGeometry(), gdata->spaceship->getCollisionGeometry())) //checkCollision
+				colliding.push_back(pair<GameObject*, GameObject*>(gdata->spaceship, *pobject));
 
 		}
 	}
 
-	for (auto pobject = level->all_gameobjects.begin(); pobject != level->all_gameobjects.end(); pobject++) // process all enemy collisions
+	for (auto pobject = gdata->level->all_gameobjects.begin(); pobject != gdata->level->all_gameobjects.end(); pobject++) // process all enemy collisions
 	{
-		for (auto bullet = spaceship->bullets.begin(); bullet != spaceship->bullets.end(); bullet++) //against player bullets
+		for (auto bullet = gdata->spaceship->bullets.begin(); bullet != gdata->spaceship->bullets.end(); bullet++) //against player bullets
 		{
 			if (dynamic_cast<GamePlayElement*>((*pobject)) == NULL)  // We only want to hit Enemies & asteroids, not gameplay stuff
 			{
@@ -251,6 +260,8 @@ void SpriteGame::DetectCollisions(){
 }
 void SpriteGame::HandleCollisions()
 {
+	GlobalData* gdata = GlobalHelper::getData();
+
 	for (auto c = colliding.begin(); c != colliding.end(); c++)
 	{
 
@@ -259,7 +270,7 @@ void SpriteGame::HandleCollisions()
 		ImpactResult res2 = c->second->ProcessHit(c->first->GetImpactSize());
 
 		if (res1 == ImpactResult::score || res2 == ImpactResult::score)
-			score += 1;
+			gdata->score += 1;
 
 		if (res1 == ImpactResult::explosion || res1 == ImpactResult::bigexplosion  )
 		{
@@ -277,9 +288,9 @@ void SpriteGame::HandleCollisions()
 				data.SetScale(float2(30.f, 30.f));
 				data.SetLifeTime(100);
 			}
-			data.SetTexture(m_particle);
+			data.SetTexture(gdata->m_particle);
 			data.SetWindowSize(m_windowBounds);
-			m_explosionData.push_back(data);
+			gdata->m_explosionData.push_back(data);
 		}
 
 		if (res2 == ImpactResult::explosion || res2 == ImpactResult::bigexplosion  )
@@ -298,9 +309,9 @@ void SpriteGame::HandleCollisions()
 				data.SetScale(float2(30.f, 30.f));
 				data.SetLifeTime(100);
 			}
-			data.SetTexture(m_particle);
+			data.SetTexture(gdata->m_particle);
 			data.SetWindowSize(m_windowBounds);
-			m_explosionData.push_back(data);
+			gdata->m_explosionData.push_back(data);
 		}
 
 		if (res1 == ImpactResult::finish || res2 == ImpactResult::finish)
@@ -309,36 +320,38 @@ void SpriteGame::HandleCollisions()
 		}
 		if (res1 == ImpactResult::health || res2 == ImpactResult::health)
 		{
-			spaceship->health = 100;
+			gdata->spaceship->health = 100;
 		}
 		if (res1 == ImpactResult::weapon_upgrade || res2 == ImpactResult::weapon_upgrade)
 		{
-			spaceship->UpgradeWeapons();
+			gdata->spaceship->UpgradeWeapons();
 		}
 	}
 
 }
 void SpriteGame::RemoveDead()
 {
-	for (auto pobject = level->all_gameobjects.begin(); pobject != level->all_gameobjects.end(); pobject++)
+	GlobalData* gdata = GlobalHelper::getData();
+
+	for (auto pobject = gdata->level->all_gameobjects.begin(); pobject != gdata->level->all_gameobjects.end(); pobject++)
 	{
 		if (!(*pobject)->IsAlive())
 		{
 			delete *(pobject);
-			pobject = level->all_gameobjects.erase(pobject);
+			pobject = gdata->level->all_gameobjects.erase(pobject);
 
-			if (pobject == level->all_gameobjects.end())
+			if (pobject == gdata->level->all_gameobjects.end())
 				break;
 		}
 	}
 
-	for (auto pobject = m_explosionData.begin(); pobject != m_explosionData.end(); pobject++)
+	for (auto pobject = gdata->m_explosionData.begin(); pobject != gdata->m_explosionData.end(); pobject++)
 	{
 		if (!pobject->IsAlive())
 		{
-			pobject = m_explosionData.erase(pobject);
+			pobject = gdata->m_explosionData.erase(pobject);
 
-			if (pobject == m_explosionData.end())
+			if (pobject == gdata->m_explosionData.end())
 				break;
 		}
 	}
@@ -346,26 +359,28 @@ void SpriteGame::RemoveDead()
 
 void SpriteGame::Render()
 {
+	GlobalData* gdata = GlobalHelper::getData();
+
 	m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), nullptr);
 
 	m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), reinterpret_cast<float*>(&D2D1::ColorF(D2D1::ColorF::AntiqueWhite)));
 
 	m_spriteBatch->Begin();
 
-	level->background->Draw(m_spriteBatch);
-	level->foreground->Draw(m_spriteBatch);
+	gdata->level->background->Draw(m_spriteBatch);
+	gdata->level->foreground->Draw(m_spriteBatch);
 
-	for (auto object = level->all_gameobjects.begin(); object != level->all_gameobjects.end(); object++)
+	for (auto object = gdata->level->all_gameobjects.begin(); object != gdata->level->all_gameobjects.end(); object++)
 		(*object)->Draw(m_spriteBatch);
 	
-	if (spaceship->IsAlive())
-		spaceship->Draw(m_spriteBatch);
+	if (gdata->spaceship->IsAlive())
+		gdata->spaceship->Draw(m_spriteBatch);
 
-	if (spaceship->health < 30 && spaceship->health>0 && gamestate == GameState::Playing)
-		bad_health_background->Draw(m_spriteBatch);
+	if (gdata->spaceship->health < 30 && gdata->spaceship->health>0 && gamestate == GameState::Playing)
+		gdata->bad_health_background->Draw(m_spriteBatch);
 
 
-	for (auto particle = m_explosionData.begin(); particle != m_explosionData.end(); particle++)
+	for (auto particle = gdata->m_explosionData.begin(); particle != gdata->m_explosionData.end(); particle++)
 		particle->Draw(m_spriteBatch);
 
 	m_spriteBatch->End();
