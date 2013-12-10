@@ -2,6 +2,8 @@
 #pragma once
 #include "../GameObject.h"
 #include "../ParticleEffects/FireBall.h"
+#include "../GlobalData.h"
+
 
 using namespace DXCore;
 using namespace DXCore::BasicSprites;
@@ -17,9 +19,7 @@ public:
 
 	int health;
 
-	Character();
-	Microsoft::WRL::ComPtr<ID3D11Texture2D>		 _projectile;
-	std::vector<FireBall> bullets;
+	Character(); 
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> spot_texture;
  

@@ -46,7 +46,7 @@ void SpriteGame::LoadLevel(Platform::String^ level_xml)
 
 	gdata->spaceship->SetTarget(float2(0.f, m_windowBounds.Height / 2.f));
 	gdata->level->SetWindowDependentProperties(m_windowBounds);
-	 
+
 	gdata->time_passed = 0;
 	gdata->score = 0;
 	last_explosion = 0;
@@ -112,7 +112,7 @@ void SpriteGame::CreateDeviceResources()
 		nullptr
 		);
 	m_spriteBatch->AddTexture(gdata->m_background.Get());
-	 
+
 
 
 	gdata->spaceship = new HorizontalSliderPlayer();
@@ -121,9 +121,7 @@ void SpriteGame::CreateDeviceResources()
 	gdata->spaceship->SetVel(float2(0, 0));
 	gdata->spaceship->SetRot(0);
 	gdata->spaceship->SetRotVel(0);
-	gdata->spaceship->SetScale(float2(.35, .35));
-
-	gdata->spaceship->_projectile = gdata->m_particle;
+	gdata->spaceship->SetScale(float2(.35, .35)); 
 
 	gdata->bad_health_background = new FlashingBackground();
 	gdata->bad_health_background->SetTexture(gdata->m_background);
@@ -138,7 +136,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	GlobalData* gdata = GlobalHelper::getData();
 	gdata->m_windowBounds = m_windowBounds;
-	 
+
 	gdata->spaceship->SetPos(float2(0.f, m_windowBounds.Height / 2.0f));
 
 	gdata->spaceship->SetTexture(gdata->m_player);
@@ -147,8 +145,8 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	gdata->spaceship->AddChild(float2(gdata->spaceship->textureSize.Width / 2.0f*gdata->spaceship->GetScale().x, gdata->spaceship->textureSize.Height / 2.0f*gdata->spaceship->GetScale().y), gdata->rocketFuel);
 
 	gdata->rocketFuel->SetPos(gdata->spaceship->GetPos());
-	 
-	 
+
+
 
 }
 
@@ -161,6 +159,11 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 	gdata->level->foreground->Update(timeDelta);
 	gdata->bad_health_background->Update(timeDelta);
 	gdata->spaceship->Update(timeDelta);
+
+	for (auto particle = gdata->bullets.begin(); particle != gdata->bullets.end(); particle++)
+		particle->Update(timeDelta);
+	for (auto particle = gdata->enemybullets.begin(); particle != gdata->enemybullets.end(); particle++)
+		particle->Update(timeDelta);
 
 	for (auto object = gdata->level->all_gameobjects.begin(); object != gdata->level->all_gameobjects.end(); object++) // update level objects
 		(*object)->Update(timeDelta);
@@ -175,7 +178,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 		data.SetPos(float2(RandFloat(0, m_windowBounds.Width), RandFloat(0, m_windowBounds.Height)));
 		data.color = float4(RandFloat(0, 1), RandFloat(0, 1), RandFloat(0, 1), 1.f);
 		data.SetScale(float2(30.0f, 30.0f));
-		data.SetTexture(gdata->m_particle); 
+		data.SetTexture(gdata->m_particle);
 		gdata->m_explosionData.push_back(data);
 		last_explosion = timeTotal;
 	}
@@ -186,7 +189,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 		data.SetPos(gdata->spaceship->GetPos());
 		data.color = float4(1.f, 0.3f, .0f, 1.f);
 		data.SetScale(float2(30.0f, 30.0f));
-		data.SetTexture(gdata->m_particle); 
+		data.SetTexture(gdata->m_particle);
 		gdata->m_explosionData.push_back(data);
 		last_explosion = timeTotal;
 	}
@@ -211,20 +214,7 @@ void SpriteGame::DetectCollisions(){
 
 	colliding.clear();
 	for (auto pobject = gdata->level->all_gameobjects.begin(); pobject != gdata->level->all_gameobjects.end(); pobject++)  // process all player collisions
-	{
-		if (dynamic_cast<Enemy*>((*pobject)) != NULL) // if it is an enemy we need to add the bullets 
-		{
-			Enemy* en = dynamic_cast<Enemy*>((*pobject));
-			for (auto bullet = en->bullets.begin(); bullet != en->bullets.end(); bullet++) // add enemy bullets to the collision list
-			{
-
-				if (dist(bullet->GetPos(), gdata->spaceship->GetPos()) < gdata->spaceship->textureSize.Width*gdata->spaceship->GetScale().x*2.0) // prune collision list based on distance
-				{
-					if (PolygonCollision(bullet->getCollisionGeometry(), gdata->spaceship->getCollisionGeometry())) //checkCollision
-						colliding.push_back(pair<GameObject*, GameObject*>(gdata->spaceship, &(*bullet)));
-				}
-			}
-		}
+	{ 
 		if (dist((*pobject)->GetPos(), gdata->spaceship->GetPos()) < gdata->spaceship->textureSize.Width*gdata->spaceship->GetScale().x*2.0) // prune collision list based on distance
 		{
 			if (PolygonCollision((*pobject)->getCollisionGeometry(), gdata->spaceship->getCollisionGeometry())) //checkCollision
@@ -232,17 +222,25 @@ void SpriteGame::DetectCollisions(){
 
 		}
 	}
+	for (auto pobject = gdata->enemybullets.begin(); pobject != gdata->enemybullets.end(); pobject++)  // process all player collisions
+	{
+		if (dist(pobject->GetPos(), gdata->spaceship->GetPos()) < gdata->spaceship->textureSize.Width*gdata->spaceship->GetScale().x*2.0) // prune collision list based on distance
+		{
+			if (PolygonCollision(pobject->getCollisionGeometry(), gdata->spaceship->getCollisionGeometry())) //checkCollision
+				colliding.push_back(pair<GameObject*, GameObject*>(gdata->spaceship, &(*pobject)) );
 
+		}
+	}
 	for (auto pobject = gdata->level->all_gameobjects.begin(); pobject != gdata->level->all_gameobjects.end(); pobject++) // process all enemy collisions
 	{
-		for (auto bullet = gdata->spaceship->bullets.begin(); bullet != gdata->spaceship->bullets.end(); bullet++) //against player bullets
+		for (auto bullet = gdata->bullets.begin(); bullet != gdata->bullets.end(); bullet++) //against player bullets
 		{
 			if (dynamic_cast<GamePlayElement*>((*pobject)) == NULL)  // We only want to hit Enemies & asteroids, not gameplay stuff
 			{
 				if (dist((*pobject)->GetPos(), bullet->GetPos()) < (*pobject)->textureSize.Width*(*pobject)->GetScale().x*2.0) // prune collision list based on distance
 				{
 					if (PolygonCollision((*pobject)->getCollisionGeometry(), bullet->getCollisionGeometry())) //checkCollision
-						colliding.push_back(pair<GameObject*, GameObject*>(&(*bullet),*pobject));
+						colliding.push_back(pair<GameObject*, GameObject*>(&(*bullet), *pobject));
 
 				}
 			}
@@ -264,13 +262,13 @@ void SpriteGame::HandleCollisions()
 		if (res1 == ImpactResult::score || res2 == ImpactResult::score)
 			gdata->score += 1;
 
-		if (res1 == ImpactResult::explosion || res1 == ImpactResult::bigexplosion  )
+		if (res1 == ImpactResult::explosion || res1 == ImpactResult::bigexplosion)
 		{
 			Explosion data;
 			data.SetPos(c->first->GetPos());
-			
 
-			if (res1 == ImpactResult::explosion  )
+
+			if (res1 == ImpactResult::explosion)
 			{
 				data.SetScale(float2(20.f, 20.f));
 				data.SetLifeTime(10);
@@ -280,11 +278,11 @@ void SpriteGame::HandleCollisions()
 				data.SetScale(float2(30.f, 30.f));
 				data.SetLifeTime(100);
 			}
-			data.SetTexture(gdata->m_particle); 
+			data.SetTexture(gdata->m_particle);
 			gdata->m_explosionData.push_back(data);
 		}
 
-		if (res2 == ImpactResult::explosion || res2 == ImpactResult::bigexplosion  )
+		if (res2 == ImpactResult::explosion || res2 == ImpactResult::bigexplosion)
 		{
 			Explosion data;
 			data.SetPos(c->first->GetPos());
@@ -300,7 +298,7 @@ void SpriteGame::HandleCollisions()
 				data.SetScale(float2(30.f, 30.f));
 				data.SetLifeTime(100);
 			}
-			data.SetTexture(gdata->m_particle); 
+			data.SetTexture(gdata->m_particle);
 			gdata->m_explosionData.push_back(data);
 		}
 
@@ -322,6 +320,28 @@ void SpriteGame::HandleCollisions()
 void SpriteGame::RemoveDead()
 {
 	GlobalData* gdata = GlobalHelper::getData();
+
+	for (auto particle = gdata->bullets.begin(); particle != gdata->bullets.end(); particle++)
+	{
+		if (particle->IsOutOfVisibleArea() || !particle->IsAlive())
+		{
+			particle = gdata->bullets.erase(particle);
+
+			if (particle == gdata->bullets.end())
+				break;
+		}
+	}
+	for (auto particle = gdata->enemybullets.begin(); particle != gdata->enemybullets.end(); particle++)
+	{
+		if (particle->IsOutOfVisibleArea() || !particle->IsAlive())
+		{
+			particle = gdata->enemybullets.erase(particle);
+
+			if (particle == gdata->enemybullets.end())
+				break;
+		}
+	}
+
 
 	for (auto pobject = gdata->level->all_gameobjects.begin(); pobject != gdata->level->all_gameobjects.end(); pobject++)
 	{
@@ -362,12 +382,17 @@ void SpriteGame::Render()
 
 	for (auto object = gdata->level->all_gameobjects.begin(); object != gdata->level->all_gameobjects.end(); object++)
 		(*object)->Draw(m_spriteBatch);
-	
+
 	if (gdata->spaceship->IsAlive())
 		gdata->spaceship->Draw(m_spriteBatch);
 
 	if (gdata->spaceship->health < 30 && gdata->spaceship->health>0 && gamestate == GameState::Playing)
 		gdata->bad_health_background->Draw(m_spriteBatch);
+
+	for (auto particle = gdata->bullets.begin(); particle != gdata->bullets.end(); particle++)
+		particle->Draw(m_spriteBatch);
+	for (auto particle = gdata->enemybullets.begin(); particle != gdata->enemybullets.end(); particle++)
+		particle->Draw(m_spriteBatch);
 
 
 	for (auto particle = gdata->m_explosionData.begin(); particle != gdata->m_explosionData.end(); particle++)

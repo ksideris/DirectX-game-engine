@@ -25,6 +25,7 @@ void HorizontalSliderPlayer::Reset(){
 void HorizontalSliderPlayer::Shoot()
 {
 
+	GlobalData* gdata = GlobalHelper::getData();
 
 	AudioManager::AudioEngineInstance.StopSoundEffect(AudioEngine::SoundEvent::Shoot);
 	AudioManager::AudioEngineInstance.PlaySoundEffect(AudioEngine::SoundEvent::Shoot);
@@ -40,67 +41,67 @@ void HorizontalSliderPlayer::Shoot()
 		data.SetPos(pos);
 		data.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data.SetScale(float2(1.0f, 1.0f));
-		data.SetTexture(_projectile);
+		data.SetTexture(GlobalHelper::getData()->m_particle);
 		data.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(), data.GetPos());
-		 bullets.push_back(data);
+		gdata->bullets.push_back(data);
 		break;
 	case WeaponsLevel::single_medium: 
 		data.SetPos(pos);
 		data.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data.SetScale(float2(2.0f, 2.0f));
-		data.SetTexture(_projectile);
+		data.SetTexture(GlobalHelper::getData()->m_particle);
 		data.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(), data.GetPos());
-		 bullets.push_back(data);
+		gdata->bullets.push_back(data);
 		break;
 	case WeaponsLevel::triple: 
 
 		data.SetPos(pos);
 		data.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data.SetScale(float2(1.0f, 1.0f));
-		data.SetTexture(_projectile);
+		data.SetTexture(GlobalHelper::getData()->m_particle);
 		data.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(), data.GetPos());
-		 bullets.push_back(data);
+		gdata->bullets.push_back(data);
 		 
 		data2.SetPos(float2(pos.x - textureSize.Width / 2.f*scale.x, pos.y - textureSize.Height / 2.f*scale.y + 20));
 		data2.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data2.SetScale(float2(1.0f, 1.0f));
-		data2.SetTexture(_projectile);
+		data2.SetTexture(GlobalHelper::getData()->m_particle);
 		data2.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(),  data2.GetPos());
-		 bullets.push_back(data2);
+		gdata->bullets.push_back(data2);
 
 
 		data3.SetPos(float2(pos.x - textureSize.Width / 2.f*scale.x, pos.y + textureSize.Height / 2.f*scale.y - 20));
 		data3.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data3.SetScale(float2(1.0f, 1.0f));
-		data3.SetTexture(_projectile);
+		data3.SetTexture(GlobalHelper::getData()->m_particle);
 		data3.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(),  data3.GetPos());
 		 
-		bullets.push_back(data3);
+		gdata->bullets.push_back(data3);
 		break;
 	case WeaponsLevel::triple_medium:
 
 		data.SetPos(pos);
 		data.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data.SetScale(float2(2.0f, 2.0f));
-		data.SetTexture(_projectile);
+		data.SetTexture(GlobalHelper::getData()->m_particle);
 		data.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(),  data.GetPos());
 	 
-		bullets.push_back(data);
+		gdata->bullets.push_back(data);
 
 		data2.SetPos(float2(pos.x - textureSize.Width / 2.f*scale.x, pos.y - textureSize.Height / 2.f*scale.y + 20));
 		data2.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data2.SetScale(float2(2.0f, 2.0f));
-		data2.SetTexture(_projectile);
+		data2.SetTexture(GlobalHelper::getData()->m_particle);
 		data2.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(), data2.GetPos());
-		 bullets.push_back(data2);
+		gdata->bullets.push_back(data2);
 
 		 
 		data3.SetPos(float2(pos.x - textureSize.Width / 2.f*scale.x, pos.y + textureSize.Height / 2.f*scale.y - 20));
 		data3.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data3.SetScale(float2(2.0f, 2.0f));
-		data3.SetTexture(_projectile);
+		data3.SetTexture(GlobalHelper::getData()->m_particle);
 		data3.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(),  data3.GetPos());
-		 bullets.push_back(data3);
+		gdata->bullets.push_back(data3);
 
 	}
 }

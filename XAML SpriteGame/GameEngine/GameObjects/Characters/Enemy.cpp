@@ -19,9 +19,9 @@ void Enemy::Shoot()
 	data.color = float4(0.0f, 1.f, 0.f, 1.0f);
 	data.vel = float2(-1000.0f* cos(rot), -1000.0f*sin(rot));
 	data.SetScale(float2(1.0f, 1.0f));
-	data.SetTexture(_projectile);
+	data.SetTexture(GlobalHelper::getData()->m_particle);
 	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos()); 
-	bullets.push_back(data);
+	GlobalHelper::getData()->enemybullets.push_back(data);
 
 }
 void Enemy::SetTarget(float2 newTarget){  //Why does it not work with the parent??

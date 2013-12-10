@@ -318,8 +318,7 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 			Enemy *data = new Enemy(EnemyMovement((enemy->first).second));
 			data->SetLifeTime(-1);
 			data->SetPos(float2(m_windowBounds.Width + 200, RandFloat(m_windowBounds.Height / 4, 3 * m_windowBounds.Height / 4)));
-			data->SetVel(float2(0.f, 0.f));
-			data->_projectile = m_projectile;
+			data->SetVel(float2(0.f, 0.f)); 
 			data->SetScale(float2(.75f, .75f));
 			data->SetRotVel(0);
 			data->SetTarget(data->GetPos());
