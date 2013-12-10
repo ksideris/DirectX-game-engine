@@ -17,8 +17,7 @@ protected:
 
 public:
 
-	Microsoft::WRL::ComPtr<ID3D11Texture2D>		 _texture;
-	Windows::Foundation::Rect				 _windowRect;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D>		 _texture; 
 	Windows::Foundation::Rect				 textureSize;
 
 
@@ -29,9 +28,7 @@ public:
 	virtual void    SetRot(float  _rot);
 	virtual float   GetRot();
 
-	virtual void SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D>  texture);
-	virtual void SetWindowSize(Windows::Foundation::Rect windowRect);
-
+	virtual void SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D>  texture); 
 	virtual void Update(float timeDelta);
 	virtual void Draw(BasicSprites::SpriteBatch^ m_spriteBatch);
 	virtual bool IsOutOfVisibleArea();

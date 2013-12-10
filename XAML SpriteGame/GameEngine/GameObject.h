@@ -3,7 +3,7 @@
 #include <utility> 
 #include "Sprite.h"
 #include "CollidingObject.h"
- 
+
 
 using namespace std;
 using namespace  DXCore;

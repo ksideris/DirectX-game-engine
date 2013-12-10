@@ -65,7 +65,7 @@ void SpriteGame::CreateDeviceResources()
 		m_d3dDevice.Get(),
 		capacity
 		);
-
+	gdata->m_spriteBatch = m_spriteBatch;
 	// Load the sprite textures.
 
 	BasicLoader^ loader = ref new BasicLoader(m_d3dDevice.Get(), m_wicFactory.Get());
@@ -137,9 +137,8 @@ void SpriteGame::CreateWindowSizeDependentResources()
 	DirectXBase::CreateWindowSizeDependentResources();
 
 	GlobalData* gdata = GlobalHelper::getData();
-
-	gdata->spaceship->SetWindowSize(m_windowBounds);
-
+	gdata->m_windowBounds = m_windowBounds;
+	 
 	gdata->spaceship->SetPos(float2(0.f, m_windowBounds.Height / 2.0f));
 
 	gdata->spaceship->SetTexture(gdata->m_player);
@@ -149,12 +148,7 @@ void SpriteGame::CreateWindowSizeDependentResources()
 
 	gdata->rocketFuel->SetPos(gdata->spaceship->GetPos());
 	 
-	if (gdata->level != NULL)
-		gdata->level->background->SetWindowSize(m_windowBounds);
-
-
- 
-	gdata->bad_health_background->SetWindowSize(m_windowBounds);
+	 
 
 }
 
@@ -181,8 +175,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 		data.SetPos(float2(RandFloat(0, m_windowBounds.Width), RandFloat(0, m_windowBounds.Height)));
 		data.color = float4(RandFloat(0, 1), RandFloat(0, 1), RandFloat(0, 1), 1.f);
 		data.SetScale(float2(30.0f, 30.0f));
-		data.SetTexture(gdata->m_particle);
-		data.SetWindowSize(m_windowBounds);
+		data.SetTexture(gdata->m_particle); 
 		gdata->m_explosionData.push_back(data);
 		last_explosion = timeTotal;
 	}
@@ -193,8 +186,7 @@ void SpriteGame::Update(float timeTotal, float timeDelta)
 		data.SetPos(gdata->spaceship->GetPos());
 		data.color = float4(1.f, 0.3f, .0f, 1.f);
 		data.SetScale(float2(30.0f, 30.0f));
-		data.SetTexture(gdata->m_particle);
-		data.SetWindowSize(m_windowBounds);
+		data.SetTexture(gdata->m_particle); 
 		gdata->m_explosionData.push_back(data);
 		last_explosion = timeTotal;
 	}
@@ -288,8 +280,7 @@ void SpriteGame::HandleCollisions()
 				data.SetScale(float2(30.f, 30.f));
 				data.SetLifeTime(100);
 			}
-			data.SetTexture(gdata->m_particle);
-			data.SetWindowSize(m_windowBounds);
+			data.SetTexture(gdata->m_particle); 
 			gdata->m_explosionData.push_back(data);
 		}
 
@@ -309,8 +300,7 @@ void SpriteGame::HandleCollisions()
 				data.SetScale(float2(30.f, 30.f));
 				data.SetLifeTime(100);
 			}
-			data.SetTexture(gdata->m_particle);
-			data.SetWindowSize(m_windowBounds);
+			data.SetTexture(gdata->m_particle); 
 			gdata->m_explosionData.push_back(data);
 		}
 

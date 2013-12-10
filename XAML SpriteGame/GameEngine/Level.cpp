@@ -255,9 +255,8 @@ void Level::Load(std::string level_loc, BasicSprites::SpriteBatch^ m_spriteBatch
 }
 
 void Level::SetWindowDependentProperties(Windows::Foundation::Rect  m_windowBounds){
-	background->SetWindowSize(m_windowBounds);
-	background->InitSliding();
-	foreground->SetWindowSize(m_windowBounds);
+	 
+	background->InitSliding(); 
 	foreground->InitSliding();
 
 }
@@ -282,8 +281,7 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 				data->SetScale(float2(tempScale, tempScale));
 				data->SetRotVel(RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * tempScale));
 				data->SetTexture(m_asteroid);
-				data->SetWindowSize(m_windowBounds);
-				  
+
 				all_gameobjects.push_back(data);
 			}
 		}
@@ -305,7 +303,7 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 				data->SetScale(float2(.25f, .25f));
 				data->SetRotVel(0);
 				data->SetTexture(m_ring);
-				data->SetWindowSize(m_windowBounds);
+
 			
 				all_gameobjects.push_back(data);
 			}
@@ -325,8 +323,7 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 			data->SetScale(float2(.75f, .75f));
 			data->SetRotVel(0);
 			data->SetTarget(data->GetPos());
-			data->SetTexture(EnemyTextures[(enemy->first).first]);
-			data->SetWindowSize(m_windowBounds);
+			data->SetTexture(EnemyTextures[(enemy->first).first]); 
 			all_gameobjects.push_back(data);
 
 		}
@@ -345,8 +342,7 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 			data->SetVel(float2(-tempMag, 0.f));
 			data->SetScale(float2(.35f, .35f));
 			data->SetRotVel(0); 
-			data->SetTexture(m_health_text);
-			data->SetWindowSize(m_windowBounds);
+			data->SetTexture(m_health_text); 
 			all_gameobjects.push_back(data);
 
 		}
@@ -365,8 +361,7 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 			data->SetVel(float2(-tempMag, 0.f));
 			data->SetScale(float2(.35f, .35f));
 			data->SetRotVel(0);
-			data->SetTexture(m_weapons_text);
-			data->SetWindowSize(m_windowBounds);
+			data->SetTexture(m_weapons_text); 
 			all_gameobjects.push_back(data);
 
 		}
@@ -381,8 +376,7 @@ void Level::Update(float timeTotal, float timeDelta, Windows::Foundation::Rect  
 		data->SetTexture(m_fline);
 		data->SetScale(float2(m_windowBounds.Height / data->textureSize.Height, m_windowBounds.Height / data->textureSize.Height));
 		data->SetTexture(m_fline);
-		data->SetRotVel(0);
-		data->SetWindowSize(m_windowBounds);
+		data->SetRotVel(0); 
 		 
 		all_gameobjects.push_back(data);
 	}

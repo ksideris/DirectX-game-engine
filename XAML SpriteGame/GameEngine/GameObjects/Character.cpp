@@ -30,8 +30,7 @@ void Character::Shoot()
 	data.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 	data.SetScale(float2(1.0f, 1.0f));
 	data.SetTexture(_projectile);
-	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
-	data.SetWindowSize(_windowRect);
+	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos()); 
 
 
 	bullets.push_back(data);
@@ -41,8 +40,7 @@ void Character::Shoot()
 	data2.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 	data2.SetScale(float2(1.0f, 1.0f));
 	data2.SetTexture(_projectile);
-	data2.setCollisionGeometryForParticle(float2(20, 20), data2.GetPos());
-	data2.SetWindowSize(_windowRect); 
+	data2.setCollisionGeometryForParticle(float2(20, 20), data2.GetPos()); 
 
 	bullets.push_back(data2);
 
@@ -52,8 +50,8 @@ void Character::Shoot()
 	data3.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 	data3.SetScale(float2(1.0f, 1.0f));
 	data3.SetTexture(_projectile);
-	data3.setCollisionGeometryForParticle(float2(20, 20), data3.GetPos());
-	data3.SetWindowSize(_windowRect);
+	data3.setCollisionGeometryForParticle(float2(20, 20), data3.GetPos()); 
+
 
 	bullets.push_back(data3);
 
@@ -95,15 +93,15 @@ ImpactResult Character::ProcessHit(float ImpactFactor)
 void Character::KeepInBounds()
 {
 
-	if (pos.x > _windowRect.Width - textureSize.Width / 2.0f * scale.x)
+	if (pos.x > GlobalHelper::getData()->m_windowBounds.Width - textureSize.Width / 2.0f * scale.x)
 	{
-		pos.x = _windowRect.Width - textureSize.Width / 2.0f * scale.x;
+		pos.x = GlobalHelper::getData()->m_windowBounds.Width - textureSize.Width / 2.0f * scale.x;
 		accel.x = 0;
 		vel.x = 0;
 	}
-	if (pos.y > _windowRect.Height - textureSize.Height / 2.0f * scale.y)
+	if (pos.y > GlobalHelper::getData()->m_windowBounds.Height - textureSize.Height / 2.0f * scale.y)
 	{
-		pos.y = _windowRect.Height - textureSize.Height / 2.0f * scale.y;
+		pos.y = GlobalHelper::getData()->m_windowBounds.Height - textureSize.Height / 2.0f * scale.y;
 		accel.y = 0;
 		vel.y = 0;
 	}

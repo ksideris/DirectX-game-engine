@@ -20,6 +20,8 @@ public:
 
 	BasicSprites::SpriteBatch^ m_spriteBatch;
 
+	Windows::Foundation::Rect        m_windowBounds;
+
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_particle;
@@ -30,13 +32,14 @@ public:
 
 	float time_passed;
 	int score;
-
-
+	
 	HorizontalSliderPlayer* spaceship;
 	RocketFire * rocketFuel;
-	FlashingBackground * bad_health_background;
-	std::vector<FireBall> m_particleData;
+	FlashingBackground * bad_health_background; 
+
 	std::vector<Explosion> m_explosionData;
+	std::vector<FireBall> bullets;
+	std::vector<FireBall> enemybullets;
 
 	vector < pair<GameObject*, GameObject*>> colliding;
 

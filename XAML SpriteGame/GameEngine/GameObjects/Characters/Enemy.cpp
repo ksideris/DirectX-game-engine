@@ -20,8 +20,7 @@ void Enemy::Shoot()
 	data.vel = float2(-1000.0f* cos(rot), -1000.0f*sin(rot));
 	data.SetScale(float2(1.0f, 1.0f));
 	data.SetTexture(_projectile);
-	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos());
-	data.SetWindowSize(_windowRect);
+	data.setCollisionGeometryForParticle(float2(20, 20), data.GetPos()); 
 	bullets.push_back(data);
 
 }
@@ -39,13 +38,13 @@ void Enemy::Update(float timeDelta)
 		{
 		case EnemyMovement::RANDOM:
 			{
-				TargetPos = float2(RandFloat(_windowRect.Width / 2, _windowRect.Width - textureSize.Width), RandFloat(textureSize.Height, _windowRect.Height - textureSize.Height));
+				TargetPos = float2(RandFloat(GlobalHelper::getData()->m_windowBounds.Width / 2, GlobalHelper::getData()->m_windowBounds.Width - textureSize.Width), RandFloat(textureSize.Height, GlobalHelper::getData()->m_windowBounds.Height - textureSize.Height));
 				break;
 								  }
 		case EnemyMovement::UP_DOWN:
 			{
 
-				TargetPos = float2(pos.x, RandFloat(0, _windowRect.Height));
+				TargetPos = float2(pos.x, RandFloat(0, GlobalHelper::getData()->m_windowBounds.Height));
 				break;
 								   }
 		}

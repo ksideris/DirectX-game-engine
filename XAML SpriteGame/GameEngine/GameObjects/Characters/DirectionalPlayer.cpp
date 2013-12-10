@@ -67,15 +67,15 @@ void DirectionalPlayer::Update(float timeDelta)
 void DirectionalPlayer::KeepInBounds()
 {
 
-	if (pos.x > _windowRect.Width - textureSize.Width / 2.0f * scale.x)
+	if (pos.x > GlobalHelper::getData()->m_windowBounds.Width - textureSize.Width / 2.0f * scale.x)
 	{
-		pos.x = _windowRect.Width - textureSize.Width / 2.0f * scale.x;
+		pos.x = GlobalHelper::getData()->m_windowBounds.Width - textureSize.Width / 2.0f * scale.x;
 		accel.x = 0;
 		vel.x = 0;
 	}
-	if (pos.y > _windowRect.Height - textureSize.Height / 2.0f * scale.y)
+	if (pos.y > GlobalHelper::getData()->m_windowBounds.Height - textureSize.Height / 2.0f * scale.y)
 	{
-		pos.y = _windowRect.Height - textureSize.Height / 2.0f * scale.y;
+		pos.y = GlobalHelper::getData()->m_windowBounds.Height - textureSize.Height / 2.0f * scale.y;
 		accel.y = 0;
 		vel.y = 0;
 	}

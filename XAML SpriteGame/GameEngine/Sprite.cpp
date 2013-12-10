@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Sprite.h"
+#include "GlobalData.h"
 
 using namespace BasicSprites;
  
@@ -16,11 +17,7 @@ void Sprite::SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D>  texture)
 	delete desc;
 
 }
-
-void Sprite::SetWindowSize(Windows::Foundation::Rect windowRect)
-{
-	_windowRect = windowRect;
-}
+ 
 
 void	Sprite::SetScale(float2 _scale){
 	scale = _scale;
@@ -44,11 +41,11 @@ float   Sprite::GetRot(){
 
 bool Sprite::IsOutOfVisibleArea()
 {
-	if (pos.x > _windowRect.Width + textureSize.Width  * scale.x)
+	if (pos.x > GlobalHelper::getData()->m_windowBounds.Width + textureSize.Width  * scale.x)
 	{
 		return true;
 	}
-	if (pos.y > _windowRect.Height + textureSize.Height   * scale.y)
+	if (pos.y > GlobalHelper::getData()->m_windowBounds.Height + textureSize.Height   * scale.y)
 	{
 		return true;
 	}
@@ -81,9 +78,9 @@ void Sprite::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 {
 	m_spriteBatch->Draw(
 		_texture.Get(),
-		float2(pos.x / _windowRect.Width, 0.5f),
+		float2(pos.x / GlobalHelper::getData()->m_windowBounds.Width, 0.5f),
 		PositionUnits::Normalized,
-		float2(_windowRect.Width / textureSize.Width, _windowRect.Height / textureSize.Height),
+		float2(GlobalHelper::getData()->m_windowBounds.Width / textureSize.Width, GlobalHelper::getData()->m_windowBounds.Height / textureSize.Height),
 		SizeUnits::Normalized
 		);
 }

@@ -25,16 +25,16 @@ void FlashingBackground::Draw(BasicSprites::SpriteBatch^ m_spriteBatch)
 	switch (rendermode)
 	{
 	case BackgroundRenderMode::STRETCH_HEIGHT:
-		scale.y = _windowRect.Height / textureSize.Height;
-		scale.x = _windowRect.Height / textureSize.Height;
+		scale.y = GlobalHelper::getData()->m_windowBounds.Height / textureSize.Height;
+		scale.x = GlobalHelper::getData()->m_windowBounds.Height / textureSize.Height;
 		break;
 	case BackgroundRenderMode::STRETCH_WIDTH:
-		scale.x = _windowRect.Width / textureSize.Width;
-		scale.y = _windowRect.Width / textureSize.Width;
+		scale.x = GlobalHelper::getData()->m_windowBounds.Width / textureSize.Width;
+		scale.y = GlobalHelper::getData()->m_windowBounds.Width / textureSize.Width;
 		break;
 	case BackgroundRenderMode::STRETCH:
-		scale.y = _windowRect.Height / textureSize.Height;
-		scale.x = _windowRect.Width / textureSize.Width;
+		scale.y = GlobalHelper::getData()->m_windowBounds.Height / textureSize.Height;
+		scale.x = GlobalHelper::getData()->m_windowBounds.Width / textureSize.Width;
 		break;
 
 	case BackgroundRenderMode::ORIGINAL:

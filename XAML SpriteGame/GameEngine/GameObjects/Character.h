@@ -3,7 +3,6 @@
 #include "../GameObject.h"
 #include "../ParticleEffects/FireBall.h"
 
-
 using namespace DXCore;
 using namespace DXCore::BasicSprites;
 

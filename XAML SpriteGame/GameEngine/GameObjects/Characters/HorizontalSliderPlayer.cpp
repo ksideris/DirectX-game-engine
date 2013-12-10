@@ -42,8 +42,7 @@ void HorizontalSliderPlayer::Shoot()
 		data.SetScale(float2(1.0f, 1.0f));
 		data.SetTexture(_projectile);
 		data.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(), data.GetPos());
-		data.SetWindowSize(_windowRect);
-		bullets.push_back(data);
+		 bullets.push_back(data);
 		break;
 	case WeaponsLevel::single_medium: 
 		data.SetPos(pos);
@@ -51,8 +50,7 @@ void HorizontalSliderPlayer::Shoot()
 		data.SetScale(float2(2.0f, 2.0f));
 		data.SetTexture(_projectile);
 		data.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(), data.GetPos());
-		data.SetWindowSize(_windowRect);
-		bullets.push_back(data);
+		 bullets.push_back(data);
 		break;
 	case WeaponsLevel::triple: 
 
@@ -61,16 +59,14 @@ void HorizontalSliderPlayer::Shoot()
 		data.SetScale(float2(1.0f, 1.0f));
 		data.SetTexture(_projectile);
 		data.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(), data.GetPos());
-		data.SetWindowSize(_windowRect);
-		bullets.push_back(data);
+		 bullets.push_back(data);
 		 
 		data2.SetPos(float2(pos.x - textureSize.Width / 2.f*scale.x, pos.y - textureSize.Height / 2.f*scale.y + 20));
 		data2.vel = float2(1000.0f* cos(rot), -1000.0f*sin(rot));
 		data2.SetScale(float2(1.0f, 1.0f));
 		data2.SetTexture(_projectile);
 		data2.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(),  data2.GetPos());
-		data2.SetWindowSize(_windowRect);
-		bullets.push_back(data2);
+		 bullets.push_back(data2);
 
 
 		data3.SetPos(float2(pos.x - textureSize.Width / 2.f*scale.x, pos.y + textureSize.Height / 2.f*scale.y - 20));
@@ -78,7 +74,7 @@ void HorizontalSliderPlayer::Shoot()
 		data3.SetScale(float2(1.0f, 1.0f));
 		data3.SetTexture(_projectile);
 		data3.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(),  data3.GetPos());
-		data3.SetWindowSize(_windowRect);
+		 
 		bullets.push_back(data3);
 		break;
 	case WeaponsLevel::triple_medium:
@@ -88,7 +84,7 @@ void HorizontalSliderPlayer::Shoot()
 		data.SetScale(float2(2.0f, 2.0f));
 		data.SetTexture(_projectile);
 		data.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(),  data.GetPos());
-		data.SetWindowSize(_windowRect);
+	 
 		bullets.push_back(data);
 
 		data2.SetPos(float2(pos.x - textureSize.Width / 2.f*scale.x, pos.y - textureSize.Height / 2.f*scale.y + 20));
@@ -96,8 +92,7 @@ void HorizontalSliderPlayer::Shoot()
 		data2.SetScale(float2(2.0f, 2.0f));
 		data2.SetTexture(_projectile);
 		data2.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(), data2.GetPos());
-		data2.SetWindowSize(_windowRect);
-		bullets.push_back(data2);
+		 bullets.push_back(data2);
 
 		 
 		data3.SetPos(float2(pos.x - textureSize.Width / 2.f*scale.x, pos.y + textureSize.Height / 2.f*scale.y - 20));
@@ -105,8 +100,7 @@ void HorizontalSliderPlayer::Shoot()
 		data3.SetScale(float2(2.0f, 2.0f));
 		data3.SetTexture(_projectile);
 		data3.setCollisionGeometryForParticle(float2(20, 20)*data.GetScale(),  data3.GetPos());
-		data3.SetWindowSize(_windowRect);
-		bullets.push_back(data3);
+		 bullets.push_back(data3);
 
 	}
 }
@@ -138,15 +132,15 @@ void HorizontalSliderPlayer::Update(float timeDelta)
 void HorizontalSliderPlayer::KeepInBounds()
 {
 
-	if (pos.x > _windowRect.Width - textureSize.Width / 2.0f * scale.x)
+	if (pos.x > GlobalHelper::getData()->m_windowBounds.Width - textureSize.Width / 2.0f * scale.x)
 	{
-		pos.x = _windowRect.Width - textureSize.Width / 2.0f * scale.x;
+		pos.x = GlobalHelper::getData()->m_windowBounds.Width - textureSize.Width / 2.0f * scale.x;
 		accel.x = 0;
 		vel.x = 0;
 	}
-	if (pos.y > _windowRect.Height - textureSize.Height / 2.0f * scale.y)
+	if (pos.y > GlobalHelper::getData()->m_windowBounds.Height - textureSize.Height / 2.0f * scale.y)
 	{
-		pos.y = _windowRect.Height - textureSize.Height / 2.0f * scale.y;
+		pos.y = GlobalHelper::getData()->m_windowBounds.Height - textureSize.Height / 2.0f * scale.y;
 
 		vel.y = 0;
 	}
